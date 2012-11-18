@@ -1,31 +1,4 @@
-javascript:(function(){
-/**
- *  The following function is provided by:
- *
- *  Secure Hash Algorithm (SHA1)
- *  http://www.webtoolkit.info/
- *
- */
-function sha1(msg) {
-
-    function rotate_left(n,s) {
-        var t4 = ( n<<s ) | (n>>>(32-s));
-        return t4;
-    };
-
-    function lsb_hex(val) {
-        var str="";
-        var i;
-        var vh;
-        var vl;
-
-        for( i=0; i<=6; i+=2 ) {
-            vh = (val>>>(i*4+4))&0x0f;
-            vl = (val>>>(i*4))&0x0f;
-            str += vh.toString(16) + vl.toString(16);
-        }
-        return str;
-    };
+function sha1(msg,out_type) {
 
     function cvt_b62(val){
         var str="";
@@ -42,13 +15,12 @@ function sha1(msg) {
         }
         return str;
     };
-
-
+    
     function Utf8Encode(string) {
         string = string.replace(/\r\n/g,"\n");
         var utftext = "";
 
-        for (var n = 0; n < string.len; n++) {
+        for (var n = 0; n < string.length; n++) {
 
             var c = string.charCodeAt(n);
 
@@ -80,16 +52,17 @@ function sha1(msg) {
     var H4 = 0xC3D2E1F0;
     var A, B, C, D, E;
     var temp;
-
+    var rl_tmp;
+    var word_array_len=0;
     msg = Utf8Encode(msg);
 
-    var msg_len = msg.len;
+    var msg_len = msg.length;
 
     var word_array = new Array();
     for( i=0; i<msg_len-3; i+=4 ) {
         j = msg.charCodeAt(i)<<24 | msg.charCodeAt(i+1)<<16 |
         msg.charCodeAt(i+2)<<8 | msg.charCodeAt(i+3);
-        word_array.push( j );
+        word_array[word_array_len++]= j;
     }
 
     switch( msg_len % 4 ) {
@@ -109,18 +82,22 @@ function sha1(msg) {
         break;
     }
 
-    word_array.push( i );
+    word_array[word_array_len++]=  i ;
 
-    while( (word_array.len % 16) != 14 ) word_array.push( 0 );
+    while( (word_array.length % 16) != 14 ){ 
+        word_array[word_array_len++]=  0 ;
+    }
 
-    word_array.push( msg_len>>>29 );
-    word_array.push( (msg_len<<3)&0x0ffffffff );
+   word_array[word_array_len++]=msg_len>>>29;
+   word_array[word_array_len++]=(msg_len<<3)&0x0ffffffff;
 
 
-    for ( blockstart=0; blockstart<word_array.len; blockstart+=16 ) {
+    for ( blockstart=0; blockstart<word_array_len; blockstart+=16 ) {
 
         for( i=0; i<16; i++ ) W[i] = word_array[blockstart+i];
-        for( i=16; i<=79; i++ ) W[i] = rotate_left(W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16], 1);
+        for( i=16; i<=79; i++ ){
+            W[i] = ((W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16])<<1)|((W[i-3] ^ W[i-8] ^ W[i-14] ^ W[i-16])>>>31);
+        }
 
         A = H0;
         B = H1;
@@ -129,37 +106,41 @@ function sha1(msg) {
         E = H4;
 
         for( i= 0; i<=19; i++ ) {
-            temp = (rotate_left(A,5) + ((B&C) | (~B&D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
+            rl_tmp=(A<<5)|(A>>>(32-5));
+            temp = (rl_tmp + ((B&C) | (~B&D)) + E + W[i] + 0x5A827999) & 0x0ffffffff;
             E = D;
             D = C;
-            C = rotate_left(B,30);
+            C = (B<<30)|(B>>>(32-30));
             B = A;
             A = temp;
         }
 
         for( i=20; i<=39; i++ ) {
-            temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
+            rl_tmp=(A<<5)|(A>>>(32-5));
+            temp = (rl_tmp + (B ^ C ^ D) + E + W[i] + 0x6ED9EBA1) & 0x0ffffffff;
             E = D;
             D = C;
-            C = rotate_left(B,30);
+            C = (B<<30)|(B>>>(32-30));
             B = A;
             A = temp;
         }
 
         for( i=40; i<=59; i++ ) {
-            temp = (rotate_left(A,5) + ((B&C) | (B&D) | (C&D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
+            rl_tmp=(A<<5)|(A>>>(32-5));
+            temp = (rl_tmp + ((B&C) | (B&D) | (C&D)) + E + W[i] + 0x8F1BBCDC) & 0x0ffffffff;
             E = D;
             D = C;
-            C = rotate_left(B,30);
+            C = (B<<30)|(B>>>(32-30));
             B = A;
             A = temp;
         }
 
         for( i=60; i<=79; i++ ) {
-            temp = (rotate_left(A,5) + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
+            rl_tmp=(A<<5)|(A>>>(32-5));
+            temp = (rl_tmp + (B ^ C ^ D) + E + W[i] + 0xCA62C1D6) & 0x0ffffffff;
             E = D;
             D = C;
-            C = rotate_left(B,30);
+            C = (B<<30)|(B>>>(32-30));
             B = A;
             A = temp;
         }
@@ -171,53 +152,161 @@ function sha1(msg) {
         H4 = (H4 + E) & 0x0ffffffff;
 
     }
+    if(!out_type){
+        str='';
+        for( i=7; i>=0; i-- ) {
+                v = (H0>>>(i*4))&0x0f;
+                str += v.toString(16);
+        };
+        for( i=7; i>=0; i-- ) {
+                v = (H1>>>(i*4))&0x0f;
+                str += v.toString(16);
+        }
+        for( i=7; i>=0; i-- ) {
+                v = (H2>>>(i*4))&0x0f;
+                str += v.toString(16);
+        }
+        for( i=7; i>=0; i-- ) {
+                v = (H3>>>(i*4))&0x0f;
+                str += v.toString(16);
+        }
+        for( i=7; i>=0; i-- ) {
+                v = (H4>>>(i*4))&0x0f;
+                str += v.toString(16);
+        }
 
-    temp = cvt_b62(H0) + cvt_b62(H1) + cvt_b62(H2) + cvt_b62(H3) + cvt_b62(H4);
+        return str.toLowerCase();
+    }
+    else if(out_type=='b62'){
+        str='';
+        str+=cvt_b62(H0);
+        str+=cvt_b62(H1);
+        str+=cvt_b62(H2);
+        str+=cvt_b62(H3);
+        str+=cvt_b62(H4);
+        return str;
+    }
+    else{
+        var tmp=new Array(H0,H1,H2,H3,H4);
+        return tmp;
+    }
 
-    return temp.toLowerCase();
+}
+function base32_encode(string){
+    var dictionary='ybndrfg8ejkmcpqxot1uwisza345h769';
+    //dictionary="ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    var str_len=string.length;
+    var iters=Math.ceil(str_len/5);
+    var tmp=Math.round(str_len/5);
+    var i=0;
+    var value=0;
+    var part1=0;
+    var part2=0;
+    var part3=0;
+    var part4=0;
+    var part5=0;
+    var part6=0;
+    var part7=0;
+    var part8=0;
+    var parta=0;
+    var partb=0;
+    var partc=0;
+    var partd=0;
+    var parte=0;
+    var out_str='';
+    for(i=0;i<iters;++i){
+        parta=string.charCodeAt(i*5);
+        partb=string.charCodeAt((i*5)+1);
 
-}    
-    var len=(document.forms.length)-1;
-    var i=0,j=0;
-    var len2;
-    var tagname;
-    var attr;
-    var tmp;
-    var found_value=new Array;
-    var salt='o6jlhDV3fvuo985FOVl9'
-    var max_len=12;
-    for(i=0;i<len;++i){
-        tagname=document.forms[i].getElementsByTagName('input');
-        len2=tagname.len
-        for(j=0;j<len2;++j){
-            attr=tagname[j].getAttribute('type');
-            if(attr=="password"){
-                found_value[0].push(i,j);
-                found_value[1].push(i,j);
-                found_value[2].push(i,j);
-                max_len=tagname[j].getAttribute('maxlength');
-                if(max_len==null){
-                    max_len=12;
-                }
-            }
-            else if(attr=="username"){
-                found_value[1].push(i,j);
+        partc=string.charCodeAt((i*5)+2);
+
+        partd=string.charCodeAt((i*5)+3);
+
+        parte=string.charCodeAt((i*5)+4);
+        value=(parta*Math.pow(2,32));
+        if(partb>=0){
+            value+=(partb*Math.pow(2,24));
+        }            
+        if(partc>=0){
+            value+=(partc<<16);
+        }
+        if(partd>=0){
+            value+=(partd<<8);
+        }
+        if(parte>=0){
+            value+=(parte);
+        }
+           
+        part1=(value/0x800000000)&0x1f;
+        part2=(value/0x400000000)&0x1f;
+        part3=(value/0x2000000)&0x1f;
+        part4=(value/0x100000)&0x1f;
+        part5=(value/0x8000)&0x1f;
+        part6=(value/0x400)&0x1f;
+        part7=(value/0x20)&0x1f;
+        part8=value&0x1f;
+        tmp=dictionary[part1]+dictionary[part2]+dictionary[part3]+dictionary[part4]+dictionary[part5]+dictionary[part6]+dictionary[part7]+dictionary[part8];
+        out_str+=tmp;
+    }
+    return out_str.substr(0,(Math.ceil(str_len*(8/5))));
+}
+function hex_decode(hex_str){
+    var strlen=Math.ceil(hex_str.length/2);
+    var i=0;
+    var out_str=''
+    for(i=0;i<strlen;i++){
+        out_str+=String.fromCharCode(parseInt(hex_str.substr(i*2,2),16));
+    }
+    return out_str;
+}
+//to get the username/email just get the input that is directly above the password. This will allow it to have better salting.
+// as a potential hacker won't be able to just try everyone's password with the site. They'll have to go username by username.
+//thus limiting the potential exposure for each user, along with making sure that each one is unique.
+function generate_salt(password,username){
+    var base_salt='mnJ+,`~~<GvaV9*.S1Ms#ChS';
+    var uri=process_uri(window.location.href);
+    var salt=sha1(password);
+    uri=sha1(uri);
+    base_salt=sha1(base_salt);
+    username=sha1(username);
+    salt=sha1(uri+base_salt+salt+username,'b62');
+    return salt;
+}
+function generate_pass(){
+    var objs=document.getElementsByTagName('input');
+    var objs_len=objs.length;
+    var type='';
+    var j=0;
+    var tmp='';
+    var inputs=[];
+    var username='';
+    var password='';
+    for(i=0;i<objs_len;++i){
+        type=objs[i].type;
+        if(type=='password'){
+            inputs[j++]=i;
+            tmp=objs[i].value;
+            if(tmp!==''){
+                password=tmp;
             }
         }
     }
-    var password=document.forms[found_value[0][0]].elements[found_value[0][1]].value;
-    var username=document.forms[found_value[1][0]].elements[found_value[1][1]].value;
-    var hostname=window.location.hostname.split('.');
-    function regnerate_password(hostname,username,password){
-        len=hostname.length;
-        tmp=username+password+hostname[len-1]+hostname[len-2]+salt;
-        var result=sha1(tmp);
-        result=sha1(result+salt);
-        result=result.substr(0, max_len);
+    var inputs_len=inputs.length;
+    for(i=0;i<inputs_len;++i){
+        tmp=objs[inputs[i]-1].value;
+        if(tmp!==''){
+            username=tmp;
+        }
     }
-    password=regenerate_password(hostname,username,password);
-    var new_div=document.createElement('div');
-    new_div.setAttribute('style', ' backround-color:gray;border 2px black;position:absolute;left:5px;top:30px;width:100px;height:200px;');
-    new_div.innerHTML='<span>Generated Password</span><br /><input type="password" id="agp_password" /><br /><span>Given Password</span><br /><input type="text" /><a href="#" id="sgp_pass_show">Show/Hide</a><div id="agp_hidden_stuff"><span>Generate New Password</span><span>Given Password<input type="password" id="sgp_generated_password" /><br /><span>Domain/URL</span><input type="text" id="sgp_url" /><br /><span>Password Length</span><input type="text" value="'+len+'"/><br /><input type="button" value="submit" onclick="javascript:regenerate_password()"/>';
-    document.body.appendChild(new_div);
-})()
+    var salt=generate_salt(password,username);
+    salt=salt.substr(0,22);
+    salt='$2a$07$'+salt;
+    password=bcrypt(password,salt);
+    password=sha1(password);
+    password=hex_decode(password);
+    password=base32_encode(password);
+    password=password.substr(0,12);
+    for(i=0;i<inputs_len;++i){
+        objs[inputs[i]].value=password;
+    }
+}
