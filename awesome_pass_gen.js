@@ -306,7 +306,5 @@ function generate_pass(){
     password=hex_decode(password);
     password=base32_encode(password);
     password=password.substr(0,12);
-    for(i=0;i<inputs_len;++i){
-        objs[inputs[i]].value=password;
-    }
+    document.getElementById('result').value=password;
 }
