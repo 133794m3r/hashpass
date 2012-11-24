@@ -278,6 +278,8 @@ function generate_pass(){
     var type='';
     var j=0;
     var tmp='';
+    var max_len=14;
+    var tmp_num=0;
     var inputs=[];
     var username='';
     var password='';
@@ -285,9 +287,12 @@ function generate_pass(){
         type=objs[i].type;
         if(type=='password'){
             inputs[j++]=i;
-            tmp=objs[i].value;
+            tmp_num=objs[i].maxlength;
             if(tmp!==''){
                 password=tmp;
+            }
+            if(tmp_num!==undefined){
+                max_len=tmp_num;
             }
         }
     }
@@ -305,6 +310,6 @@ function generate_pass(){
     password=sha1(password);
     password=hex_decode(password);
     password=base32_encode(password);
-    password=password.substr(0,12);
+    password=password.substr(0,max_len);
     document.getElementById('result').value=password;
 }
