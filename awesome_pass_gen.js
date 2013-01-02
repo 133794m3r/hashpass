@@ -1,5 +1,4 @@
 function sha1(msg,out_type) {
-
     function cvt_b62(val){
         var str="";
         var i=0;
@@ -259,6 +258,28 @@ function hex_decode(hex_str){
     }
     return out_str;
 }
+function string_indexes(string,search_string){
+var len=string.length;
+var tmp_str='';
+var str='';
+var index=0;
+var indexes=[];
+var prev_index=0;
+var j=0;
+while(index!==null){
+    tmp_str=string.substr(index);
+    console.log('tmp '+tmp_str);
+    index=tmp_str.match(search_string);
+console.log('indexes '+index);
+    if(index!==null){
+        indexes[j++]=tmp_str.indexOf(index[0])+prev_index;
+        index=tmp_str.indexOf(index[0])+1+prev_index;
+        console.log('str '+tmp_str.substr(index-prev_index,1));
+        prev_index=index;
+    }
+}
+return indexes;
+}
 //to get the username/email just get the input that is directly above the password. This will allow it to have better salting.
 // as a potential hacker won't be able to just try everyone's password with the site. They'll have to go username by username.
 //thus limiting the potential exposure for each user, along with making sure that each one is unique.
@@ -271,6 +292,41 @@ function generate_salt(password,username){
     username=sha1(username);
     salt=sha1(uri+base_salt+salt+username,'b62');
     return salt;
+}
+function simplify(password,max_len){
+console.log('a');
+
+var str=password;
+var reg=new RegExp("[0-9]");
+var reg2=new RegExp("[0-9]","g");
+console.log(password);
+var tmp=string_indexes(password,reg);
+console.log('tmp')
+console.log(tmp);
+var len=tmp.length;
+var password=password.replace(reg2,"");
+console.log('reg');
+console.log(password);
+var tmp2=password.length;
+var num_str='';
+password=password.substr(0,1).toUpperCase()+password.substr(1);
+
+console.log(1);
+console.log(password);
+password=str.substr(tmp[0],1)+password;
+console.log(2);
+console.log(password);
+for(i=1;i<len;++i){
+    num_str+=str.substr(tmp[i],1);
+    console.log(num_str);
+}
+console.log('2a');
+console.log(num_str);
+console.log(3);
+password=password.substr(0,max_len-5)+num_str;
+console.log(password);
+return password;
+
 }
 function generate_pass(){
     var objs=document.getElementsByTagName('input');
@@ -310,6 +366,7 @@ function generate_pass(){
     password=sha1(password);
     password=hex_decode(password);
     password=base32_encode(password);
+    password=simplify(password,max_len);
     password=password.substr(0,max_len);
     document.getElementById('result').value=password;
 }
