@@ -1,0 +1,80 @@
+<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
+    'http://www.w3.org/TR/html4/strict.dtd'
+    >
+<html lang='en'>
+<head>
+<META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
+<meta name='description' content='A fast password hashing/scrambling bookmarklet that also has a site you can use, to make your password stronger.' />
+        <meta name='keywords' content='Password,Hashing,scrypt,scrypt,hash,scrambler,bookmarklet'/>
+    <title>Password Hasher ' modern techniques.</title>
+
+</head>
+<body>
+    <style>
+        input{
+            left:5%;
+        }
+        label{
+            left:auto;
+            position: relative;
+        }
+    </style>
+    <h1 style='text-align:center; position:relative'>
+       Awesome Password Generator
+    </h1>
+    <p style='width:95%'>
+        This site will hash your password ' scrypt,
+        ' the username, the site's name and your password for salt(to make it harder to crack). It will generate a 14 character
+        psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
+        of the boxes will change everything. Thus the entire thing is case sensitive. You can change the length by changing the "Output Length" option
+        to make it the length of the password the maximum that you require. If the length is below 2 it is considered weak below 1 is extremely weak.
+        Try to add a few numbers. The tool will also help you with this by providng some feedback too.
+    </p>
+   <div align='left'>
+    <label for='site_name'>
+        Site Name:
+        <input type='text' id='site_name' value="" />
+    </label>
+    <br />
+    <label for='userame'>
+        Username:
+        <input type='text' id='username'  value=""/>
+    </label> <br />
+    <label for='password'>
+        Password:&nbsp;
+        <input type='text' id='password' value=""/>
+    </label>
+    <label for='length'>
+        &nbsp;&nbsp;Output Lenght:&nbsp;
+        <input type='text' id='length' value='14'/>
+    </label>    
+    <br />
+    <label for='result'>
+        Result:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        <input type='text' id='result' />
+    </label> <br />
+    <input type='submit'  onclick='JavaScript:generate_pass(); return false;' value='Generate Password'>
+   </div>
+   <br />
+   <p style="width:95%">
+    Your original score:<b id='orig_score'></b>
+    <br/>
+    Generated password score:<b id='gen_score'></b>
+   <br />
+    The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
+    If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.
+   </p>
+   <p style="width:95%">
+    Time to crack original password:<b id='orig_time'></b>&nbsp;&nbsp;Some Suggestions:&nbsp;&nbsp;<span id='feedback'></span>
+    <br />
+    Time to crack generated passwod:<b id='gen_time'></b>
+   </p>
+   <br />
+  <!--- <script type='text/javascript' src='out.js'></script> -->
+    <script type="text/javascript" src="scrypt1.js"></script>
+<script type="text/javascript" src="awesome_pass_gen2.js"></script>
+<script type='text/javascript' src='zxcvbn.js'></script>
+<script type='text/javascript' src='string.js'></script>
+<script type='text/javascript' src='math.js'></script>
+</body>
+</html>

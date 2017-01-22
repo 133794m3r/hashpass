@@ -1,0 +1,76 @@
+php
+Rounds:4
+Std Dev:0.00074
+Means:0.0020240680031154
+Hashes/second:494.05454681404
+
+Rounds:5
+Std Dev:0
+Means:0.0023495280224344
+Hashes/second:425.61739653732
+
+Rounds:6
+Std Dev:0.00022
+Means:0.0045017843661101
+Hashes/second:222.13414030403
+
+Rounds:7
+Std Dev:0.00022
+Means:0.0086722519086755
+Hashes/second:115.31030354407
+
+Rounds:8
+Std Dev:0.00032
+Means:0.016991866153219
+Hashes/second:58.851687682964
+
+Rounds:9
+Std Dev:0.00071
+Means:0.033782111043515
+Hashes/second:29.601465660683
+
+Rounds:10
+Std Dev:0.0013
+Means:0.067377901077271
+Hashes/second:14.841661494518
+
+Rounds:11
+Std Dev:0.00183
+Means:0.13493811773217
+Hashes/second:7.4108044250685
+
+total:31.124506950378
+
+js
+rounds: 11
+the mean:0.4085
+std dev:0.0059
+hashes/second: 2.4479804161566707
+rounds: 10
+the mean:0.2077
+std dev:0.0046
+hashes/second: 4.814636494944632
+rounds: 9
+the mean:0.102
+std dev:0.0053
+hashes/second: 9.803921568627452
+rounds: 8
+the mean:0.0513
+std dev:0.0045
+hashes/second: 19.49317738791423
+rounds: 7
+the mean:0.0257
+std dev:0.0029
+hashes/second: 38.91050583657587
+rounds: 6
+the mean:0.0138
+std dev:0.0037
+hashes/second: 72.46376811594203
+rounds: 5
+the mean:0.0075
+std dev:0.0032
+hashes/second: 133.33333333333334
+rounds: 4
+the mean:0.0036
+std dev:0.0008
+hashes/second: 277.77777777777777
