@@ -1,6 +1,12 @@
+<<<<<<< HEAD
 This is a simple password hasher using bcrypt+sha1, it also has a bookmarklet
 which allows you to use it the same as you would if it was supergenpass
 unlike super gen pass, we are using a stronger algorithm with much stronger
+=======
+This is a simple password hasher ' bcrypt+sha1, it also has a bookmarklet
+which allows you to use it the same as you would if it was supergenpass
+unlike super gen pass, we are ' a stronger algorithm with much stronger
+>>>>>>> new-gh-pages
 security for your generated passwords if anyone ever manages to get the 
 password(s) and knows you use this software.
 
