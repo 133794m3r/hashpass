@@ -5,9 +5,9 @@
 <head>
 <META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
 <meta name='description' content='A fast password hashing/scrambling bookmarklet that also has a site you can use, to make your password stronger.' />
-        <meta name='keywords' content='Password,Hashing,scrypt,scrypt,hash,scrambler,bookmarklet'/>
+    <meta name='keywords' content='Password,Hashing,scrypt,scrypt,hash,scrambler,bookmarklet'/>
     <title>Password Hasher ' modern techniques.</title>
-
+    <link rel="stylesheet" type='text/css' href='style.css'/>
 </head>
 <body>
     <style>
@@ -28,7 +28,8 @@
         psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
         of the boxes will change everything. Thus the entire thing is case sensitive. You can change the length by changing the "Output Length" option
         to make it the length of the password the maximum that you require. If the length is below 2 it is considered weak below 1 is extremely weak.
-        Try to add a few numbers. The tool will also help you with this by providng some feedback too.
+        Try to add a few numbers. The tool will also help you with this by providing some feedback too. Also when highlighting the password make sure
+        to double click to highlight the whole thing.
     </p>
    <div align='left'>
     <label for='site_name'>
@@ -37,7 +38,7 @@
     </label>
     <br />
     <label for='userame'>
-        Username:
+        Username:&nbsp;
         <input type='text' id='username'  value=""/>
     </label> <br />
     <label for='password'>
@@ -50,9 +51,13 @@
     </label>    
     <br />
     <label for='result'>
-        Result:&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+        Result:&nbsp;&nbsp;&nbsp;
         <input type='text' id='result' />
-    </label> <br />
+    </label>
+    <label for='no_spec'>
+        &nbsp;&nbsp;No Special Characters:
+        <input type='checkbox' onchange="javascript:modal_toggle('_spec')" id='no_spec'/>
+    </label><br />
     <input type='submit'  onclick='JavaScript:generate_pass(); return false;' value='Generate Password'>
    </div>
    <br />
@@ -65,13 +70,27 @@
     If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.
    </p>
    <p style="width:95%">
-    Time to crack original password:<b id='orig_time'></b>&nbsp;&nbsp;Some Suggestions:&nbsp;&nbsp;<span id='feedback'></span>
+    Time to crack original password :<b id='orig_time'></b>&nbsp;&nbsp;&nbsp;&nbsp;Some Suggestions:&nbsp;&nbsp;<span id='feedback'></span>
     <br />
-    Time to crack generated passwod:<b id='gen_time'></b>
+    Time to crack generated password:<b id='gen_time'></b>
    </p>
    <br />
+   <div class='modal' id='modal_spec'>
+                <div clas='modal_body'>
+        <div class='modal_content'>
+            <div class='caps' style='color:red; font-size:1.2em'>
+                <p><b>Are you sure you want to disable the special character from generation? <br />Doing so will decrease the strength of your generated password.
+                <br />You should only do this if the site you're going to use specifically said that you cannot use them.</b></p>
+            </div>
+            <div id='buttons'>
+            <a href='#' onclick='confirmed(1)' style='font-size:1.5em'>YES I'M SURE</a>
+            &nbsp;&nbsp; <a href='#' onclick='confirmed(0)' style='font-size:2em'>No I'm not.</a>
+            </div>
+            </div>
+        </div>
+   </div>
   <!--- <script type='text/javascript' src='out.js'></script> -->
-    <script type="text/javascript" src="scrypt1.js"></script>
+<script type="text/javascript" src="scrypt1.js"></script>
 <script type="text/javascript" src="awesome_pass_gen2.js"></script>
 <script type='text/javascript' src='zxcvbn.js'></script>
 <script type='text/javascript' src='string.js'></script>

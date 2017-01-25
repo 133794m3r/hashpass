@@ -2,21 +2,21 @@ function generate_salt(password,username,url){
 	var time=Date.now();
     var salt='';
     scrypt(password,url,{
-        logN:6,
+        logN:7,
         r:5,
         p:1,
         encoding:'base64'},
         function(x){password=x;}
     )
     scrypt(username,password,{
-        logN:6,
+        logN:7,
         r:5,
         p:1,
         encoding:'hex'},
         function(x){username=x;}
     )
     scrypt(url,username,{
-        logN:6,
+        logN:7,
         r:5,
         p:1,
         encoding:'base64'},
@@ -25,8 +25,8 @@ function generate_salt(password,username,url){
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
-        logN:8,
-        r:6,
+        logN:9,
+        r:7,
         p:1,
         encoding:'hex'},
         function(x){salt=x;}
@@ -45,17 +45,26 @@ var reg=new RegExp("[0-9]");
 var reg2=new RegExp("[0-9]","g");
 var password_tmp='';
 var tmp=string_indexes(password,reg);
-
+var cap_char='';
+var str_char='';
+var num='';
+var num_str='';
 var len=tmp.length;
+var chars_order=0;
+chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%3;
 password=password.replace(reg2,"");
 
 var tmp2=password.length;
-var num_str='';
 var special_str=0;
 password_tmp=password.substr(1);
+
 password_tmp=no_repeat_strings(password_tmp);
-password=password.substr(0,1).toUpperCase()+password_tmp;
-password=str.substr(tmp[0],1)+password;
+str_char=password_tmp;
+cap_char=password.substr(0,1).toUpperCase();
+//password=password.substr(0,1).toUpperCase()+password_tmp;
+num=str.substr(tmp[0],1);
+//password=str.substr(tmp[0],1)+password;
+
 
 for(i=1;i<len;++i){
     num_str+=str.substr(tmp[i],1);
@@ -63,11 +72,15 @@ for(i=1;i<len;++i){
 num_str=no_repeat_strings(num_str);
 if(num_str.length>=5){
 	num_str_len=Math.floor((max_len/2));
-	password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
+	//password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
+	str_char=str_char.substr(0,num_str_len-2);
+	num_str=num_str.substr(0,(max_len-num_str_len)-1);
 }
 else{
 	max_len=(max_len-num_str.length);
-	password=password.substr(0,max_len-1)+num_str.substr(0);
+	//password=password.substr(0,max_len-1)+num_str.substr(0);
+	str_char=str_char.substr(0,max_len-3);
+	num_str.substr(0);
 }
 special_str=(parseInt(num_str.substr(0,2)))%3;
 var tmp_str='';
@@ -82,7 +95,18 @@ switch(special_str){
 		tmp_str='@';
 		break;
 }
-password=password+tmp_str;
+switch(chars_order){
+	case 0:
+		password=num+cap_char+str_char+num_str+tmp_str;
+		break;
+	case 1:
+		password=cap_char+num+str_char+num_str+tmp_str;
+		break;
+	case 2:
+		password=num+cap_char+num_str+str_char+tmp_str;
+		break;
+}
+//password=password+tmp_str;
 var time2=Date.now();
 console.log('simplify:'+(time2-time)+'ms');
 return password;
@@ -113,6 +137,7 @@ function generate_pass(){
 	max_len=document.getElementById('length').value;
 	if(max_len===''){
 		max_len=14;
+		document.getElementById('length').value=14;
 	}
     result=zxcvbn(password);
     document.getElementById('orig_score').innerHTML=result.score;
@@ -148,4 +173,17 @@ function generate_pass(){
 	document.getElementById('gen_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
 	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
 
+}
+
+function modal_toggle(id){
+	var el=document.getElementById('modal'+id);
+	var visible=el.style.visibility;
+	console.log('modal'+id);
+	console.log(document.getElementById('modal'+id).style.visibility);
+	if(visible==="visible"){
+		el.style.visibility='hidden';
+	}
+	else{
+		el.style.visibility='visible';
+	}
 }
