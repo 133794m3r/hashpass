@@ -1,32 +1,36 @@
 function generate_salt(password,username,url){
 	var time=Date.now();
     var salt='';
+
     scrypt(password,url,{
         logN:7,
-        r:5,
+        r:6,
         p:1,
         encoding:'base64'},
         function(x){password=x;}
     )
+	percent_update(5);
     scrypt(username,password,{
         logN:7,
-        r:5,
+        r:6,
         p:1,
         encoding:'hex'},
         function(x){username=x;}
     )
+	percent_update(7);
     scrypt(url,username,{
         logN:7,
-        r:5,
+        r:6,
         p:1,
         encoding:'base64'},
         function(x){url=x;}
     )
+	percent_update(9);
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
         logN:9,
-        r:7,
+        r:8,
         p:1,
         encoding:'hex'},
         function(x){salt=x;}
@@ -34,10 +38,11 @@ function generate_salt(password,username,url){
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
+	percent_update(15);
     return salt;
 }
 
-function simplify(password,max_len){
+function simplify(password,max_len,no_spec){
 
 var time=Date.now();
 var str=password;
@@ -51,13 +56,14 @@ var num='';
 var num_str='';
 var len=tmp.length;
 var chars_order=0;
+var tmp_str='';
 chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%3;
 password=password.replace(reg2,"");
-
+password=password.replace(/\=/gi,'');
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);
-
+console.log('p'+password);
 password_tmp=no_repeat_strings(password_tmp);
 str_char=password_tmp;
 cap_char=password.substr(0,1).toUpperCase();
@@ -69,7 +75,33 @@ num=str.substr(tmp[0],1);
 for(i=1;i<len;++i){
     num_str+=str.substr(tmp[i],1);
 }
+
+console.log('num '+num_str);
 num_str=no_repeat_strings(num_str);
+
+special_str=(parseInt(num_str.substr(0,2)))%3;
+if(no_spec===false){
+	switch(special_str){
+		case 0:
+			tmp_str='$';
+			break;
+		case 1:
+			tmp_str='#';
+			break;
+		case 2:
+			tmp_str='@';
+			break;
+	}
+}
+else{
+	if(num_str.length>=5){
+		tmp_str=num_str.substr(-1,1);
+	}
+	else{
+		tmp_str=str_char.substr(-1,1);
+	}
+}
+
 if(num_str.length>=5){
 	num_str_len=Math.floor((max_len/2));
 	//password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
@@ -82,19 +114,9 @@ else{
 	str_char=str_char.substr(0,max_len-3);
 	num_str.substr(0);
 }
-special_str=(parseInt(num_str.substr(0,2)))%3;
-var tmp_str='';
-switch(special_str){
-	case 0:
-		tmp_str='$';
-		break;
-	case 1:
-		tmp_str='#';
-		break;
-	case 2:
-		tmp_str='@';
-		break;
-}
+
+
+
 switch(chars_order){
 	case 0:
 		password=num+cap_char+str_char+num_str+tmp_str;
@@ -130,6 +152,7 @@ function generate_pass(){
 	var time2=0;
 	var time=0;
 	var time4=0;
+	var no_spec=document.getElementById('no_spec').checked;
 	//password special strings will be one of $#@
     url=document.getElementById('site_name').value;
 	password=document.getElementById('password').value;
@@ -140,12 +163,18 @@ function generate_pass(){
 		document.getElementById('length').value=14;
 	}
     result=zxcvbn(password);
+	
+	document.getElementById('generate_pass').disabled=true;
+	modal_toggle('_progress');
+	percent_update(1);
+	
     document.getElementById('orig_score').innerHTML=result.score;
 	document.getElementById('feedback').innerHTML=result.feedback.suggestions;
 	document.getElementById('orig_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
     time=Date.now();
     var salt=generate_salt(password,username,url);
 	time4=Date.now();
+	percent_update(20);
     scrypt(password,salt,{
         logN:15,
         r:10,
@@ -155,11 +184,12 @@ function generate_pass(){
     )       
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
+	percent_update(90);
     password=hex_decode(password);
     password=base32_encode(password);
 	console.log('scrypt:'+password);
-	
-    password=simplify(password,max_len);
+    password=simplify(password,max_len,no_spec);
+	percent_update(98);
     password=password.substr(0,max_len);
     document.getElementById('result').value=password;
     time2=Date.now();
@@ -169,21 +199,49 @@ function generate_pass(){
     time2=Date.now();
     console.log('zxcvbn:'+((time2-time))+'ms');
     
+	percent_update(99);
+	
     document.getElementById('gen_score').innerHTML=result.score;
 	document.getElementById('gen_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
 	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
+	
+	document.getElementById('generate_pass').disabled=false;
+	modal_toggle('_progress');
+	percent_update(0);
+}
 
+function percent_update(percent){
+	var completed_perc=document.getElementById('completed_perc');
+	var perc_text=document.getElementById('perc_text');
+	var perc_done=document.getElementById('perc_done');
+	
+	percent=percent+'%';
+	
+	perc_text.innerHTML=percent;
+	perc_done.innerHTML=percent;
+	completed_perc.style.width=percent;
 }
 
 function modal_toggle(id){
 	var el=document.getElementById('modal'+id);
 	var visible=el.style.visibility;
-	console.log('modal'+id);
-	console.log(document.getElementById('modal'+id).style.visibility);
 	if(visible==="visible"){
 		el.style.visibility='hidden';
 	}
 	else{
 		el.style.visibility='visible';
 	}
+}
+
+function no_spec_check(){
+	var no_spec=document.getElementById('no_spec');
+	if(no_spec.checked===true){
+		modal_toggle('_spec');
+	}
+}
+
+function confirmed(val){
+	var no_spec=document.getElementById('no_spec');
+	no_spec.checked=val;
+	modal_toggle('_spec');
 }

@@ -56,9 +56,9 @@
     </label>
     <label for='no_spec'>
         &nbsp;&nbsp;No Special Characters:
-        <input type='checkbox' onchange="javascript:modal_toggle('_spec')" id='no_spec'/>
+        <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'/>
     </label><br />
-    <input type='submit'  onclick='JavaScript:generate_pass(); return false;' value='Generate Password'>
+    <input type='submit'  onclick='JavaScript:generate_pass(); return false;' value='Generate Password' id='generate_pass'>
    </div>
    <br />
    <p style="width:95%">
@@ -76,16 +76,31 @@
    </p>
    <br />
    <div class='modal' id='modal_spec'>
-                <div clas='modal_body'>
+        <div clas='modal_body'>
         <div class='modal_content'>
-            <div class='caps' style='color:red; font-size:1.2em'>
+            <div class='caps' style='color:red;'>
                 <p><b>Are you sure you want to disable the special character from generation? <br />Doing so will decrease the strength of your generated password.
                 <br />You should only do this if the site you're going to use specifically said that you cannot use them.</b></p>
             </div>
             <div id='buttons'>
-            <a href='#' onclick='confirmed(1)' style='font-size:1.5em'>YES I'M SURE</a>
-            &nbsp;&nbsp; <a href='#' onclick='confirmed(0)' style='font-size:2em'>No I'm not.</a>
+            <input type='button' onclick='confirmed(1)' style='font-size:1.5em' value="YES I'M SURE" />
+            &nbsp;&nbsp; <input type='button' onclick='confirmed(0)' style='font-size:2em' value="No I'm Not" />
             </div>
+            </div>
+        </div>
+   </div>
+   <div class='modal' id='modal_progress'>
+        <div class='modal_body'>
+            <div class='modal_content' id='full'>
+                <font color='red' size='1.1em'>
+                    Currently Generating Password. It is now <span id='perc_done' style='color:blue'></span> done.
+                </font>
+                <div id='perc_container'>
+                    <span id='perc_text'>
+                        
+                    </span>
+                    <span id='completed_perc' style='width:0%'></span>
+                </div>
             </div>
         </div>
    </div>
