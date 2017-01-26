@@ -5,6 +5,7 @@
     padding-top: 100px; /* Location of the box */
     left: 0;
     top: 0;
+    font-size:1.2em;
     width: 100%; /* Full width */
     height: 100%; /* Full height */
     overflow: auto; /* Enable scroll if needed */
@@ -26,9 +27,45 @@
 .modal_body {padding: 2px 16px;}
 .caps{
     text-transform: uppercase;
+    font-size:1.2em;
     margin-left:1%;
     display:block;
 }
 #buttons{
     text-align:center;
+}
+#perc_container{
+    border-radius: 0.5em;
+    background-color:black;
+    height:2em;
+    border-color:gray;
+    width:90%;
+    margin:auto;
+    position:absolute;
+    margin-top:1em;
+    border:3px;
+}
+#completed_perc{
+    border-radius: 0.5em;
+    background-color:blue;
+    top:0.2em;
+    left:0.2em;
+    position:absolute;
+    z-index:100;
+    bottom:0.2em;
+    height:auto;
+}
+#perc_text{
+    position:absolute;
+    text-align:center;
+    color:white;
+    top:0.2em;
+    width:100%;
+    z-index:1000;
+}
+#modal_progress{
+    height:100%;
+}
+#full{
+    height:5em;
 }
