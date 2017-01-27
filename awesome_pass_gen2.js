@@ -10,7 +10,7 @@ function generate_salt(password,username,url){
         encoding:'base64'},
         function(x){password=x;}
     )
-	percent_update(5);
+
     scrypt(username,password,{
         logN:7,
         r:6,
@@ -18,7 +18,7 @@ function generate_salt(password,username,url){
         encoding:'hex'},
         function(x){username=x;}
     )
-	percent_update(7);
+
     scrypt(url,username,{
         logN:7,
         r:6,
@@ -26,7 +26,6 @@ function generate_salt(password,username,url){
         encoding:'base64'},
         function(x){url=x;}
     )
-	percent_update(9);
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
@@ -63,7 +62,6 @@ password=password.replace(/\=/gi,'');
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);
-console.log('p'+password);
 password_tmp=no_repeat_strings(password_tmp);
 str_char=password_tmp;
 cap_char=password.substr(0,1).toUpperCase();
@@ -76,7 +74,6 @@ for(i=1;i<len;++i){
     num_str+=str.substr(tmp[i],1);
 }
 
-console.log('num '+num_str);
 num_str=no_repeat_strings(num_str);
 
 special_str=(parseInt(num_str.substr(0,2)))%3;
@@ -199,11 +196,12 @@ function generate_pass(){
 	document.getElementById('gen_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
 	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
 		
-//window.setTimeout(modal_toggle('_progress'),20);
+modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
-	setTimeout(modal_toggle('_progress'),10);
+
 
 perc=0;
+return;
 }
 
 function sleepFor( sleepDuration ){
@@ -225,7 +223,6 @@ function percent_update(percent){
 function modal_toggle(id){
 	var el=document.getElementById('modal'+id);
 	var visible=el.style.visibility;
-	console.log('v '+visible);
 	if(visible==="visible"){
 		el.style.visibility='hidden';
 	}
@@ -252,8 +249,6 @@ function generate_wrapper(){
 	//var timeout=setTimeout(modal_toggle('_progress'),0);
 	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
-	
-	var interval=setTimeout(percent_update(70),1);
-	setTimeout(function(){generate_pass()},5);
-	document.getElementById('generate_pass').disabled=false;
+	var interval=setTimeout(function(){percent_update(70);},1);
+	setTimeout(function(){generate_pass()},30);
 }
