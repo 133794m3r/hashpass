@@ -19,7 +19,7 @@
             position: relative;
         }
     </style>
-    <h1 style='text-align:center; position:relative'>
+    <h1 style='text-align:center; position:relative' id='header'>
        Awesome Password Generator
     </h1>
     <p style='width:95%'>
@@ -58,7 +58,7 @@
         &nbsp;&nbsp;No Special Characters:
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'/>
     </label><br />
-    <input type='submit'  onclick='JavaScript:generate_pass(); return false;' value='Generate Password' id='generate_pass'>
+    <input type='submit'  onclick='JavaScript:generate_wrapper();' value='Generate Password' id='generate_pass'>
    </div>
    <br />
    <p style="width:95%">
