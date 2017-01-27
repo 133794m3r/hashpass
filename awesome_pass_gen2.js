@@ -1,3 +1,4 @@
+perc=0;
 function generate_salt(password,username,url){
 	var time=Date.now();
     var salt='';
@@ -38,7 +39,6 @@ function generate_salt(password,username,url){
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
-	percent_update(15);
     return salt;
 }
 
@@ -164,9 +164,6 @@ function generate_pass(){
 	}
     result=zxcvbn(password);
 	
-	document.getElementById('generate_pass').disabled=true;
-	modal_toggle('_progress');
-	percent_update(1);
 	
     document.getElementById('orig_score').innerHTML=result.score;
 	document.getElementById('feedback').innerHTML=result.feedback.suggestions;
@@ -174,7 +171,6 @@ function generate_pass(){
     time=Date.now();
     var salt=generate_salt(password,username,url);
 	time4=Date.now();
-	percent_update(20);
     scrypt(password,salt,{
         logN:15,
         r:10,
@@ -184,12 +180,11 @@ function generate_pass(){
     )       
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
-	percent_update(90);
     password=hex_decode(password);
     password=base32_encode(password);
 	console.log('scrypt:'+password);
     password=simplify(password,max_len,no_spec);
-	percent_update(98);
+
     password=password.substr(0,max_len);
     document.getElementById('result').value=password;
     time2=Date.now();
@@ -198,23 +193,28 @@ function generate_pass(){
     result=zxcvbn(password);
     time2=Date.now();
     console.log('zxcvbn:'+((time2-time))+'ms');
-    
-	percent_update(99);
+
 	
     document.getElementById('gen_score').innerHTML=result.score;
 	document.getElementById('gen_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
 	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
-	
-	document.getElementById('generate_pass').disabled=false;
-	modal_toggle('_progress');
-	percent_update(0);
+		
+//window.setTimeout(modal_toggle('_progress'),20);
+	//setTimeout(percent_update(99),4);
+	setTimeout(modal_toggle('_progress'),10);
+
+perc=0;
+}
+
+function sleepFor( sleepDuration ){
+    var now = new Date().getTime();
+    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
 }
 
 function percent_update(percent){
 	var completed_perc=document.getElementById('completed_perc');
 	var perc_text=document.getElementById('perc_text');
 	var perc_done=document.getElementById('perc_done');
-	
 	percent=percent+'%';
 	
 	perc_text.innerHTML=percent;
@@ -225,6 +225,7 @@ function percent_update(percent){
 function modal_toggle(id){
 	var el=document.getElementById('modal'+id);
 	var visible=el.style.visibility;
+	console.log('v '+visible);
 	if(visible==="visible"){
 		el.style.visibility='hidden';
 	}
@@ -244,4 +245,15 @@ function confirmed(val){
 	var no_spec=document.getElementById('no_spec');
 	no_spec.checked=val;
 	modal_toggle('_spec');
+}
+
+function generate_wrapper(){
+	//setTimeout(document.getElementById('generate_pass').disabled=true,0);
+	//var timeout=setTimeout(modal_toggle('_progress'),0);
+	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
+	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
+	
+	var interval=setTimeout(percent_update(70),1);
+	setTimeout(function(){generate_pass()},5);
+	document.getElementById('generate_pass').disabled=false;
 }

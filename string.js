@@ -191,6 +191,5 @@ function no_repeat_strings(string) {
 
   }
   string_fixed = string;
-  console.log('j ' + j);
   return string_fixed;
 }
