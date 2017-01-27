@@ -1,13 +1,7 @@
-<<<<<<< HEAD
-This is a simple password hasher using bcrypt+sha1, it also has a bookmarklet
-which allows you to use it the same as you would if it was supergenpass
-unlike super gen pass, we are using a stronger algorithm with much stronger
-=======
-This is a simple password hasher ' bcrypt+sha1, it also has a bookmarklet
-which allows you to use it the same as you would if it was supergenpass
-unlike super gen pass, we are ' a stronger algorithm with much stronger
->>>>>>> new-gh-pages
-security for your generated passwords if anyone ever manages to get the 
-password(s) and knows you use this software.
 
-It is licensed under the LGPLv3 or later.
+This is a simple password hasher using scrypt,which allows you to use it the same as you would if it was supergenpass unlike super gen pass, we are using a stronger algorithm with much stronger
+
+Overall this is considered at least version 1.0 as everything works and strength is high enough to make it extremely costly to guess a password that was used for generating the password from this system.
+It is licensed under the GPLv3 or later.
+
+The scrypt js library minified in scrypt1.js is licensed under the MIT from the original source. I have included their link in the source file itself. It is no longer async but is now synchronous those looking for an async version should look at the source repo.
