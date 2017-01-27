@@ -1,3 +1,9 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* AGPLv3
+*/
 function base32_encode(string) {
     //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
     var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';

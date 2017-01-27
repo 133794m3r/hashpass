@@ -1,3 +1,9 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+*AGPLv3
+*/
 function sha1(msg,out_type) {
     function cvt_b62(val){
         var str="";

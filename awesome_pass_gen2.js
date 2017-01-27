@@ -1,3 +1,8 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+*/
 perc=0;
 function generate_salt(password,username,url){
 	var time=Date.now();

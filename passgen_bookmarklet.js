@@ -1,3 +1,9 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* AGPLv3
+*/
 function generate_pass(){
     var objs=document.getElementsByTagName('input');
     var objs_len=objs.length;
