@@ -1,4 +1,4 @@
-<<<<<<< HEAD
+
 function sha1(msg,out_type) {
 
     function cvt_b62(val){
@@ -272,7 +272,6 @@ function generate_salt(password,username){
     username=sha1(username);
     salt=sha1(uri+base_salt+salt+username,'b62');
     return salt;
-=======
 //to get the username/email just get the input that is directly above the password. This will allow it to have better salting.
 // as a potential hacker won't be able to just try everyone's password with the site. They'll have to go username by username.
 //thus limiting the potential exposure for each user, along with making sure that each one is unique.
@@ -341,7 +340,7 @@ var time2=Date.now();
 console.log('simplify:'+(time2-time));
 return password;
 
->>>>>>> new-gh-pages
+
 }
 function generate_pass(){
     var objs=document.getElementsByTagName('input');
@@ -349,7 +348,7 @@ function generate_pass(){
     var type='';
     var j=0;
     var tmp='';
-<<<<<<< HEAD
+
     var inputs=[];
     var username='';
     var password='';
@@ -361,7 +360,7 @@ function generate_pass(){
             if(tmp!==''){
                 password=tmp;
             }
-=======
+
     var max_len=14;
     var tmp_num=0;
     var inputs=[];
@@ -373,42 +372,6 @@ function generate_pass(){
 	var time2=0;
 	var time=0;
 	var time4=0;
-/*    for(i=0;i<objs_len;++i){
-        type=objs[i].id;
-        if(id=='password'){
-            inputs[j++]=i;
-            tmp_num=objs[i].maxlength;
-            if(tmp!==''){
-                password=tmp;
-            }
-            if(tmp_num!==undefined){
-                max_len=tmp_num;
-            }
->>>>>>> new-gh-pages
-        }
-    }
-    var inputs_len=inputs.length;
-    for(i=0;i<inputs_len;++i){
-        tmp=objs[inputs[i]-1].value;
-        if(tmp!==''){
-            username=tmp;
-        }
-    }
-<<<<<<< HEAD
-    var salt=generate_salt(password,username);
-    salt=salt.substr(0,22);
-    salt='$2a$07$'+salt;
-    password=bcrypt(password,salt);
-    password=sha1(password);
-    password=hex_decode(password);
-    password=base32_encode(password);
-    password=password.substr(0,12);
-    for(i=0;i<inputs_len;++i){
-        objs[inputs[i]].value=password;
-    }
-}
-=======
-*/
     url=document.getElementById('site_name').value;
 	password=document.getElementById('password').value;
 	username=document.getElementById('username').value;
@@ -442,4 +405,3 @@ function generate_pass(){
 	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
 
 }
->>>>>>> new-gh-pages
