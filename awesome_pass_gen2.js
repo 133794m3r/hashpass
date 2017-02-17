@@ -190,6 +190,7 @@ function generate_pass(){
     password=password.substr(0,max_len);
     document.getElementById('result').value=password;
     time2=Date.now();
+    var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
     time=Date.now();
     result=zxcvbn(password);
@@ -206,13 +207,11 @@ modal_toggle('_progress');
 
 
 perc=0;
+alert(total+'ms');
 return;
 }
 
-function sleepFor( sleepDuration ){
-    var now = new Date().getTime();
-    while(new Date().getTime() < now + sleepDuration){ /* do nothing */ } 
-}
+
 
 function percent_update(percent){
 	var completed_perc=document.getElementById('completed_perc');
