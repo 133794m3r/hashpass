@@ -5,7 +5,7 @@ Overall this is considered at least version 1.0 as everything works and strength
 It is licensed under the AGPLv3 or later.
 
 HashPass
-Copyright (c) 2011-2017 Macarthur Inbody
+Copyright (c) 2011-2017 133794m3r
 
 The scrypt js library minified in scrypt1.js is licensed under the MIT from the original source. I have included their link in the source file itself. It is no longer async but is now synchronous those looking for an async version should look at the source repo.
 
