@@ -155,7 +155,7 @@ function no_repeat_strings(string) {
   var extra_str = '';
   var prev_str = string.substr(0, 1);
   var cur_str = '';
-  var string_fixed = '';
+
   var repeat_found = 1;
   var i = 1;
   var tmp_str_len = 0;

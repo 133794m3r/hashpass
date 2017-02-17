@@ -50,10 +50,10 @@ function simplify(password,max_len,no_spec){
 
 var time=Date.now();
 var str=password;
-var reg=new RegExp("[0-9]");
-var reg2=new RegExp("[0-9]","g");
+var reg=new RegExp("[^0-9]");
+var reg2=new RegExp("[^a-z]","g");
 var password_tmp='';
-var tmp=string_indexes(password,reg);
+var tmp=str.replace('[^0-9]','g');
 var cap_char='';
 var str_char='';
 var num='';
@@ -63,7 +63,6 @@ var chars_order=0;
 var tmp_str='';
 chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%3;
 password=password.replace(reg2,"");
-password=password.replace(/\=/gi,'');
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);
@@ -71,14 +70,11 @@ password_tmp=no_repeat_strings(password_tmp);
 str_char=password_tmp;
 cap_char=password.substr(0,1).toUpperCase();
 //password=password.substr(0,1).toUpperCase()+password_tmp;
-num=str.substr(tmp[0],1);
+num=tmp.substr(0,1);
 //password=str.substr(tmp[0],1)+password;
 
 
-for(i=1;i<len;++i){
-    num_str+=str.substr(tmp[i],1);
-}
-
+num_str=tmp.substr(1);
 num_str=no_repeat_strings(num_str);
 
 special_str=(parseInt(num_str.substr(0,2)))%3;

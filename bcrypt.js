@@ -260,11 +260,8 @@ bCrypt.prototype.encode_base64 = function(d, len) {
 	var c2;
     var rs_len=0;
 	if (len <= 0 || len > d.length)
-<<<<<<< HEAD
 		throw "Invalid len";
-=======
-		throw 'Invalid len';
->>>>>>> new-gh-pages
+
 	while (off < len) {
 		c1 = d[off++] & 0xff;
 		rs[rs_len++]=this.base64_code[(c1 >> 2) & 0x3f];
@@ -303,11 +300,9 @@ bCrypt.prototype.decode_base64 = function(s, maxolen) {
     var rs_len=0;
 	var c1, c2, c3, c4, o;
 	if (maxolen <= 0)
-<<<<<<< HEAD
 		throw "Invalid maxolen";
-=======
-		throw 'Invalid maxolen';
->>>>>>> new-gh-pages
+
+
 	while (off < slen - 1 && olen < maxolen) {
 		c1 = this.char64(s.charCodeAt(off++));
 		c2 = this.char64(s.charCodeAt(off++));
@@ -393,40 +388,29 @@ bCrypt.prototype.hashpw = function(password, salt) {
 	}
 
 	if (salt.charAt(0) != '$' || salt.charAt(1) != '2')
-<<<<<<< HEAD
+
 		throw "Invalid salt version";
-=======
-		throw 'Invalid salt version';
->>>>>>> new-gh-pages
+
+
 	if (salt.charAt(2) == '$')
 		off = 3;
 	else {
 		minor = salt.charAt(2);
 		if (minor != 'a' || salt.charAt(3) != '$')
-<<<<<<< HEAD
 			throw "Invalid salt revision";
-=======
-			throw 'Invalid salt revision';
->>>>>>> new-gh-pages
 		off = 4;
 	}
 
 	// Extract number of rounds
 	if (salt.charAt(off + 2) > '$')
-<<<<<<< HEAD
 		throw "Missing salt rounds";
-=======
-		throw 'Missing salt rounds';
->>>>>>> new-gh-pages
+
+
 	var r1 = parseInt(salt.substring(off, off + 1)) * 10;
 	var r2 = parseInt(salt.substring(off + 1, off + 2));
 	rounds = r1 + r2;
 	real_salt = salt.substring(off + 3, off + 25);
-<<<<<<< HEAD
 	password = password + (minor >= 'a' ? "\000" : "");
-=======
-	password = password + (minor >= 'a' ? '\000' : '');
->>>>>>> new-gh-pages
     password_len=password.length;
 	for (var r = 0; r < password_len; r++) {
 		passwordb.push(this.getByte(password.charCodeAt(r)));
@@ -442,16 +426,9 @@ bCrypt.prototype.hashpw = function(password, salt) {
 	var one_percent;
 
 	if (log_rounds < 4 || log_rounds > 31)
-<<<<<<< HEAD
 		throw "Bad number of log_rounds";
 	if (saltb.length != this.BCRYPT_SALT_LEN)
 		throw "Bad saltb length";
-=======
-		throw 'Bad number of log_rounds';
-	if (saltb.length != this.BCRYPT_SALT_LEN)
-		throw 'Bad saltb length';
->>>>>>> new-gh-pages
-
 	log_rounds = 1 << rounds;
 //	this.init_key();
     this.P = this.P_orig;
@@ -549,18 +526,6 @@ bCrypt.prototype.hashpw = function(password, salt) {
     
     var rs = [];
     var rs_len=0;
-<<<<<<< HEAD
-    rs[rs_len++]="$2";
-    if (minor >= 'a'){
-    rs[rs_len++]=minor;
-    }
-    rs[rs_len++]="$";
-    if (rounds < 10){
-        rs[rs_len++]="0";   
-    }
-    rs[rs_len++]=rounds.toString();
-    rs[rs_len++]="$";
-=======
     rs[rs_len++]='$2';
     if (minor >= 'a'){
     rs[rs_len++]=minor;
@@ -571,7 +536,6 @@ bCrypt.prototype.hashpw = function(password, salt) {
     }
     rs[rs_len++]=rounds.toString();
     rs[rs_len++]='$';
->>>>>>> new-gh-pages
     rs[rs_len++]=this.encode_base64(saltb, saltb.length);
     rs[rs_len++]=this.encode_base64(hashed, this.bf_crypt_ciphertext_len * 4 - 1);
     return rs.join('');
