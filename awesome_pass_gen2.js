@@ -50,10 +50,10 @@ function simplify(password,max_len,no_spec){
 
 var time=Date.now();
 var str=password;
-var reg=new RegExp("[^0-9]");
+var reg=new RegExp("[^0-9]",'g');
 var reg2=new RegExp("[^a-z]","g");
 var password_tmp='';
-var tmp=str.replace('[^0-9]','g');
+var tmp=str.replace(reg,'');
 var cap_char='';
 var str_char='';
 var num='';
@@ -63,6 +63,7 @@ var chars_order=0;
 var tmp_str='';
 chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%3;
 password=password.replace(reg2,"");
+console.log(password);
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);
