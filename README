@@ -12,7 +12,7 @@ Scrypt Async JS
 Copyright (c) 2013-2016 Dmitry Chestnykh | BSD License
 https://github.com/dchest/scrypt-async-js
 
-I also have included ZXCVBN for password strength estimation. It is licensed as BSD-like it looks like.
+I also have included ZXCVBN for password strength estimation. It is licensed as MIT-like it looks like.
 
 ZXCVBN
 Copyright (c) 2012-2016 Dan Wheeler and Dropbox, Inc.
