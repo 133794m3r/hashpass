@@ -152,6 +152,8 @@ function generate_pass(){
 	var time2=0;
 	var time=0;
 	var time4=0;
+    var warning='';
+    var tmp='';
 	var no_spec=document.getElementById('no_spec').checked;
 	//password special strings will be one of $#@
     url=document.getElementById('site_name').value;
@@ -164,14 +166,17 @@ function generate_pass(){
 		document.getElementById('length').value=14;
 	}
     result=zxcvbn(password,inputs);
+	tmp=result.feedback.warning;
 	console.log(result.guesses);
-	
+    console.log(tmp);
+    var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
     document.getElementById('orig_score').innerHTML=result.score;
-    if(result.score<=1 && (inputs[0] == inputs[1])){
-        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! Also try adding a word or two, less common are better. Or try adding a few numbers.';
+    if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
+        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=1){
-	    document.getElementById('feedback').innerHTML='Try adding a word or two, less common are better. Or try adding a few numbers.';
+        console.log('hit');
+	    document.getElementById('feedback').innerHTML=warning;
     }
 	document.getElementById('orig_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
     time=Date.now();
