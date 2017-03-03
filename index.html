@@ -11,6 +11,9 @@
 </head>
 <body>
     <style>
+        body{
+        font-size:1em;
+        } 
         input{
             left:5%;
         }
@@ -19,9 +22,8 @@
             position: relative;
         }
         #feedback{
-            font-size:1.1em;
             font-weight:600;
-            font-family:monospace;
+            font-size:1.1em;
         }
         #score_explain{
             font-weight:600;
@@ -34,7 +36,7 @@
         This site will hash your password with scrypt, the username, the site's name and your password for salt(to make it harder to guess). It will generate a 14 character
         psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
         of the boxes will change everything. Thus the entire thing is case sensitive. You can change the length by changing the "Output Length" option
-        to make it the length of the password the maximum that you require. You can also disable special character that is added onto the end if the site that you're using doesn't allow it(only way to know is to try pasting the password into teh site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll give you a new password that doesn't have the special character on the end. <br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak.
+        to make it the length of the password the maximum that you require. You can also disable special character that is added onto the end if the site that you're using doesn't allow it(only way to know is to try pasting the password into teh site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll give you a new password that doesn't have the special character on the end. <br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak.You want the original score to be <i>at least 1</i>
         Try to add a few numbers, also try not to use your username or the sitename in the password. Suchas a facebook password being facebookpassword. You entered facebook as site name and then entered that password as your password is will be weaker as people are going to likely try to use your username/sitename you entered when trying to guess the password. The tool will also help you with this by providing some feedback too. <br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password.</b></p>
     </p>
    <div align='left'>
@@ -67,7 +69,7 @@
     <input type='submit'  onclick='JavaScript:generate_wrapper();' value='Generate Password' id='generate_pass'>
    </div>
    <br />
-   <p style="width:95%; font-size:1.1em">
+   <p style="width:95%; font-size:1.05em">
     Your original score:<b id='orig_score'></b>
     <br/>
     Generated password score:<b id='gen_score'></b>
@@ -76,7 +78,7 @@
     If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>
    </p>
    <p style="width:95%">
-    Time to crack original password :<b id='orig_time'></b>&nbsp;&nbsp;&nbsp;&nbsp;Some Suggestions:&nbsp;&nbsp;<span id='feedback'></span>
+    Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
     <br />
     Time to crack generated password:<b id='gen_time'></b>
    </p>
