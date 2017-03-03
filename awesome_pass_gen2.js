@@ -2,6 +2,7 @@
 * Awesome Password Generator aka HashPass
 * Copyright (c) Macarthur Inbody 2011-2017
 * https://github.com/133794m3r/hashpass
+* Licensed AGPLv3 or Later
 */
 perc=0;
 function generate_salt(password,username,url){
@@ -157,15 +158,21 @@ function generate_pass(){
 	password=document.getElementById('password').value;
 	username=document.getElementById('username').value;
 	max_len=document.getElementById('length').value;
+    inputs[0]=username;inputs[1]=url;
 	if(max_len===''){
 		max_len=14;
 		document.getElementById('length').value=14;
 	}
-    result=zxcvbn(password);
-	
+    result=zxcvbn(password,inputs);
+	console.log(result.guesses);
 	
     document.getElementById('orig_score').innerHTML=result.score;
-	document.getElementById('feedback').innerHTML=result.feedback.suggestions;
+    if(result.score<=1 && (inputs[0] == inputs[1])){
+        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! Also try adding a word or two, less common are better. Or try adding a few numbers.';
+    }
+    else if(result.score<=1){
+	    document.getElementById('feedback').innerHTML='Try adding a word or two, less common are better. Or try adding a few numbers.';
+    }
 	document.getElementById('orig_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
     time=Date.now();
     var salt=generate_salt(password,username,url);
@@ -190,7 +197,7 @@ function generate_pass(){
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
     time=Date.now();
-    result=zxcvbn(password);
+    result=zxcvbn(password,inputs);
     time2=Date.now();
     console.log('zxcvbn:'+((time2-time))+'ms');
 
@@ -204,7 +211,7 @@ modal_toggle('_progress');
 
 
 perc=0;
-alert(total+'ms');
+//alert(total+'ms');
 return;
 }
 
