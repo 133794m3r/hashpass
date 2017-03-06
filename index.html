@@ -30,7 +30,8 @@
             font-weight:600;
         }
         .texts{
-            font-size:107%;
+            font-size:100%;
+            margin-bottom:0.5%;
         }
     </style>
     <h1 style='text-align:center; position:relative' id='header'>
@@ -47,31 +48,33 @@
    <div align='left'>
     <label for='site_name'>
         Site Name:
-        <input type='text' id='site_name' value="" />
+        <input type='text' id='site_name' class='texts' value="">
     </label>
     <br />
     <label for='username'>
         Username:&nbsp;
-        <input type='text' id='username'  value=""/>
+        <input type='text' id='username'  class='texts' value="">
     </label> <br />
     <label for='password'>
         Password:&nbsp;
-        <input type='text' id='password' value=""/>
+        <input type='text' id='password' class='texts' value="">
     </label>
     <label for='length'>
         &nbsp;&nbsp;Output Lenght:&nbsp;
-        <input type='text' id='length' value='14'/>
+        <input type='text' id='length' class='texts' value='14' style="width:2em" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
     </label>    
     <br />
     <label for='result'>
         Result:&nbsp;&nbsp;&nbsp;
-        <input type='text' id='result' onclick='javascript:this.setSelectionRange(0, this.value.length)'></input>
+        <input type='text' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)'>
     </label>
     <label for='no_spec'>
         &nbsp;&nbsp;No Special Characters:
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'/>
     </label><br />
+    <div style='margin-top:1%'>
     <input type='submit'  onclick='JavaScript:generate_wrapper();' value='Generate Password' id='generate_pass'>
+    </div>
    </div>
    <br />
    <p style="width:95%; font-size:1.05em">

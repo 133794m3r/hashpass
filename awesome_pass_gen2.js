@@ -62,7 +62,7 @@ var num_str='';
 var len=tmp.length;
 var chars_order=0;
 var tmp_str='';
-chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%3;
+chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%5;
 password=password.replace(reg2,"");
 console.log(password);
 var tmp2=password.length;
@@ -119,14 +119,25 @@ else{
 
 switch(chars_order){
 	case 0:
+        //ex 0Abcdefg123@
 		password=num+cap_char+str_char+num_str+tmp_str;
 		break;
 	case 1:
+        //ex A0bcdefg123@
 		password=cap_char+num+str_char+num_str+tmp_str;
 		break;
 	case 2:
+        //ex 0A123bcdefg@
 		password=num+cap_char+num_str+str_char+tmp_str;
 		break;
+    case 3:
+        //ex 123Abcdefg0@
+        password=num_str+cap_char+str_char+num+tmp_str;
+        break;
+    case 4:
+        //ex 0A123bcdefg@
+        password=num_str+cap_char+num+str_char+tmp_str;
+        break;
 }
 //password=password+tmp_str;
 var time2=Date.now();
