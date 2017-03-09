@@ -10,34 +10,34 @@ function generate_salt(password,username,url){
     var salt='';
 
     scrypt(password,url,{
-        logN:7,
+        logN:8,
         r:6,
-        p:1,
+        p:2,
         encoding:'base64'},
         function(x){password=x;}
     )
 
     scrypt(username,password,{
-        logN:7,
+        logN:8,
         r:6,
-        p:1,
+        p:2,
         encoding:'hex'},
         function(x){username=x;}
     )
 
     scrypt(url,username,{
-        logN:7,
+        logN:8,
         r:6,
-        p:1,
+        p:2,
         encoding:'base64'},
         function(x){url=x;}
     )
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
-        logN:9,
+        logN:10,
         r:8,
-        p:1,
+        p:2,
         encoding:'hex'},
         function(x){salt=x;}
     )    
