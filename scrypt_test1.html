@@ -26,7 +26,7 @@
         
         var results=document.getElementById('results');
         do_test(n,r,p);
-        var hps=Math.round((1/the_mean),4);
+        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
         var str='n: '+n+' r:'+r+' p:'+p+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
         results.insertAdjacentHTML('afterbegin',str);
     }
