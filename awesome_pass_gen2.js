@@ -203,7 +203,7 @@ function generate_pass(){
         console.log('hit');
 	    document.getElementById('feedback').innerHTML=warning;
     }
-	document.getElementById('orig_time').innerHTML=display_time(result.guesses/3000);
+	document.getElementById('orig_time').innerHTML=display_time(result.guesses/2700);
     time=Date.now();
     var salt=generate_salt(password,username,url);
 	time4=Date.now();
@@ -233,7 +233,7 @@ function generate_pass(){
 
 	
     document.getElementById('gen_score').innerHTML=result.score;
-	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2000);
+	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2700);
 
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
