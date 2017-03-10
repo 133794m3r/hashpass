@@ -11,7 +11,7 @@ function do_write(str){
 function do_test(n,r,p){
 total=microtime();
 var i=1;
-var j=20;
+var j=40;
 var l=0;
 var k=1;
 var strings=new Array(k);
@@ -29,7 +29,7 @@ var tmp='';
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
-    for(l=1;l<=k;l++){
+
         scrypt(tmp_str,tmp_str2,{
             logN:n,
             r:r,
@@ -39,11 +39,13 @@ for(i=1;i<=j;i++){
         )
         tmp_str2=tmp_str;
         tmp_str2=tmp;
-    }
     end=microtime();
-    times[i-1]=((end-start)/k);
+    times[i-1]=((end-start));
 }
 true_end=microtime();
+var arr_start=1+(Math.ceil(j/20));
+var arr_end=-1*arr_start;
+//times=times.slice(arr_start,arr_end);
 means=mean(times);
 std_dev=standard_deviation(times,means);
 the_std_dev=std_dev;

@@ -10,34 +10,34 @@ function generate_salt(password,username,url){
     var salt='';
 
     scrypt(password,url,{
-        logN:8,
+        logN:7,
         r:6,
-        p:2,
+        p:1,
         encoding:'base64'},
         function(x){password=x;}
     )
 
     scrypt(username,password,{
-        logN:8,
+        logN:7,
         r:6,
-        p:2,
+        p:1,
         encoding:'hex'},
         function(x){username=x;}
     )
 
     scrypt(url,username,{
-        logN:8,
+        logN:7,
         r:6,
-        p:2,
+        p:1,
         encoding:'base64'},
         function(x){url=x;}
     )
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
-        logN:10,
+        logN:9,
         r:8,
-        p:2,
+        p:1,
         encoding:'hex'},
         function(x){salt=x;}
     )    
@@ -176,6 +176,11 @@ function generate_pass(){
 		max_len=14;
 		document.getElementById('length').value=14;
 	}
+    if(password!==''){
+        tmp=password.length;
+        password=password.substr(0,1).toUpperCase()+password.substr(1,tmp);
+        document.getElementById('password').value=password;
+    }
     result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
 	console.log(result.guesses);
@@ -189,7 +194,7 @@ function generate_pass(){
         console.log('hit');
 	    document.getElementById('feedback').innerHTML=warning;
     }
-	document.getElementById('orig_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
+	document.getElementById('orig_time').innerHTML=display_time(result.guesses/2500);
     time=Date.now();
     var salt=generate_salt(password,username,url);
 	time4=Date.now();
@@ -219,9 +224,8 @@ function generate_pass(){
 
 	
     document.getElementById('gen_score').innerHTML=result.score;
-	document.getElementById('gen_time').innerHTML=result.crack_times_display['offline_slow_hashing_1e4_per_second'];
-	console.log(JSON.stringify(result.crack_times_display['offline_slow_hashing_1e4_per_second']));
-		
+	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2000);
+
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
 

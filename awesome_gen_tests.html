@@ -1,0 +1,30 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+    "http://www.w3.org/TR/html4/loose.dtd">
+<html lang="en">
+<head>
+    <title>full tests</title>
+    <script src='salt_test.js' type='text/javascript'></script>
+    <script src='math.js' type='text/javascript'></script>
+    <script src='scrypt1.js' type='text/javascript'></script>
+    <script src='string.js' type='text/javascript'></script>
+</head>
+<body>
+    <input type='text' id='rounds' value='20'/>
+    <input type='button' id='do_it' onclick='javascript:run_test()' value='do it'/>
+    <p id='results'>
+        
+    </p>
+    <script type='text/javascript'>
+        function run_test(){
+            var num=document.getElementById('rounds').value;
+            do_test(num);
+            hps=round(1/(salt_mean+(salt_stddev/2)),4);
+            var str='salt mean:'+salt_mean+'<br /> salt stddev:'+salt_stddev+'<br /> hps:'+hps+'<br />';
+            results.insertAdjacentHTML('afterbegin',str);
+            hps=round(1/(true_mean+(true_stddev/2)),4);
+            str='true mean:'+true_mean+'<br /> true stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
+            results.insertAdjacentHTML('afterbegin',str);
+        }
+    </script>
+</body>
+</html>
