@@ -172,15 +172,24 @@ function generate_pass(){
 	username=document.getElementById('username').value;
 	max_len=document.getElementById('length').value;
     inputs[0]=username;inputs[1]=url;
-	if(max_len===''){
+	if(max_len === ''){
 		max_len=14;
 		document.getElementById('length').value=14;
 	}
-    if(password!==''){
+    if(password !== ''){
         tmp=password.length;
         password=password.substr(0,1).toUpperCase()+password.substr(1,tmp);
         document.getElementById('password').value=password;
     }
+	if(username !== ''){
+		username=username.substr(0,1).toUpperCase()+username.substr(1);
+		document.getElementById('username').value=username;
+	}
+	if(url !==''){
+		url=url.substr(0,1).toUpperCase()+url.substr(1);
+		document.getElementById('site_name').value=url;
+	}
+	tmp='';
     result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
 	console.log(result.guesses);
@@ -194,7 +203,7 @@ function generate_pass(){
         console.log('hit');
 	    document.getElementById('feedback').innerHTML=warning;
     }
-	document.getElementById('orig_time').innerHTML=display_time(result.guesses/2500);
+	document.getElementById('orig_time').innerHTML=display_time(result.guesses/3000);
     time=Date.now();
     var salt=generate_salt(password,username,url);
 	time4=Date.now();
