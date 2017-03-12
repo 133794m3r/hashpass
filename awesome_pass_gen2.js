@@ -5,12 +5,12 @@
 * Licensed AGPLv3 or Later
 */
 perc=0;
-function generate_salt(password,username,url){
+function generate_salt(password,username,url,alt=false){
 	var time=Date.now();
     var salt='';
 
     scrypt(password,url,{
-        logN:7,
+        logN:10,
         r:6,
         p:1,
         encoding:'base64'},
@@ -18,7 +18,7 @@ function generate_salt(password,username,url){
     )
 
     scrypt(username,password,{
-        logN:7,
+        logN:10,
         r:6,
         p:1,
         encoding:'hex'},
@@ -26,7 +26,7 @@ function generate_salt(password,username,url){
     )
 
     scrypt(url,username,{
-        logN:7,
+        logN:10,
         r:6,
         p:1,
         encoding:'base64'},
@@ -35,7 +35,7 @@ function generate_salt(password,username,url){
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
-        logN:9,
+        logN:13,
         r:8,
         p:1,
         encoding:'hex'},
@@ -226,6 +226,7 @@ function generate_pass(){
     time2=Date.now();
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
+    alert('total new values:'+total);
     time=Date.now();
     result=zxcvbn(password,inputs);
     time2=Date.now();

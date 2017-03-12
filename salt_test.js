@@ -37,6 +37,46 @@ function generate_salt(password,username,url){
 	var time2=microtime()
     return salt;
 }
+function generate_salt2(password,username,url){
+	var time=microtime()
+    var salt='';
+
+    scrypt(password,url,{
+        logN:9,
+        r:7,
+        p:2,
+        encoding:'base64'},
+        function(x){password=x;}
+    )
+
+    scrypt(username,password,{
+        logN:9,
+        r:7,
+        p:2,
+        encoding:'hex'},
+        function(x){username=x;}
+    )
+
+    scrypt(url,username,{
+        logN:9,
+        r:7,
+        p:2,
+        encoding:'base64'},
+        function(x){url=x;}
+    )
+    salt=url+password+username;
+    salt2=username+url+password;
+    scrypt(salt,salt2,{
+        logN:11,
+        r:10,
+        p:2,
+        encoding:'hex'},
+        function(x){salt=x;}
+    )    
+	var time2=microtime()
+    return salt;
+}
+
 function do_test(num){
 var times=[];
 var urls=[];
@@ -45,6 +85,7 @@ var passwords=[];
 var tmp='';
 var start=0;
 var end=0;
+var password='';
 var true_start=microtime()
 var arr_start=1+(Math.floor(num/20));
 var arr_end=-1*arr_start;
@@ -57,6 +98,13 @@ for(i=0;i<=num;i++){
 for(i=0;i<=num;i++){
 	start=microtime()
 	tmp=generate_salt(passwords[i],usernames[i],urls[i]);
+    scrypt(passwords[i],tmp,{
+        logN:15,
+        r:10,
+        p:1,
+        encoding:'hex'},
+        function(x){password=x;}
+    );
 	end=microtime()
 	times[i]=(end-start);
 }
@@ -66,14 +114,14 @@ salt_stddev=standard_deviation(times,salt_mean);
 
 for(i=0;i<=num;i++){
 	start=microtime()
-	tmp=generate_salt(passwords[i],usernames[i],urls[i]);
-	scrypt(passwords[i],tmp,{
-            logN:15,
-            r:10,
-            p:1
-        },
-        function (x){tmp=x;}
-        );
+	tmp=generate_salt2(passwords[i],usernames[i],urls[i]);
+    scrypt(passwords[i],tmp,{
+        logN:15,
+        r:10,
+        p:1,
+        encoding:'hex'},
+        function(x){password=x;}
+    );
 	end=microtime()
 	times[i]=(end-start);
 }

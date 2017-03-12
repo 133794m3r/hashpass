@@ -19,10 +19,10 @@
             var num=document.getElementById('rounds').value;
             do_test(num);
             hps=round(1/(salt_mean+(salt_stddev/2)),4);
-            var str='salt mean:'+salt_mean+'<br /> salt stddev:'+salt_stddev+'<br /> hps:'+hps+'<br />';
+            var str='old mean:'+salt_mean+"<br /> old stddev:"+salt_stddev+'<br /> hps:'+hps+'<br />';
             results.insertAdjacentHTML('afterbegin',str);
             hps=round(1/(true_mean+(true_stddev/2)),4);
-            str='true mean:'+true_mean+'<br /> true stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
+            str='new mean:'+true_mean+'<br /> new stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
             results.insertAdjacentHTML('afterbegin',str);
         }
     </script>
