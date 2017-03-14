@@ -8,36 +8,47 @@ perc=0;
 function generate_salt(password,username,url,alt=false){
 	var time=Date.now();
     var salt='';
-
+    var n1=7;
+    var p=1;
+    var r=8;
+    var n2=9;
+    var p2=1;
+if(alt===false){
+    n1=9;
+    p=5;
+    n2=12;
+    r=7;
+    p2=3;
+}
     scrypt(password,url,{
-        logN:10,
+        logN:n1,
         r:6,
-        p:1,
+        p:p,
         encoding:'base64'},
         function(x){password=x;}
     )
 
     scrypt(username,password,{
-        logN:10,
+        logN:n1,
         r:6,
-        p:1,
+        p:p,
         encoding:'hex'},
         function(x){username=x;}
     )
 
     scrypt(url,username,{
-        logN:10,
+        logN:n1,
         r:6,
-        p:1,
+        p:p,
         encoding:'base64'},
         function(x){url=x;}
     )
     salt=url+password+username;
     salt2=username+url+password;
     scrypt(salt,salt2,{
-        logN:13,
-        r:8,
-        p:1,
+        logN:n2,
+        r:r,
+        p:p2,
         encoding:'hex'},
         function(x){salt=x;}
     )    
@@ -146,7 +157,7 @@ return password;
 
 }
 
-function generate_pass(){
+function generate_pass(dbg=false){
     var objs=document.getElementsByTagName('input');
     var objs_len=objs.length;
     var type='';
@@ -166,6 +177,7 @@ function generate_pass(){
     var warning='';
     var tmp='';
 	var no_spec=document.getElementById('no_spec').checked;
+    var legacy_mode=document.getElementById('no_legacy').checked;
 	//password special strings will be one of $#@
     url=document.getElementById('site_name').value;
 	password=document.getElementById('password').value;
@@ -205,7 +217,7 @@ function generate_pass(){
     }
 	document.getElementById('orig_time').innerHTML=display_time(result.guesses/2700);
     time=Date.now();
-    var salt=generate_salt(password,username,url);
+    var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
     scrypt(password,salt,{
         logN:15,
@@ -226,7 +238,9 @@ function generate_pass(){
     time2=Date.now();
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
-    alert('total new values:'+total);
+	if(dbg===true){
+		alert('total new values:'+total);
+	}
     time=Date.now();
     result=zxcvbn(password,inputs);
     time2=Date.now();
@@ -234,7 +248,14 @@ function generate_pass(){
 
 	
     document.getElementById('gen_score').innerHTML=result.score;
-	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2700);
+//using ~380x guesses as SSE2 scrypt running on CPU.
+if(legacy_mode===false){
+	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2650);
+}
+//old version ~380x guesses
+else{
+    document.getElementById('gen_time').innerHTML=display_time(result.guesses/3550);
+}
 
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
@@ -267,6 +288,7 @@ function modal_toggle(id){
 	else{
 		el.style.visibility='visible';
 	}
+	return 0;
 }
 
 function no_spec_check(){
@@ -274,19 +296,28 @@ function no_spec_check(){
 	if(no_spec.checked===true){
 		modal_toggle('_spec');
 	}
+	return 0;
+}
+function no_legacy_check(){
+	var no_legacy=document.getElementById('no_legacy');
+	if(no_legacy.checked===true){
+		modal_toggle('_legacy');
+	}
+	return 0;
 }
 
-function confirmed(val){
-	var no_spec=document.getElementById('no_spec');
-	no_spec.checked=val;
-	modal_toggle('_spec');
+function confirmed(val,id){
+	var el=document.getElementById('no'+id);
+	el.checked=val;
+	modal_toggle(id);
+	return 0;
 }
 
-function generate_wrapper(){
+function generate_wrapper(dbg=false){
 	//setTimeout(document.getElementById('generate_pass').disabled=true,0);
 	//var timeout=setTimeout(modal_toggle('_progress'),0);
 	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
 	var interval=setTimeout(function(){percent_update(70);},1);
-	setTimeout(function(){generate_pass()},30);
+	setTimeout(function(){generate_pass(dbg)},35);
 }

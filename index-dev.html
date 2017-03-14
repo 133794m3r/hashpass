@@ -32,6 +32,17 @@
         .texts{
             font-size:107%;
         }
+
+
+        #legacy_mode{
+            text-align: center; /* center checkbox horizontally */
+            vertical-align: middle; /* center checkbox vertically */
+            margin-top:-0.05em;
+        }
+        #no_spec{
+            text-align: center; /* center checkbox horizontally */
+            vertical-align: middle; /* center checkbox vertically */
+        }
     </style>
     <h1 style='text-align:center; position:relative' id='header'>
        Awesome Password Generator
@@ -61,17 +72,21 @@
     <label for='length'>
         &nbsp;&nbsp;Output Lenght:&nbsp;
         <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
-    </label>    
+    </label>
+    <label for='no_legacy' id='legacy'>
+        &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
+        <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
+    </label>
     <br />
     <label for='result'>
         Result:&nbsp;&nbsp;&nbsp;
         <input type='text' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
     </label>
-    <label for='no_spec'>
-        &nbsp;&nbsp;No Special Characters:
+    <label for='no_spec' id='spec_label'>
+        &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
     </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper();' value='Generate Password' id='generate_pass'>
+    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate Password' id='generate_pass'>
    <br />
    <p style="width:95%; font-size:105%">
     Your original score:<b id='orig_score'></b>
@@ -95,8 +110,22 @@
                 <br />You should only do this if the site you're going to use specifically said that you cannot use them.</b></p>
             </div>
             <div id='buttons'>
-            <input type='button' onclick='confirmed(1)' style='font-size:1.5em' value="YES I'M SURE" />
-            &nbsp;&nbsp; <input type='button' onclick='confirmed(0)' style='font-size:2em' value="No I'm Not" />
+            <input type='button' onclick='confirmed(1,"_spec")' style='font-size:1.5em' value="YES I'M SURE" />
+            &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_spec")' style='font-size:2em' value="No I'm Not" />
+            </div>
+            </div>
+        </div>
+   </div>
+      <div class='modal' id='modal_legacy'>
+        <div clas='modal_body'>
+        <div class='modal_content'>
+            <div class='caps' style='color:red;'>
+                <p><b>Are you sure that you want to enable legacy mode? <br />Doing so will decrease the security of the password.
+                <br />You should only do this if you are migrating your password to the new format.</b></p>
+            </div>
+            <div id='buttons'>
+            <input type='button' onclick='confirmed(1,"_legacy")' style='font-size:1.5em' value="YES I'M SURE" />
+            &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_legacy")' style='font-size:2em' value="No I'm Not" />
             </div>
             </div>
         </div>
