@@ -270,7 +270,7 @@ else{
 *actually using for their system and moved real times to the orginal one as that' the one where
 I control the strengths.
 */
-document.getElementById('gen_time').innerHTML=display_time(result.guesses/6500);
+document.getElementById('gen_time').innerHTML=display_time(result.guesses/7500);
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
 
