@@ -12,12 +12,12 @@ function generate_salt(password,username,url,alt=false){
     var p=1;
     var r=8;
     var n2=9;
-    var p2=1;
+    var p2=2;
 if(alt===false){
     n1=9;
     p=5;
-    n2=12;
-    r=7;
+    n2=13;
+    r=8;
     p2=3;
 }
     scrypt(password,url,{
@@ -215,7 +215,13 @@ function generate_pass(dbg=false){
         console.log('hit');
 	    document.getElementById('feedback').innerHTML=warning;
     }
-	document.getElementById('orig_time').innerHTML=display_time(result.guesses/2700);
+    //using ~380x guesses as SSE2 scrypt running on CPU.
+    if(legacy_mode===false){
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/2500);
+    }
+    else{
+        document.getElementById('origin_time').innerHTML=display_time(results.guesses/3600);
+    }
     time=Date.now();
     var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
@@ -248,6 +254,7 @@ function generate_pass(dbg=false){
 
 	
     document.getElementById('gen_score').innerHTML=result.score;
+/*
 //using ~380x guesses as SSE2 scrypt running on CPU.
 if(legacy_mode===false){
 	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2650);
@@ -257,6 +264,13 @@ else{
     document.getElementById('gen_time').innerHTML=display_time(result.guesses/3550);
 }
 
+*/
+/*
+*switched the generated one back to a more realistic estimate because I don't know what sites are
+*actually using for their system and moved real times to the orginal one as that' the one where
+I control the strengths.
+*/
+document.getElementById('gen_time').innerHTML=display_time(result.guesses/6500);
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
 
