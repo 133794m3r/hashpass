@@ -16,9 +16,9 @@ function generate_salt(password,username,url,alt=false){
 if(alt===false){
     n1=9;
     p=1;
-    n2=13;
+    n2=12;
     r=8;
-    p2=4;
+    p2=1;
 }
     scrypt(password,url,{
         logN:n1,
@@ -51,14 +51,14 @@ if(alt===false){
         p:p2,
         encoding:'hex'},
         function(x){salt=x;}
-    )    
+    )
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
     return salt;
 }
 
-function simplify(password,max_len,no_spec){
+function simplify(password,max_len,no_spec,legacy_mode){
 
 var time=Date.now();
 var str=password;
@@ -73,7 +73,6 @@ var num_str='';
 var len=tmp.length;
 var chars_order=0;
 var tmp_str='';
-chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%5;
 password=password.replace(reg2,"");
 console.log(password);
 var tmp2=password.length;
@@ -127,7 +126,8 @@ else{
 }
 
 
-
+if(legacy_mode===true){
+chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%5;
 switch(chars_order){
 	case 0:
         //ex 0Abcdefg123@
@@ -149,6 +149,53 @@ switch(chars_order){
         //ex 0A123bcdefg@
         password=num_str+cap_char+num+str_char+tmp_str;
         break;
+}
+}
+else{
+    chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%10;
+	switch(chars_order){
+		case 0:
+			//A0bcdefg123@
+			password=cap_char+num+str_char+num_str+tmp_str;
+			break;
+		case 1:
+			//@123Abcdefg0
+			password=tmp_str+num_str+cap_char+str_char+num;
+			break;
+		case 2:
+			//0@A123bcdefg
+			password=num+tmp_str+cap_char+num_str+str_char;
+			break;
+		case 3:
+			//A123@bcdefg0
+			password=cap_char+num_str+tmp_str+str_char+num;
+			break;
+		case 4:
+			//123Abcdefg@0
+			password=num_str+cap_char+str_char+tmp_str+num;
+			break;
+		case 5:
+			//123A0bcdefg@
+			password=num_str+cap_char+num+str_char+tmp_str;
+			break;
+		case 6:
+			//bcdefg1230A
+			password=tmp_str+num_str+str_char+num+cap_char;
+			break;
+		case 7:
+			//123@bcdefgA0
+			password=num_str+tmp_str+str_char+cap_char+num;
+			break;
+		case 8:
+			//bcdefg123@A0
+			passwod=str_char+num_str+tmp_str+cap_char+num;
+			break;
+		case 9:
+			//0bcdefg123@A
+			password=num+str_char+num_str+tmp_str+cap_char;
+			break;
+	}
+
 }
 //password=password+tmp_str;
 var time2=Date.now();
@@ -176,6 +223,7 @@ function generate_pass(dbg=false){
 	var time4=0;
     var warning='';
     var tmp='';
+    var p=1;
 	var no_spec=document.getElementById('no_spec').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
 	//password special strings will be one of $#@
@@ -220,7 +268,8 @@ function generate_pass(dbg=false){
     }
     //using ~380x guesses as SSE2 scrypt running on CPU.
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/2120);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1750);
+        p=2;
     }
     else{
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
@@ -231,7 +280,7 @@ function generate_pass(dbg=false){
     scrypt(password,salt,{
         logN:15,
         r:10,
-        p:1,
+        p:p,
         encoding:'hex'},
         function(x){password=x;}
     )       
@@ -240,9 +289,9 @@ function generate_pass(dbg=false){
     password=hex_decode(password);
     password=base32_encode(password);
 	console.log('scrypt:'+password);
-    password=simplify(password,max_len,no_spec);
+    password=simplify(password,max_len,no_spec,legacy_mode);
 
-    password=password.substr(0,max_len);
+//    password=password.substr(0,max_len);
     document.getElementById('result').value=password;
     time2=Date.now();
     var total=time2-time;
@@ -337,4 +386,56 @@ function generate_wrapper(dbg=false){
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
 	var interval=setTimeout(function(){percent_update(70);},1);
 	setTimeout(function(){generate_pass(dbg)},35);
+}
+
+function score_password(){
+    var legacy_mode=document.getElementById('no_legacy').checked;
+    var tmp='';
+	tmp='';
+    var result='';
+    var inputs=[];
+    url=document.getElementById('site_name').value;
+    password=document.getElementById('password').value;
+	username=document.getElementById('username').value;
+	max_len=document.getElementById('length').value;
+    console.log('hits');
+    if(password !== ''){
+        password=password.substr(0,1).toUpperCase()+password.substr(1);
+        document.getElementById('password').value=password;
+    }
+	if(username !== ''){
+		username=username.substr(0,1).toUpperCase()+username.substr(1);
+		document.getElementById('username').value=username;
+	}
+	if(url !==''){
+		url=url.substr(0,1).toUpperCase()+url.substr(1);
+		document.getElementById('site_name').value=url;
+	}
+
+
+    inputs[0]=username;
+    inputs[1]=url;
+
+    result=zxcvbn(password,inputs);
+	tmp=result.feedback.warning;
+    var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
+    document.getElementById('orig_score').innerHTML=result.score;
+
+    if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
+        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
+    }
+    else if(result.score<=2){
+        console.log('hit');
+	    document.getElementById('feedback').innerHTML=warning;
+    }
+    else{
+        document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
+    }
+    //using ~380x guesses as SSE2 scrypt running on CPU.
+    if(legacy_mode===false){
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1700);
+    }
+    else{
+        document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
+    }
 }
