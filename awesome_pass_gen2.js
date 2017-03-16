@@ -12,7 +12,7 @@ function generate_salt(password,username,url,alt=false){
     var p=1;
     var r=8;
     var n2=9;
-    var p2=2;
+    var p2=1;
 if(alt===false){
     n1=9;
     p=1;
@@ -211,9 +211,12 @@ function generate_pass(dbg=false){
     if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
-    else if(result.score<=1){
+    else if(result.score<=2){
         console.log('hit');
 	    document.getElementById('feedback').innerHTML=warning;
+    }
+    else{
+        document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
     //using ~380x guesses as SSE2 scrypt running on CPU.
     if(legacy_mode===false){
