@@ -15,7 +15,7 @@ function generate_salt(password,username,url,alt=false){
     var p2=2;
 if(alt===false){
     n1=9;
-    p=5;
+    p=6;
     n2=13;
     r=8;
     p2=3;
@@ -220,7 +220,7 @@ function generate_pass(dbg=false){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/2500);
     }
     else{
-        document.getElementById('origin_time').innerHTML=display_time(results.guesses/3600);
+        document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
     }
     time=Date.now();
     var salt=generate_salt(password,username,url,legacy_mode);
