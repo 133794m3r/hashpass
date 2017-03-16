@@ -15,10 +15,10 @@ function generate_salt(password,username,url,alt=false){
     var p2=2;
 if(alt===false){
     n1=9;
-    p=6;
+    p=1;
     n2=13;
     r=8;
-    p2=3;
+    p2=4;
 }
     scrypt(password,url,{
         logN:n1,
@@ -217,7 +217,7 @@ function generate_pass(dbg=false){
     }
     //using ~380x guesses as SSE2 scrypt running on CPU.
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/2500);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/2120);
     }
     else{
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
