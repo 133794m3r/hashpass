@@ -1,19 +1,15 @@
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-    'http://www.w3.org/TR/html4/strict.dtd'
-    >
+<!DOCTYPE html>
 <html lang='en'>
 <head>
 <META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
-<meta name='description' content='A fast password hashing/scrambling bookmarklet that also has a site you can use, to make your password stronger.' />
+<meta name='description' content='A fast password hashing/scrambling site you can use, to generate unique passwords for eachsite' />
     <meta name='keywords' content='Password,Hashing,scrypt,scrypt,hash,scrambler,bookmarklet'/>
-    <title>Password Generator Developer</title>
-    <link rel="stylesheet" type='text/css' href='style.css'/>
-</head>
-<body>
+    <title>Password Generator using modern techniques.</title>
+    <link rel="stylesheet" type='text/css' href='style.css' />
     <style>
         body{
         font-size:1em;
-        } 
+        }
         input{
             left:5%;
         }
@@ -30,34 +26,45 @@
             font-weight:600;
         }
         .texts{
-            font-size:107%;
+            font-size:100%;
+            margin-bottom:0.5%;
+        }
+        #no_spec{
+            text-align: center; /* center checkbox horizontally */
+            vertical-align: middle; /* center checkbox vertically */
         }
         #legacy_mode{
             text-align: center; /* center checkbox horizontally */
             vertical-align: middle; /* center checkbox vertically */
             margin-top:-0.05em;
         }
-        #no_spec{
-            text-align: center; /* center checkbox horizontally */
-            vertical-align: middle; /* center checkbox vertically */
+        #fonts{
+            font-size:1.1;
+            font-color:red;
+        }
+        #left{
+            text-align:left;
+            content-align:left;
         }
     </style>
+</head>
+<body>
+
     <h1 style='text-align:center; position:relative' id='header'>
        Awesome Password Generator
     </h1>
     <p style='width:95%'>
         This site will hash your password with scrypt, the username, the site's name and your password for salt(to make it harder to guess). It will generate by default a 14 character
         psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
-        of the boxes will change everything. Thus the entire thing is case sensitive. 
+        of the boxes will change everything. Thus the entire thing is case sensitive.
         To just score the passwrd you entered witout generating one just click the "Score Password" button.
         You can change the length by changing the "Output Length" option
-        to make it the length of the password the maximum that you require. You can also disable the special character that is added onto the end if the site that you're using doesn't allow 
-        it(only way to know is to try pasting the password into teh site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll 
-        give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 characters.
-<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak.You want the original score to be <i>at least 1</i>
+        to make it the length of the password the maximum that you require. You can also disable the special character that is added onto the end if the site that you're using doesn't allow
+        it(only way to know is to try pasting the password into the site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll
+        give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 character
+<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i>
 <br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields. So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>
-    </p>
-   <div align='left'>
+   <div id='left'>
     <label for='site_name'>
         Site Name:
         <input type='text' id='site_name' class='texts' value="">
@@ -94,59 +101,78 @@
     Your original score:<b id='orig_score'></b>
     <br/>
     Generated password score:<b id='gen_score'></b>
-   <br /><span id='score_explain'>
+    <br /><span id='score_explain'>
     The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
     If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>
-   </p>
-   <p style="width:95%">
+    </p>
+    <p style="width:95%">
     Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
     <br />
     Time to crack generated password:<b id='gen_time'></b>
-   </p>
-   <br />
-   <div class='modal' id='modal_spec'>
-        <div clas='modal_body'>
+    </p>
+    </div>
+    <br />
+    <p>
+        I would suggest using this in combination with a password manager like KeePass and this way you have to remember only two passwords one for generating the unique password for each site
+        and one for keeping the database for your passwords safe. When doing this <b><u>make sure</u></b> that your password that you're going to use scores at least a 2. You can utilize the score password
+        button to get feedback and see how strong the password you're going to use is. Below I have included links to the Android, iOS, Windows, and Linux versions that I recommend as all are open source.
+        <br /><br />
+        <b>iOS</b>&emsp;<a href='https://itunes.apple.com/app/id451661808'>MiniKeePass</a> It is Open Source and is also Free.
+        <br />
+        <b>Android</b>&emsp;<a href='https://play.google.com/store/apps/details?id=com.android.keepass'>KeePassDroid</a> I personally use <a href='http://fdroid.org/'>F-Droid</a> to get it. It only has open source ad-free no tracking apps in it's list.
+        <br />
+        <b>Linux/OSX</b>&emsp;<a href='https://www.keepassx.org/'>KeePassX</a> Linux version is nice but sadly now it is database version 2 but all other ones listed use/are able to use this improved format.
+        <br />
+        <b>Windows</b>&emsp;<a href='http://keepass.info/download.html'>KeePass</a> The original program that was written for Windows. It also has versions for other platforms but I would suggest using the ones I listed instead of the other ones listed on the page for other platforms.
+        <br /><br />
+        You can change the
+        strength of the protection that the database gives you. If unsure how to change it just leave it as the default.
+        For those with more expereience make sure it is AES(Rijndael) and the Encryption Rounds is set to 100000(100,000). That should provide you with a basic level of protection
+        from attackers trying to steal your passwords from the database so long as you have made sure the password you use to open that database scores at least a 2 via this tool's score password function.<br /><br />
+    </p>
+    <div class='modal' id='modal_spec'>
+        <div class='modal_body'>
         <div class='modal_content'>
             <div class='caps' style='color:red;'>
                 <p><b>Are you sure you want to disable the special character from generation? <br />Doing so will decrease the strength of your generated password.
                 <br />You should only do this if the site you're going to use specifically said that you cannot use them.</b></p>
             </div>
-            <div id='buttons'>
+            <div class='buttons'>
             <input type='button' onclick='confirmed(1,"_spec")' style='font-size:1.5em' value="YES I'M SURE" />
             &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_spec")' style='font-size:2em' value="No I'm Not" />
             </div>
             </div>
         </div>
-   </div>
+    </div>
       <div class='modal' id='modal_legacy'>
-        <div clas='modal_body'>
+        <div class='modal_body'>
         <div class='modal_content'>
             <div class='caps' style='color:red;'>
                 <p><b>Are you sure that you want to enable legacy mode? <br />Doing so will decrease the security of the password.
                 <br />You should only do this if you are migrating your password to the new format.</b></p>
             </div>
-            <div id='buttons'>
+            <div class='buttons'>
             <input type='button' onclick='confirmed(1,"_legacy")' style='font-size:1.5em' value="YES I'M SURE" />
             &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_legacy")' style='font-size:2em' value="No I'm Not" />
             </div>
             </div>
         </div>
-   </div>
-   <div class='modal' id='modal_progress'>
+    </div>
+    <div class='modal' id='modal_progress'>
         <div class='modal_body'>
             <div class='modal_content' id='full'>
-                <font color='red' size='1.1em'>
+                <span id='fonts'>
                     Currently Generating Password. It is now <span id='perc_done' style='color:blue'></span> done.
-                </font>
+                </span>
                 <div id='perc_container'>
                     <span id='perc_text'>
-                        
+
                     </span>
                     <span id='completed_perc' style='width:0%'></span>
                 </div>
             </div>
         </div>
-   </div>
+    </div>
   <!--- <script type='text/javascript' src='out.js'></script> -->
 <script type="text/javascript" src="scrypt1.js"></script>
 <script type="text/javascript" src="awesome_pass_gen2.js"></script>
@@ -157,7 +183,7 @@
 <!--
 
  Awesome Password Generator aka HashPass
- Copyright (c) Macarthur Inbody 2011-2017 
+ Copyright (c) Macarthur Inbody 2011-2017
 licensed under AGPLv3
  https://github.com/133794m3r/hashpass
 

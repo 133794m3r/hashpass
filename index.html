@@ -1,19 +1,15 @@
-<!DOCTYPE HTML PUBLIC '-//W3C//DTD HTML 4.01//EN'
-    'http://www.w3.org/TR/html4/strict.dtd'
-    >
+<!DOCTYPE html>
 <html lang='en'>
 <head>
 <META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
 <meta name='description' content='A fast password hashing/scrambling site you can use, to generate unique passwords for eachsite' />
     <meta name='keywords' content='Password,Hashing,scrypt,scrypt,hash,scrambler,bookmarklet'/>
     <title>Password Generator using modern techniques.</title>
-    <link rel="stylesheet" type='text/css' href='style.css'/>
-</head>
-<body>
+    <link rel="stylesheet" type='text/css' href='style.css' />
     <style>
         body{
         font-size:1em;
-        } 
+        }
         input{
             left:5%;
         }
@@ -42,23 +38,33 @@
             vertical-align: middle; /* center checkbox vertically */
             margin-top:-0.05em;
         }
+        #fonts{
+            font-size:1.1;
+            font-color:red;
+        }
+        #left{
+            text-align:left;
+            content-align:left;
+        }
     </style>
+</head>
+<body>
+
     <h1 style='text-align:center; position:relative' id='header'>
        Awesome Password Generator
     </h1>
     <p style='width:95%'>
         This site will hash your password with scrypt, the username, the site's name and your password for salt(to make it harder to guess). It will generate by default a 14 character
         psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
-        of the boxes will change everything. Thus the entire thing is case sensitive. 
+        of the boxes will change everything. Thus the entire thing is case sensitive.
         To just score the passwrd you entered witout generating one just click the "Score Password" button.
         You can change the length by changing the "Output Length" option
         to make it the length of the password the maximum that you require. You can also disable the special character that is added onto the end if the site that you're using doesn't allow
         it(only way to know is to try pasting the password into the site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll
         give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 character
-<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i> 
+<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i>
 <br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields. So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>
-    </p>
-   <div align='left'>
+   <div id='left'>
     <label for='site_name'>
         Site Name:
         <input type='text' id='site_name' class='texts' value="">
@@ -89,7 +95,7 @@
         &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
     </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" />
+    <input type='submit'  onclick='JavaScript:generate_wrapper(false);' value='Generate A Password' id='generate_pass'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" />
    <br />
    <p style="width:95%; font-size:105%">
     Your original score:<b id='orig_score'></b>
@@ -104,6 +110,7 @@
     <br />
     Time to crack generated password:<b id='gen_time'></b>
     </p>
+    </div>
     <br />
     <p>
         I would suggest using this in combination with a password manager like KeePass and this way you have to remember only two passwords one for generating the unique password for each site
@@ -118,19 +125,19 @@
         <br />
         <b>Windows</b>&emsp;<a href='http://keepass.info/download.html'>KeePass</a> The original program that was written for Windows. It also has versions for other platforms but I would suggest using the ones I listed instead of the other ones listed on the page for other platforms.
         <br /><br />
-        You can change the 
+        You can change the
         strength of the protection that the database gives you. If unsure how to change it just leave it as the default.
         For those with more expereience make sure it is AES(Rijndael) and the Encryption Rounds is set to 100000(100,000). That should provide you with a basic level of protection
         from attackers trying to steal your passwords from the database so long as you have made sure the password you use to open that database scores at least a 2 via this tool's score password function.<br /><br />
     </p>
     <div class='modal' id='modal_spec'>
-        <div clas='modal_body'>
+        <div class='modal_body'>
         <div class='modal_content'>
             <div class='caps' style='color:red;'>
                 <p><b>Are you sure you want to disable the special character from generation? <br />Doing so will decrease the strength of your generated password.
                 <br />You should only do this if the site you're going to use specifically said that you cannot use them.</b></p>
             </div>
-            <div id='buttons'>
+            <div class='buttons'>
             <input type='button' onclick='confirmed(1,"_spec")' style='font-size:1.5em' value="YES I'M SURE" />
             &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_spec")' style='font-size:2em' value="No I'm Not" />
             </div>
@@ -138,13 +145,13 @@
         </div>
     </div>
       <div class='modal' id='modal_legacy'>
-        <div clas='modal_body'>
+        <div class='modal_body'>
         <div class='modal_content'>
             <div class='caps' style='color:red;'>
                 <p><b>Are you sure that you want to enable legacy mode? <br />Doing so will decrease the security of the password.
                 <br />You should only do this if you are migrating your password to the new format.</b></p>
             </div>
-            <div id='buttons'>
+            <div class='buttons'>
             <input type='button' onclick='confirmed(1,"_legacy")' style='font-size:1.5em' value="YES I'M SURE" />
             &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_legacy")' style='font-size:2em' value="No I'm Not" />
             </div>
@@ -154,12 +161,12 @@
     <div class='modal' id='modal_progress'>
         <div class='modal_body'>
             <div class='modal_content' id='full'>
-                <font color='red' size='1.1em'>
+                <span id='fonts'>
                     Currently Generating Password. It is now <span id='perc_done' style='color:blue'></span> done.
-                </font>
+                </span>
                 <div id='perc_container'>
                     <span id='perc_text'>
-                        
+
                     </span>
                     <span id='completed_perc' style='width:0%'></span>
                 </div>
@@ -176,7 +183,7 @@
 <!--
 
  Awesome Password Generator aka HashPass
- Copyright (c) Macarthur Inbody 2011-2017 
+ Copyright (c) Macarthur Inbody 2011-2017
 licensed under AGPLv3
  https://github.com/133794m3r/hashpass
 
