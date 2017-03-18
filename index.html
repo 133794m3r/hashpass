@@ -95,17 +95,22 @@
     Your original score:<b id='orig_score'></b>
     <br/>
     Generated password score:<b id='gen_score'></b>
-   <br /><span id='score_explain'>
+    <br /><span id='score_explain'>
     The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
     If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>
-   </p>
-   <p style="width:95%">
+    </p>
+    <p style="width:95%">
     Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
     <br />
     Time to crack generated password:<b id='gen_time'></b>
-   </p>
-   <br />
-   <div class='modal' id='modal_spec'>
+    </p>
+    <br />
+    <p>
+        I would suggest using this in combination with a password manager like KeePass and this way you have to remember only two passwords one for generating the unique password for each site
+        and one for keeping the database for your passwords safe. When doing this _make sure_ that your password that you're going to use scores at least a 2. You can utilize the score password
+        button to get feedback and see how strong the password you're going to use is. Below I have included links to the Android, iOS, Windows, and Linux versions that I recommend as all are open source.
+    </p>
+    <div class='modal' id='modal_spec'>
         <div clas='modal_body'>
         <div class='modal_content'>
             <div class='caps' style='color:red;'>
@@ -118,7 +123,7 @@
             </div>
             </div>
         </div>
-   </div>
+    </div>
       <div class='modal' id='modal_legacy'>
         <div clas='modal_body'>
         <div class='modal_content'>
@@ -132,8 +137,8 @@
             </div>
             </div>
         </div>
-   </div>
-   <div class='modal' id='modal_progress'>
+    </div>
+    <div class='modal' id='modal_progress'>
         <div class='modal_body'>
             <div class='modal_content' id='full'>
                 <font color='red' size='1.1em'>
@@ -147,7 +152,7 @@
                 </div>
             </div>
         </div>
-   </div>
+    </div>
   <!--- <script type='text/javascript' src='out.js'></script> -->
 <script type="text/javascript" src="scrypt1.js"></script>
 <script type="text/javascript" src="awesome_pass_gen2.js"></script>

@@ -15,10 +15,10 @@ function generate_salt(password,username,url,alt=false){
     var p2=1;
 if(alt===false){
     n1=9;
-    p=1;
+    p=2;
     n2=12;
     r=8;
-    p2=1;
+    p2=3;
 }
     scrypt(password,url,{
         logN:n1,
@@ -268,7 +268,7 @@ function generate_pass(dbg=false){
     }
     //using ~380x guesses as SSE2 scrypt running on CPU.
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1750);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1700);
         p=2;
     }
     else{
@@ -283,7 +283,7 @@ function generate_pass(dbg=false){
         p:p,
         encoding:'hex'},
         function(x){password=x;}
-    )       
+    )
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
     password=hex_decode(password);
@@ -296,9 +296,10 @@ function generate_pass(dbg=false){
     time2=Date.now();
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
-	if(dbg===true){
+/*	if(dbg===true){
 		alert('total new values:'+total);
 	}
+*/
     time=Date.now();
     result=zxcvbn(password,inputs);
     time2=Date.now();
@@ -385,7 +386,7 @@ function generate_wrapper(dbg=false){
 	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
 	var interval=setTimeout(function(){percent_update(70);},1);
-	setTimeout(function(){generate_pass(dbg)},35);
+	setTimeout(function(){generate_pass(dbg)},45);
 }
 
 function score_password(){
