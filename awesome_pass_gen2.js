@@ -13,16 +13,18 @@ function generate_salt(password,username,url,alt=false){
     var r=8;
     var n2=9;
     var p2=1;
+    var r2=6;
 if(alt===false){
     n1=9;
-    p=2;
-    n2=12;
+    p=4;
+    n2=13;
     r=8;
+    r2=8;
     p2=3;
 }
     scrypt(password,url,{
         logN:n1,
-        r:6,
+        r:r2,
         p:p,
         encoding:'base64'},
         function(x){password=x;}
@@ -30,7 +32,7 @@ if(alt===false){
 
     scrypt(username,password,{
         logN:n1,
-        r:6,
+        r:r2,
         p:p,
         encoding:'hex'},
         function(x){username=x;}
@@ -38,7 +40,7 @@ if(alt===false){
 
     scrypt(url,username,{
         logN:n1,
-        r:6,
+        r:r2,
         p:p,
         encoding:'base64'},
         function(x){url=x;}
