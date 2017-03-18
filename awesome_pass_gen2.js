@@ -270,7 +270,7 @@ function generate_pass(dbg=false){
     }
     //using ~380x guesses as SSE2 scrypt running on CPU.
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1700);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1500);
         p=2;
     }
     else{
