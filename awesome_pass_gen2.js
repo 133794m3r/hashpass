@@ -273,7 +273,7 @@ function generate_pass(dbg=false){
     if(legacy_mode===false){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1500);
         p=2;
-        r=11;
+        r=12;
     }
     else{
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
