@@ -272,7 +272,7 @@ function generate_pass(dbg=false){
     }
     //using ~380x guesses as SSE2 scrypt running on CPU. Maybe 1300
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1400);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
         p=2;
         r=6;
         n=16;
@@ -439,6 +439,6 @@ function score_password(){
         document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
     //for scoring password I am using in between as I don't know how they're using it will show up as different but still it should be fine.
-        document.getElementById('orig_time').innerHTML=display_time(result.guesses/4000);
+        document.getElementById('orig_time').innerHTML=display_time(result.guesses/3000);
 
 }
