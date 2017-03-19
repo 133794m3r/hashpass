@@ -333,9 +333,7 @@ I control the strengths.
 document.getElementById('gen_time').innerHTML=display_time(result.guesses/7500);
 modal_toggle('_progress');
 	//setTimeout(percent_update(99),4);
-
-
-perc=0;
+document.getElementById('generate_pass').disabled=false
 //alert(total+'ms');
 return;
 }
@@ -392,7 +390,8 @@ function generate_wrapper(dbg=false){
 	//var timeout=setTimeout(modal_toggle('_progress'),0);
 	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
-	var interval=setTimeout(function(){percent_update(70);},1);
+    setTimeout(function(){document.getElementById('generate_pass').disabled=true;},1);
+	var interval=setTimeout(function(){percent_update(70);},2);
 	setTimeout(function(){generate_pass(dbg)},45);
 }
 
