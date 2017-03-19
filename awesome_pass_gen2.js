@@ -300,10 +300,11 @@ function generate_pass(dbg=false){
     time2=Date.now();
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
-/*	if(dbg===true){
+
+	if(dbg===true){
 		alert('total new values:'+total);
 	}
-*/
+
     time=Date.now();
     result=zxcvbn(password,inputs);
     time2=Date.now();
