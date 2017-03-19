@@ -226,6 +226,7 @@ function generate_pass(dbg=false){
     var warning='';
     var tmp='';
     var p=1;
+    var r=10;
 	var no_spec=document.getElementById('no_spec').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
 	//password special strings will be one of $#@
@@ -272,6 +273,7 @@ function generate_pass(dbg=false){
     if(legacy_mode===false){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1500);
         p=2;
+        r=11;
     }
     else{
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
@@ -281,7 +283,7 @@ function generate_pass(dbg=false){
 	time4=Date.now();
     scrypt(password,salt,{
         logN:15,
-        r:10,
+        r:r,
         p:p,
         encoding:'hex'},
         function(x){password=x;}
