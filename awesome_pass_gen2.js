@@ -16,11 +16,11 @@ function generate_salt(password,username,url,alt=false){
     var r2=6;
 if(alt===false){
     n1=9;
-    p=4;
-    n2=13;
-    r=8;
+    p=1;
+    n2=15;
+    r=5;
     r2=8;
-    p2=3;
+    p2=1;
 }
     scrypt(password,url,{
         logN:n1,
@@ -227,6 +227,7 @@ function generate_pass(dbg=false){
     var tmp='';
     var p=1;
     var r=10;
+    var n=15;
 	var no_spec=document.getElementById('no_spec').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
 	//password special strings will be one of $#@
@@ -269,11 +270,12 @@ function generate_pass(dbg=false){
     else{
         document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
-    //using ~380x guesses as SSE2 scrypt running on CPU.
+    //using ~380x guesses as SSE2 scrypt running on CPU. Maybe 1300
     if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1500);
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1400);
         p=2;
-        r=12;
+        r=6;
+        n=16;
     }
     else{
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
@@ -282,7 +284,7 @@ function generate_pass(dbg=false){
     var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
     scrypt(password,salt,{
-        logN:15,
+        logN:n,
         r:r,
         p:p,
         encoding:'hex'},
