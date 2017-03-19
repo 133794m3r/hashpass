@@ -17,8 +17,8 @@ function generate_salt(password,username,url,alt=false){
 if(alt===false){
     n1=9;
     p=1;
-    n2=15;
-    r=5;
+    n2=14;
+    r=9;
     r2=8;
     p2=1;
 }
@@ -439,11 +439,7 @@ function score_password(){
     else{
         document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
-    //using ~380x guesses as SSE2 scrypt running on CPU.
-    if(legacy_mode===false){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1700);
-    }
-    else{
-        document.getElementById('orig_time').innerHTML=display_time(result.guesses/3600);
-    }
+    //for scoring password I am using in between as I don't know how they're using it will show up as different but still it should be fine.
+        document.getElementById('orig_time').innerHTML=display_time(result.guesses/4000);
+
 }
