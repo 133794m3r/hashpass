@@ -126,10 +126,12 @@ else{
 	str_char=str_char.substr(0,max_len-3);
 	num_str.substr(0);
 }
-
+//console.log('num '+num_str);
+//console.log('str '+str_char);
 
 if(legacy_mode===true){
 chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%5;
+//password='example';
 switch(chars_order){
 	case 0:
         //ex 0Abcdefg123@
@@ -155,6 +157,8 @@ switch(chars_order){
 }
 else{
     chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%10;
+  //  password='example2';
+   // console.log(chars_order);
 	switch(chars_order){
 		case 0:
 			//A0bcdefg123@
@@ -190,7 +194,7 @@ else{
 			break;
 		case 8:
 			//bcdefg123@A0
-			passwod=str_char+num_str+tmp_str+cap_char+num;
+			password=str_char+num_str+tmp_str+cap_char+num;
 			break;
 		case 9:
 			//0bcdefg123@A
@@ -201,6 +205,7 @@ else{
 }
 //password=password+tmp_str;
 var time2=Date.now();
+console.log('pass '+password);
 console.log('simplify:'+(time2-time)+'ms');
 return password;
 
