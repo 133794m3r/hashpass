@@ -199,3 +199,80 @@ function no_repeat_strings(string) {
   string_fixed = string;
   return string_fixed;
 }
+
+function b64_encode(str,type=false){
+	var chr1, chr2, chr3, rez = '', arr = [], i = 0, j = 0, code = 0,k=0;
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/='.split('');
+if(type==false){
+	while(code = str.charCodeAt(j++)){
+		if(code < 128){
+			arr[k] = code;
+		}
+		else if(code < 2048){
+			arr[k] = 192 | (code >> 6);
+			arr[k] = 128 | (code & 63);
+		}
+		else if(code < 65536){
+			arr[k] = 224 | (code >> 12);
+			arr[k] = 128 | ((code >> 6) & 63);
+			arr[k] = 128 | (code & 63);
+		}
+		else{
+			arr[k] = 240 | (code >> 18);
+			arr[k] = 128 | ((code >> 12) & 63);
+			arr[k] = 128 | ((code >> 6) & 63);
+			arr[k] = 128 | (code & 63);
+		}
+        ++k;
+	}
+}
+else
+{
+    arr=str;
+    k=arr.length;
+}
+    console.log(arr);
+	while(i < k){
+		chr1 = arr[i++];
+		chr2 = arr[i++];
+		chr3 = arr[i++];
+		rez += chars[chr1 >> 2];
+		rez += chars[(((chr1 & 3) << 4) | (chr2 >> 4))];
+		rez += chars[(chr2 === undefined ? 64 : ((chr2 & 15) << 2) | (chr3 >> 6))];
+		rez += chars[(chr3 === undefined ? 64 : chr3 & 63)];
+	}
+	return rez;
+};
+
+function b64_decode(str){
+    var chr0, chr1, chr2,chr3, rez = '', arr = [], i = 0, j = 0, code = 0,k=0;;
+	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
+    var strlen=str.length;
+    var bits=0;
+    var dec=[];
+    var ac=0;
+    var o0,o1,o2;
+    while(i<strlen){
+        chr0=chars.indexOf(str.charAt(i));
+        chr1=chars.indexOf(str.charAt(i+1));
+        chr2=chars.indexOf(i+2,1);
+        chr3=chars.indexOf(i+3,1);
+        o0=(chr0<<2)|(chr1>>4);
+        o1=((chr1&15)<<4)|(chr2>>2);
+        o2=((chr2&3)<<6)|chr4;
+        
+        
+        dec+=String.fromCharCode(o0)
+        if(chr2!==64){
+            dec+=String.fromCharCode(o1);
+        }
+        else if(chr3!==64){
+            dec+=String.fromCharCode(o2);
+        }
+        chr0=chr1=chr2=chr3='';
+        o0=o1=o2='';
+      ++i;
+    }
+    dec=unescape(dec);
+    return dec;
+}
