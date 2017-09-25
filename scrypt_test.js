@@ -25,13 +25,14 @@ var round_str='';
 var tmp_str=Math.random().toString(16);
 var tmp_str2=Math.random().toString(16);
 var tmp='';
+n=Math.pow(2,n);
 
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
 
         scrypt(tmp_str,tmp_str2,{
-            logN:n,
+            N:n,
             r:r,
             p:p
         },

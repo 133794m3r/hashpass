@@ -7,6 +7,8 @@
     <script src='math.js' type='text/javascript'></script>
     <script src='scrypt1.js' type='text/javascript'></script>
     <script src='string.js' type='text/javascript'></script>
+    <script src="argon2-asm.min.js" type='text/javascript' async></script>
+<META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
 </head>
 <body>
     <input type='text' id='rounds' value='20'/>
@@ -18,13 +20,18 @@
         function run_test(){
             var num=document.getElementById('rounds').value;
             do_test(num);
-            hps=round(1/(salt_mean+(salt_stddev/2)),4);
+            /*
+    hps=round(1/(salt_mean+(salt_stddev/2)),4);
             var str='old mean:'+salt_mean+"<br /> old stddev:"+salt_stddev+'<br /> hps:'+hps+'<br />';
             results.insertAdjacentHTML('afterbegin',str);
+        */
             hps=round(1/(true_mean+(true_stddev/2)),4);
             str='new mean:'+true_mean+'<br /> new stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
+            str+='phone time normal:'+round(1/(hps/15),3)+'s<br />';
+            str+='phone time worst: '+round(1/(hps/23),3)+'s<br />';
             results.insertAdjacentHTML('afterbegin',str);
         }
     </script>
+    <script src='argon2.js' type='text/javascript' defer></script>
 </body>
 </html>

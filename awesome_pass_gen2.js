@@ -59,7 +59,17 @@ if(alt===false){
     console.log(salt);
     return salt;
 }
+function generate_salt_argon2(password,username,url){
+    var time=Date.now();
+    
+    
 
+
+	var time2=Date.now();
+	console.log('gen_salt:'+(time2-time)+'ms');
+    console.log(salt);
+    return salt;
+}
 function simplify(password,max_len,no_spec,legacy_mode){
 
 var time=Date.now();

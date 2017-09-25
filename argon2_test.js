@@ -57,5 +57,5 @@ means=mean(times);
 std_dev=standard_deviation(times,means);
 the_std_dev=std_dev;
 the_mean=means;
-daheap=new Uint8Array(heaps);
+//daheap=new Uint8Array(heaps);
 }

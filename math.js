@@ -72,6 +72,30 @@ function round(n,x){
     }
 }
 
+function mean(array){
+    var arg_len=array.length;
+    var i=0,max=0;
+    var tmp=0;
+    for(i=0;i<arg_len;++i){
+        max+=array[i];
+    }
+    tmp=round((max/arg_len),8);
+    return tmp;
+}
+
+function standard_deviation(array,mean){
+    if(typeof mean==undefined){
+        mean=mean(array);
+    }
+    var arr_len=array.length,i=0,tmp=0,tmp2=0;
+    for(i=0;i<arr_len;++i){
+        tmp+=pow((array[i]-mean),2);
+    }
+    tmp=(tmp/arr_len);
+    tmp=round(sqrt(tmp),8);
+    return tmp;
+}
+
 /**
  * 
  * random Float
@@ -104,29 +128,7 @@ function sum(initial_value,start,end,formula){
 
 
 
-function mean(array){
-    var arg_len=array.length;
-    var i=0,max=0;
-    var tmp=0;
-    for(i=0;i<arg_len;++i){
-        max+=array[i];
-    }
-    tmp=round((max/arg_len),8);
-    return tmp;
-}
 
-function standard_deviation(array,mean){
-    if(typeof mean==undefined){
-        mean=mean(array);
-    }
-    var arr_len=array.length,i=0,tmp=0,tmp2=0;
-    for(i=0;i<arr_len;++i){
-        tmp+=pow((array[i]-mean),2);
-    }
-    tmp=(tmp/arr_len);
-    tmp=round(sqrt(tmp),8);
-    return tmp;
-}
 
 function num_format(number){
     str=number+'';
