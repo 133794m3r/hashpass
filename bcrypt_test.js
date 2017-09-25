@@ -39,6 +39,8 @@ for(i=1;i<=k;i++){
     tmp_str2=sha1(tmp_str);
     strings[i-1]=tmp_str2;
 }
+da_salt=salts[0];
+da_string=strings[0];
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
@@ -48,6 +50,8 @@ for(i=1;i<=j;i++){
     end=microtime();
     times[i-1]=((end-start)/k);
 }
+da_salts=salts[0];
+da_strings=strings[0];
 true_end=microtime();
 means=mean(times);
 std_dev=standard_deviation(times,means);

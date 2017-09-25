@@ -1,15 +1,4 @@
-<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
-    "http://www.w3.org/TR/html4/loose.dtd">
-<html lang="en">
-    <head>
-<META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
-<script src="argon2-asm.min.js" type='text/javascript' async></script>
-        <script src="string.js" type='text/javascript'></script>
-        <script src="math.js" type="text/javascript"></script>
-        <script src='argon2_test.js' type='text/javascript'></script>
-<script defer='defer'>
-            
-                    var ArgonType = {
+ var ArgonType = {
         Argon2d: 0,
         Argon2i: 1
     };      
@@ -80,45 +69,3 @@
             
             }
             var argon2={hash:argon2_hash,ArgonType:ArgonType};
-                    the_mean=0;
-        the_std_dev=0;
-        function inc_do_test(){
-        var n=document.getElementById('n').value;
-        var r=document.getElementById('r').value;
-        var p=document.getElementById('p').value;
-        var id=document.getElementById('id').value;
-        n=parseInt(n);
-        r=parseInt(r);
-        p=parseInt(p);
-        id=parseInt(id);
-        if(id==0){
-            id=ArgonType.Argon2d;
-        }
-        else{
-            id=ArgonType.Argon2i;
-        }
-        document.getElementById('n').value=n+1;
-        if(n>=3&&r<=52){
-            document.getElementById('r').value=r+2;
-        }
-        
-        var results=document.getElementById('results');
-        do_test(n,r,p,id);
-        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
-        var str='time: '+n+' mem:'+r+' p:'+p+'id:'+id+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
-        results.insertAdjacentHTML('afterbegin',str);
-    }
-        </script>
-        <meta charset="utf-8"/>
-    </head>
-    <body>
-        <input type="text" value='1' id='n'/>
-    <input type='text' value='8' id='r' />
-    <input type='text' value='1' id='p' />
-    <input type='text' value='0' id='id'/>
-    <input type="button" onclick="inc_do_test();" />
-    <p id="results">
-        
-    </p>
-    </body>
-</html>
