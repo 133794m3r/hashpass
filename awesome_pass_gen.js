@@ -22,37 +22,33 @@ if(alt===false){
     r2=8;
     p2=1;
 }
-    scrypt(password,url,{
+    password=scrypt(password,url,{
         logN:n1,
         r:r2,
         p:p,
-        encoding:'base64'},
-        function(x){password=x;}
+        encoding:'base64'}
     )
 
-    scrypt(username,password,{
+    username=scrypt(username,password,{
         logN:n1,
         r:r2,
         p:p,
-        encoding:'hex'},
-        function(x){username=x;}
+        encoding:'hex'}
     )
 
-    scrypt(url,username,{
+    url=scrypt(url,username,{
         logN:n1,
         r:r2,
         p:p,
-        encoding:'base64'},
-        function(x){url=x;}
+        encoding:'base64'}
     )
     salt=url+password+username;
     salt2=username+url+password;
-    scrypt(salt,salt2,{
+    salt=scrypt(salt,salt2,{
         logN:n2,
         r:r,
         p:p2,
-        encoding:'hex'},
-        function(x){salt=x;}
+        encoding:'hex'}
     )
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
@@ -298,12 +294,11 @@ function generate_pass(dbg=false){
     time=Date.now();
     var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
-    scrypt(password,salt,{
+    password=scrypt(password,salt,{
         logN:n,
         r:r,
         p:p,
-        encoding:'hex'},
-        function(x){password=x;}
+        encoding:'hex'}
     )
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
