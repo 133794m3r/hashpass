@@ -557,6 +557,7 @@ function hashpw(password, salt) {
 	rounds = r1 + r2;
 	real_salt = salt.substring(off + 3, off + 25);
 	password = password + (minor >= 'a' ? "\x00" : "");
+	console.log('m'+(minor >='a'?"\x00":""));
     password_len=password.length;
 	var cdata = obj.bf_crypt_ciphertext;
     if(Int32Array){
@@ -617,7 +618,16 @@ function hashpw(password, salt) {
         	}
     	};
         hashed=ret;
-    
+		var hashed_len=ret_len;
+		var hashed2=[];
+
+ 		for(i=0;i<hashed_len;++i){
+			hashed2[i]=ret[i]>>>0;
+		}
+		
+        hashed=ret;	
+    console.log('h'+encode_base64(hashed, obj.bf_crypt_ciphertext_len * 4 - 1));
+	console.log('h2'+encode_base64(hashed2, obj.bf_crypt_ciphertext_len * 4 - 1));
     var rs = [];
     var rs_len=0;
     rs[rs_len++]='$2';
