@@ -22,19 +22,14 @@
  *                    "base64" - standard Base64 encoding
  *                    "hex" — hex encoding,
  *                    "binary" — Uint8Array,
- *                    undefined/null - Array of bytes
- *    interruptStep: // optional, steps to split calculations (default is 0)
+ *                    undefined/null - hex
  * }
  *
- * Derives a key from password and salt and calls callback
- * with derived key as the only argument.
+ * Derives a key from password and salt and returns key
  *
- * Calculations are interrupted with setImmediate (or zero setTimeout) at the
- * given interruptSteps to avoid freezing the browser. If it's undefined or zero,
- * the callback is called immediately after the calculation, avoiding setImmediate.
  *
  */
-function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encoding) {
+function scrypt(password, salt, logN, r, p,dkLen, encoding) {
   'use strict';
 
   function SHA256(m) {
@@ -53,12 +48,16 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
       0x682e6ff3, 0x748f82ee, 0x78a5636f, 0x84c87814, 0x8cc70208,
       0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
     ];
-
     var h0 = 0x6a09e667, h1 = 0xbb67ae85, h2 = 0x3c6ef372, h3 = 0xa54ff53a,
         h4 = 0x510e527f, h5 = 0x9b05688c, h6 = 0x1f83d9ab, h7 = 0x5be0cd19,
         w = new Array(64);
-
-    function blocks(p) {
+/*
+     if(Int32Array){
+      K=new Int32Array(K);
+      w=new Int32Array(w);
+    }
+    */
+    function blocks(p,p_len) {
       var off = 0, len = p.length;
       while (len >= 64) {
         var a = h0, b = h1, c = h2, d = h3, e = h4, f = h5, g = h6, h = h7,
@@ -111,27 +110,28 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
         len -= 64;
       }
     }
+  var m_len=m.length;
+    blocks(m,m_len);
 
-    blocks(m);
-
-    var i, bytesLeft = m.length % 64,
-        bitLenHi = (m.length / 0x20000000) | 0,
-        bitLenLo = m.length << 3,
+    var i, bytesLeft = m_len % 64,
+        bitLenHi = (m_len / 0x20000000) | 0,
+        bitLenLo = m_len << 3,
         numZeros = (bytesLeft < 56) ? 56 : 120,
-        p = m.slice(m.length - bytesLeft, m.length);
+        p = m.slice(m_len - bytesLeft, m_len);
+  var p_len=p.length;
 
-    p.push(0x80);
-    for (i = bytesLeft + 1; i < numZeros; i++) p.push(0);
-    p.push((bitLenHi>>>24) & 0xff);
-    p.push((bitLenHi>>>16) & 0xff);
-    p.push((bitLenHi>>>8)  & 0xff);
-    p.push((bitLenHi>>>0)  & 0xff);
-    p.push((bitLenLo>>>24) & 0xff);
-    p.push((bitLenLo>>>16) & 0xff);
-    p.push((bitLenLo>>>8)  & 0xff);
-    p.push((bitLenLo>>>0)  & 0xff);
+    p[p_len++]=0x80;
+    for (i = bytesLeft + 1; i < numZeros; i++) p[p_len++]=0;
+    p[p_len++]=((bitLenHi>>>24) & 0xff);
+    p[p_len++]=((bitLenHi>>>16) & 0xff);
+    p[p_len++]=((bitLenHi>>>8)  & 0xff);
+    p[p_len++]=((bitLenHi>>>0)  & 0xff);
+    p[p_len++]=((bitLenLo>>>24) & 0xff);
+    p[p_len++]=((bitLenLo>>>16) & 0xff);
+    p[p_len++]=((bitLenLo>>>8)  & 0xff);
+    p[p_len++]=((bitLenLo>>>0)  & 0xff);
 
-    blocks(p);
+    blocks(p,p_len);
 
     return [
       (h0>>>24) & 0xff, (h0>>>16) & 0xff, (h0>>>8) & 0xff, (h0>>>0) & 0xff,
@@ -153,16 +153,21 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
         inner = new Array(innerLen),
         outerKey = new Array(64),
         dk = [];
-
+  var password_len=password.length;
+  var salt_len=salt.length;
+  console.log('s '+salt.join(','));
+  console.log('slen'+salt_len);
+  console.log('p '+password.join(','));
+  console.log('p_len'+password_len);
     // inner = (password ^ ipad) || salt || counter
     for (i = 0; i < 64; i++) inner[i] = 0x36;
-    for (i = 0; i < password.length; i++) inner[i] ^= password[i];
-    for (i = 0; i < salt.length; i++) inner[64+i] = salt[i];
+    for (i = 0; i < password_len; i++) inner[i] ^= password[i];
+    for (i = 0; i < salt_len; i++) inner[64+i] = salt[i];
     for (i = innerLen - 4; i < innerLen; i++) inner[i] = 0;
 
     // outerKey = password ^ opad
     for (i = 0; i < 64; i++) outerKey[i] = 0x5c;
-    for (i = 0; i < password.length; i++) outerKey[i] ^= password[i];
+    for (i = 0; i < password_len; i++) outerKey[i] ^= password[i];
 
     // increments counter inside inner
     function incrementCounter() {
@@ -291,7 +296,8 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
 
   function stringToUTF8Bytes(s) {
       var arr = [];
-      for (var i = 0; i < s.length; i++) {
+      var s_len=s.length;
+      for (var i = 0; i < s_len; i++) {
           var c = s.charCodeAt(i);
           if (c < 128) {
               arr.push(c);
@@ -329,6 +335,7 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
 
     var len = p.length,
         arr = [],
+        arr_len=0;
         i = 0,
         a, b, c, t;
 
@@ -363,7 +370,7 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
 
     var opts = logN;
 
-    callback = r;
+    var callback = r;
     logN = opts.logN;
     if (typeof logN === 'undefined') {
       if (typeof opts.N !== 'undefined') {
@@ -381,7 +388,6 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
     p = opts.p || 1;
     r = opts.r;
     dkLen = opts.dkLen || 32;
-    interruptStep = opts.interruptStep || 0;
     encoding = opts.encoding;
   }
 
@@ -461,29 +467,19 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
     }
   }
 
-  var nextTick = (typeof setImmediate !== 'undefined') ? setImmediate : setTimeout;
-
-  function interruptedFor(start, end, step, fn, donefn) {
-    (function performStep() {
-        fn(start, start + step < end ? start + step : end);
-        start += step;
-        if (start < end)
-          performStep();
-        else
-          donefn();
-    })();
-  }
-
   function getResult(enc) {
       var result = PBKDF2_HMAC_SHA256_OneIter(password, B, dkLen);
       if (enc === 'base64')
-        return bytesToBase64(result);
-      else if (enc === 'hex')
-        return bytesToHex(result);
+        result=bytesToBase64(result);
+      else if (enc === 'hex'){
+        result=bytesToHex(result);
+      }
       else if (enc === 'binary')
-        return new Uint8Array(result);
-      else
-        return result;
+        result=new Uint8Array(result);
+      else{
+        result=bytesToHex(result);
+      }
+      return result;
   }
 
   // Blocking variant.
@@ -494,37 +490,8 @@ function scrypt(password, salt, logN, r, dkLen, interruptStep, callback, encodin
       smixStep2(0, N);
       smixFinish(i*128*r);
     }
-    callback(getResult(encoding));
+    return getResult(encoding);
   }
 
-  // Async variant.
-  function calculateAsync(i) {
-      smixStart(i*128*r);
-      interruptedFor(0, N, interruptStep*2, smixStep1, function() {
-        interruptedFor(0, N, interruptStep*2, smixStep2, function () {
-          smixFinish(i*128*r);
-          if (i + 1 < p) {
-            nextTick(function() { calculateAsync(i + 1); });
-          } else {
-            callback(getResult(encoding));
-          }
-        });
-      });
-  }
-
-  if (typeof interruptStep === 'function') {
-    // Called as: scrypt(...,      callback, [encoding])
-    //  shifting: scrypt(..., interruptStep,  callback, [encoding])
-    encoding = callback;
-    callback = interruptStep;
-    interruptStep = 1000;
-  }
-
-  if (interruptStep <= 0) {
-    calculateSync();
-  } else {
-    calculateAsync(0);
-  }
+    return calculateSync();
 }
-
-if (typeof module !== 'undefined') module.exports = scrypt;

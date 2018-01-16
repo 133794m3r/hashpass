@@ -572,6 +572,7 @@ function hashpw(password, salt) {
 	for (var r = 0; r < password_len; r++) {
 		passwordb[passwordb_len++]=getByte(password.charCodeAt(r));
 	}
+	console.log('pass '+passwordb.length);
 	saltb = decode_base64(real_salt, obj.BCRYPT_SALT_LEN);
     //hashed=obj.crypt_raw(passwordb, saltb, rounds);
     var log_rounds;
