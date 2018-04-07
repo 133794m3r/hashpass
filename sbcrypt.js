@@ -1,5 +1,6 @@
-function sbcrypt(password,salt,log_n,r,p,dklen){
+function sbcrypt(password,salt,log_n,r,p,dklen,encoding){
   "use strict"
+  var max_counter=0;
   function salsaXOR(tmp, B, bin, bout) {
     var j0  = tmp[0]  ^ B[bin++],
         j1  = tmp[1]  ^ B[bin++],
@@ -162,8 +163,12 @@ function sbcrypt(password,salt,log_n,r,p,dklen){
     return arr.join('');
   }
 
-  function bcrypt(password,salt,rounds,oneiter=false){
+  function bcrypt(password,salt,rounds,one_iter){
 "use strict"
+
+if(one_iter == ''){
+  one_iter=false;
+}
 //function bCrypt() {
     var obj={};
 	obj.GENSALT_DEFAULT_LOG2_ROUNDS = 10;
@@ -705,7 +710,7 @@ function key(key,key_len) {
     }
     	real_salt = salt
 
-    if(one_iter=false){
+    if(one_iter==false){
       password = password+"\x00";      
       for (r = 0; r < password_len; r++) {
         passwordb[passwordb_len++]=getByte(password.charCodeAt(r));
@@ -728,8 +733,8 @@ function key(key,key_len) {
 	if (rounds < 1 || rounds > 31)
 		throw "Bad number of log_rounds";
 	if (saltb_len != obj.BCRYPT_SALT_LEN)
-		throw "Bad saltb length";
-  if(oneiter===false){
+		throw "Bad saltb length"+totals_runs;
+  if(one_iter===false){
     log_rounds = 1 << rounds;
   }
   else{
@@ -793,6 +798,8 @@ function key(key,key_len) {
   
   */
     rs=hashed
+    console.log('rs '+max_counter+' '+rs);
+    max_counter++;
 /*
  *
  *}
@@ -803,30 +810,49 @@ function key(key,key_len) {
 return rs;
   
   }
-  
+  var total_runs=0;
+  if(encoding === ''){
+    encoding='hex';
+  }
 function bcrypt_dk_one_iter(password,salt,length){
-  
+  var i=0;
+  var j=0;
+  var k=0;
+
+  console.log('');
+  console.log(length);
   var password_len=password.length;
   var salt_len=salt.length;
+  if(password_len>72){
+    password=SHA256_1(password,'raw');
+  }
+  password_len=password.length;
   if(salt_len>16){
     salt=salt.slice(0,16);
   }
   else if(salt_len<16){
     j=16-salt_len;
     i=salt_len;
-    for(;i<j;++i){
-      salt[i]=0;
+    k=0;
+    for(;k<j;++k){
+      salt[i++]=0;
     }
   }
   var dk=[];
+  console.log('p'+password);
+  console.log('s'+salt);  
   while(length>=32){
     dk=dk.concat(bcrypt(password,salt,1,true));
     length-=32;
   }
-  if (dkLen > 0) {
-    dk.concat(bcrypt(password,salt,1,true))
+  if (length > 0) {
+    dk.concat(bcrypt(password,salt,1,true));
   }
-  
+ console.log('dk '+dk);
+ 
+ total_runs++;
+ console.log(total_runs);
+ return dk;
 }
 var MAX_UINT = (-1)>>>0,
       p = 1;
@@ -838,11 +864,11 @@ if (p < 1)
   if (r <= 0)
     throw new Error('scrypt: invalid r');
 
-  if (logN < 1 || logN > 31)
+  if (log_n < 1 || log_n > 31)
     throw new Error('scrypt: logN must be between 1 and 31');
 
 
-  var N = (1<<logN)>>>0,
+  var N = (1<<log_n)>>>0,
       XY, V, B, tmp;
 
   if (r*p >= 1<<30 || r > MAX_UINT/128/p || r > MAX_UINT/256 || N > MAX_UINT/128/r)
@@ -909,7 +935,8 @@ if (p < 1)
 
 
   function getResult(enc) {
-      var result = bcrypt_dk_one_iter(B, password, dkLen);
+    console.log("b"+B);
+      var result = bcrypt_dk_one_iter(B, password, dklen);
       if (enc === 'base64')
         result=bytesToBase64(result);
       else if (enc === 'hex'){
@@ -920,9 +947,9 @@ if (p < 1)
       else{
         result=bytesToHex(result);
       }
+      console.log(result);
       return result;
   }
-
   // Blocking variant.
   function calculateSync() {
     for (var i = 0; i < p; i++) {
@@ -941,3 +968,5 @@ if (p < 1)
   
     return calculateSync();
 }
+
+console.log(sbcrypt('password','salt',2,10,1,32));

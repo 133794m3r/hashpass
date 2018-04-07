@@ -190,6 +190,12 @@ function sha1(msg,out_type) {
         str+=cvt_b62(H4);
         return str;
     }
+    else if(out_type==='raw'){
+         return [(h0>>>24) & 0xff, (h0>>>16) & 0xff, (h0>>>8) & 0xff, (h0>>>0) & 0xff,
+      (h1>>>24) & 0xff, (h1>>>16) & 0xff, (h1>>>8) & 0xff, (h1>>>0) & 0xff,
+      (h2>>>24) & 0xff, (h2>>>16) & 0xff, (h2>>>8) & 0xff, (h2>>>0) & 0xff,
+      (h3>>>24) & 0xff, (h3>>>16) & 0xff, (h3>>>8) & 0xff, (h3>>>0) & 0xff]
+    }
     else{
         var tmp=new Array(H0,H1,H2,H3,H4);
         return tmp;
