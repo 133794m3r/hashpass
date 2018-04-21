@@ -51,6 +51,7 @@ function hashBlocks(w, v, p, pos, len) {
             w[i] = (((p[j] & 0xff) << 24) | ((p[j + 1] & 0xff) << 16) |
                 ((p[j + 2] & 0xff) << 8) | (p[j + 3] & 0xff));
         }
+    
         for (i = 16; i < 64; i++) {
             u = w[i - 2];
             t1 = (u >>> 17 | u << (32 - 17)) ^ (u >>> 19 | u << (32 - 19)) ^ (u >>> 10);
@@ -58,6 +59,7 @@ function hashBlocks(w, v, p, pos, len) {
             t2 = (u >>> 7 | u << (32 - 7)) ^ (u >>> 18 | u << (32 - 18)) ^ (u >>> 3);
             w[i] = (t1 + w[i - 7] | 0) + (t2 + w[i - 16] | 0);
         }
+   
         for (i = 0; i < 64; i++) {
             t1 = (((((e >>> 6 | e << (32 - 6)) ^ (e >>> 11 | e << (32 - 11)) ^
                 (e >>> 25 | e << (32 - 25))) + ((e & f) ^ (~e & g))) | 0) +
@@ -73,6 +75,9 @@ function hashBlocks(w, v, p, pos, len) {
             b = a;
             a = (t1 + t2) | 0;
         }
+        
+    //    console.log('w2 '+w.join(','));          
+        
         v[0] += a;
         v[1] += b;
         v[2] += c;
@@ -185,6 +190,7 @@ var Hash = /** @class */ (function () {
             hashBlocks(this.temp, this.state, this.buffer, 0, padLength);
             this.finished = true;
         }
+
         for (var i = 0; i < 8; i++) {
             out[i * 4 + 0] = (this.state[i] >>> 24) & 0xff;
             out[i * 4 + 1] = (this.state[i] >>> 16) & 0xff;
@@ -197,6 +203,7 @@ var Hash = /** @class */ (function () {
     Hash.prototype.digest = function () {
         var out = new Uint8Array(this.digestLength);
         this.finish(out);
+
         return out;
     };
     // Internal function for use in HMAC for optimization.
