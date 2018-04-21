@@ -20,7 +20,27 @@ var K = new Uint32Array([
     0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 ]);
 
-
+     var digestLength = exports.digestLength;
+         var blockSize = exports.blockSize;
+        var state = new Int32Array(8); // hash state
+        var temp = new Int32Array(64); // temporary state
+        var buffer = new Uint8Array(128); // buffer for data to hash
+        var bufferLength = 0; // number of bytes in buffer
+        var bytesHashed = 0; // number of total bytes hashed
+        var finished = false; // indicates whether the hash was finalized
+        //state[0] = 0x6a09e667;
+        //state[1] = 0xbb67ae85;
+        //state[2] = 0x3c6ef372;
+        //state[3] = 0xa54ff53a;
+        //state[4] = 0x510e527f;
+        //state[5] = 0x9b05688c;
+        //state[6] = 0x1f83d9ab;
+        //state[7] = 0x5be0cd19;
+        var bufferLength = 0;
+        var bytesHashed = 0;
+        var finished = false;
+        
+        
 function hashBlocks(w, v, p, pos, len) {
     var a, b, c, d, e, f, g, h, u, i, j, t1, t2,pos_tmp=0;
     while (len >= 64) {
@@ -119,7 +139,7 @@ function hashBlocks(w, v, p, pos, len) {
         w[15] = (((p[pos_tmp] & 0xff) << 24) | ((p[pos_tmp + 1] & 0xff) << 16) |
                 ((p[pos_tmp + 2] & 0xff) << 8) | (p[pos_tmp + 3] & 0xff));        
         
-        
+
         /*
         for (i = 16; i < 64; i++) {
             u = w[i - 2];
@@ -496,20 +516,560 @@ function hashBlocks(w, v, p, pos, len) {
             t2 = (u >>> 7 | u << 25) ^ (u >>> 18 | u << 14) ^ (u >>> 3);
             w[63] = (t1 + w[56] | 0) + (t2 + w[47] | 0);
             
-            
-                        //64
-            u = w[62];
-            t1 = (u >>> 17 | u << 15) ^ (u >>> 19 | u << 13) ^ (u >>> 10);
-            u = w[49];
-            t2 = (u >>> 7 | u << 25) ^ (u >>> 18 | u << 14) ^ (u >>> 3);
-            w[64] = (t1 + w[57] | 0) + (t2 + w[48] | 0);
-            
-            
-            
-                                     
-        for (i = 0; i < 64; i++) {
+
+            //64 loop part 2
+            //starts here
+
+            //0
             t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
-                (e >>> 25 | e << 7)) + ((e & f) ^ (~e & g))) | 0) +
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[0] + w[0]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //0
+
+            //1
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[1] + w[1]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //1
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[2] + w[2]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //2
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[3] + w[3]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //3
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[4] + w[4]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //4
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[5] + w[5]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //5
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[6] + w[6]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //6
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[7] + w[7]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //7
+
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[8] + w[8]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //8
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[9] + w[9]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //9
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[10] + w[10]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //10
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[11] + w[11]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //11
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[12] + w[12]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //12
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[13] + w[13]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //13
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[14] + w[14]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //14
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[15] + w[15]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //15
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[16] + w[16]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //16
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[17] + w[17]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //17
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[18] + w[18]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //18
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[19] + w[19]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //19
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[20] + w[20]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //20
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[21] + w[21]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //21
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[22] + w[22]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //22
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[23] + w[23]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //23
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[24] + w[24]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //24
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[25] + w[25]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //25
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[26] + w[26]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //26
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[27] + w[27]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //27
+
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[28] + w[28]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //28
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[29] + w[29]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //29
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[30] + w[30]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //30
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[31] + w[31]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //31
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[32] + w[32]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //32
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
+                ((h + ((K[33] + w[33]) | 0)) | 0)) | 0;
+            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
+                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
+            h = g;
+            g = f;
+            f = e;
+            e = (d + t1) | 0;
+            d = c;
+            c = b;
+            b = a;
+            a = (t1 + t2) | 0;
+            //33        
+            
+        for (i = 34; i < 64; i++) {
+            
+            //0
+            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
+                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
                 ((h + ((K[i] + w[i]) | 0)) | 0)) | 0;
             t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
                 (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
@@ -521,7 +1081,16 @@ function hashBlocks(w, v, p, pos, len) {
             c = b;
             b = a;
             a = (t1 + t2) | 0;
-        }
+            //0
+        }        
+        
+        
+        
+        
+        
+        
+        
+        
         v[0] += a;
         v[1] += b;
         v[2] += c;
@@ -533,6 +1102,9 @@ function hashBlocks(w, v, p, pos, len) {
         pos += 64;
         len -= 64;
     }
+    
+ //       console.log('w2 '+w.join(','));      
+    
     return pos;
 }
 
@@ -563,15 +1135,6 @@ function clean(){
     reset();
 }
 
-    var digestLength;
-        var blockSize;
-        // Note: Int32Array is used instead of Uint32Array for performance reasons.
-        var state; // hash state
-        var temp; // temporary state
-        var buffer; // buffer for data to hash
-        var bufferLength; // number of bytes in buffer
-        var bytesHashed; // number of total bytes hashed
-        var finished; // indicates whether the hash was finalized
 
 // Hash implements SHA256 hash algorithm.
 function update(data,data_len){
@@ -629,11 +1192,10 @@ function finish(out){
         buffer[pad_len-3]=(bit_len_lo >>> 16) & 0xff;
         buffer[pad_len-2]=(bit_len_lo >>> 8) &0xff;
         buffer[pad_len-1]=(bit_len_lo >>> 0 ) &0xff;
-        
         hashBlocks(temp,state,buffer,0,pad_len);
         finished=true;
     }
-
+//todo:
     for(i=0;i < 8; i++){
         out[i * 4] = (state[i] >>> 24) &0xff;
         out[i*4 +1] = (state[i] >>> 16) &0xff;
@@ -646,27 +1208,32 @@ function finish(out){
 
 function digest(){
     var out=new Uint8Array(digestLength);
+
     out=finish(out);
+    
     return out;
 }
 
 function hash(data) {
-     digestLength = exports.digestLength;
-         blockSize = exports.blockSize;
-        // Note: Int32Array is used instead of Uint32Array for performance reasons.
-        state = new Int32Array(8); // hash state
-        temp = new Int32Array(64); // temporary state
-        buffer = new Uint8Array(128); // buffer for data to hash
-        bufferLength = 0; // number of bytes in buffer
-        bytesHashed = 0; // number of total bytes hashed
-        finished = false; // indicates whether the hash was finalized
-        reset();
-    var h = update(data);
+        state[0] = 0x6a09e667;
+        state[1] = 0xbb67ae85;
+        state[2] = 0x3c6ef372;
+        state[3] = 0xa54ff53a;
+        state[4] = 0x510e527f;
+        state[5] = 0x9b05688c;
+        state[6] = 0x1f83d9ab;
+        state[7] = 0x5be0cd19;
+        bufferLength = 0;
+        bytesHashed = 0;
+        finished = false;
+
+
+    update(data);
     var digests = digest();
-    clean();
+    //clean();
     return digests;
 }
-
+/*
 // Derives a key from password and salt using PBKDF2-HMAC-SHA256
 // with the given number of iterations.
 //
@@ -713,6 +1280,6 @@ function hash(data) {
 //    prf.clean();
 //    return dk;
 //}
-
+*/
 return hash(data);
 }

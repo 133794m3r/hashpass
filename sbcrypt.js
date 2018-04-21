@@ -885,6 +885,7 @@ if (p < 1)
     XY = new Int32Array(64*r);
     V = new Int32Array(32*N*r);
     tmp = new Int32Array(16);
+    B = new Int32Array(p*128*r);
   } else {
     XY = [];
     V = [];

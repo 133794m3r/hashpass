@@ -1,7 +1,7 @@
 <html lang="en">
 <head>
 <META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
-    <title>scrypt test</title>
+    <title>sha2 test</title>
         <script src="../string.js" type='text/javascript'></script>
         <script src="../math.js" type="text/javascript"></script>
         <script src='test.js' type='text/javascript'></script>
@@ -26,10 +26,10 @@
         var results=document.getElementById('results');
         p=n*iterations;
         
-        do_test(n);
-        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
-        var str='sha256_new rounds '+n+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
-        results.insertAdjacentHTML('afterbegin',str);
+        //do_test(n);
+        //var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
+        //var str='sha256_new rounds '+n+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
+        //results.insertAdjacentHTML('afterbegin',str);
         
         /*
         do_test1(n);

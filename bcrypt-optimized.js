@@ -594,6 +594,7 @@ function hashpw(password, salt) {
     var ret=[];
     var ret_len=0;
     var k=0;
+    var clen_1=clen >> 1;
     off=0;
 	while(k<=log_rounds){
 		if(i < log_rounds){
@@ -605,7 +606,7 @@ function hashpw(password, salt) {
                     k=i;
         	}else{
  	        	for (i = 0; i < 64; i++) {
-                		for (j = 0; j < (clen >> 1); j++) {
+                		for (j = 0; j < clen_1; j++) {
                     			encipher(cdata, j << 1);
                 		}
             		}

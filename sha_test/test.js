@@ -3,6 +3,8 @@ function compare_numbers(a, b) {
 }
 iterations=1;
 repeats=2;
+w_glob=[];
+w2_glob=[];
 function do_test(rounds){
 
 
