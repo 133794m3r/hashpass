@@ -116,16 +116,17 @@ function SHA256_1(m) {
         inner = new Array(innerLen),
         outerKey = new Array(64),
         dk = [];
-
+    var password_len=password.length;
+    var salt_len=salt.length;
     // inner = (password ^ ipad) || salt || counter
     for (i = 0; i < 64; i++) inner[i] = 0x36;
-    for (i = 0; i < password.length; i++) inner[i] ^= password[i];
-    for (i = 0; i < salt.length; i++) inner[64+i] = salt[i];
+    for (i = 0; i < password_len; i++) inner[i] ^= password[i];
+    for (i = 0; i < salt_len; i++) inner[64+i] = salt[i];
     for (i = innerLen - 4; i < innerLen; i++) inner[i] = 0;
 
     // outerKey = password ^ opad
     for (i = 0; i < 64; i++) outerKey[i] = 0x5c;
-    for (i = 0; i < password.length; i++) outerKey[i] ^= password[i];
+    for (i = 0; i < password_len; i++) outerKey[i] ^= password[i];
 
     // increments counter inside inner
     function incrementCounter() {
@@ -140,12 +141,16 @@ function SHA256_1(m) {
     while (dkLen >= 32) {
       incrementCounter();
       dk = dk.concat(SHA256_1(outerKey.concat(SHA256_1(inner))));
+      //console.log('t2 '+SHA256_1(outerKey.concat(SHA256_1(inner))))
       dkLen -= 32;
     }
     if (dkLen > 0) {
       incrementCounter();
       dk = dk.concat(SHA256_1(outerKey.concat(SHA256_1(inner))).slice(0, dkLen));
     }
+    //console.log('inn'+inner);
+    //console.log('out'+outerKey);
+    //console.log((outerKey.concat(SHA256_1(inner))));
     return dk;
   }
   function stringToUTF8Bytes1(s) {

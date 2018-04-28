@@ -112,13 +112,18 @@ var start=0;
 var end=0;
 var means=0;
 var std_devs=0;
-
+var p1='';
+var s1='';
 var result=[];
+var password='password';
+var salt='salt';
 var iter=iterations*rounds;
 for(i=0;i<iter;i++){
     start=microtime();
     for(j=0;j<repeats;++j){
-        //pbkdf2_new('password','salt',rounds,64);
+        //p1=password+j;
+        //s1=salt+j;
+        //result=pbkdf2_old(p1,s1,rounds,64);
         result=sha256_f(sha_uint_heap);
     }
     end=microtime();
@@ -133,6 +138,7 @@ means=mean(times);
 the_mean=means;
 std_devs=standard_deviation(times,means);
 the_std_dev=std_devs;
+w2_glob=result;
 }
 
 
@@ -145,13 +151,18 @@ var start=0;
 var end=0;
 var means=0;
 var std_devs=0;
-
+var p1='';
+var s1='';
+var password='password';
+var salt='salt';
 var result=[];
 var iter=iterations*rounds;
 for(i=0;i<iter;i++){
     start=microtime();
     for(j=0;j<repeats;++j){
-        //pbkdf2_new('password','salt',rounds,64);
+        //p1=password+j;
+        //s1=salt+j;
+        //result=pbkdf2_fast(p1,s1,rounds,64);
         result=sha256_fast(sha_uint_heap);
     }
     end=microtime();
@@ -161,9 +172,10 @@ for(i=0;i<iter;i++){
 times_sort=times.sort(function(a,b){
         return a - b;
     });
-times_sort=times_sort.slice(floor(iter/20),-(round(iter/20)));
+times=times_sort.slice(floor(iter/20),-(round(iter/20)));
 means=mean(times);
 the_mean=means;
 std_devs=standard_deviation(times,means);
 the_std_dev=std_devs;
+w_glob=result;
 }

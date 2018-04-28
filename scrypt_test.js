@@ -11,7 +11,7 @@ function do_write(str){
 function do_test(n,r,p){
 total=microtime();
 var i=1;
-var j=40;
+var j=120;
 var l=0;
 var k=1;
 var strings=new Array(k);
@@ -42,9 +42,15 @@ for(i=1;i<=j;i++){
 }
 console.log(res);
 true_end=microtime();
+
 var arr_start=1+(Math.ceil(j/20));
 var arr_end=-1*arr_start;
+times_sort=times.sort(function(a,b){
+        return a - b;
+    });
+times_sort=times_sort.slice(floor(j/20),-(round(j/20)));
 //times=times.slice(arr_start,arr_end);
+times=times_sort;
 means=mean(times);
 std_dev=standard_deviation(times,means);
 the_std_dev=std_dev;
