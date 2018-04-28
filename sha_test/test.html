@@ -16,20 +16,23 @@
         var the_mean=0;
         var the_std_dev=0;
         var heap_size=Math.floor(131072*6);
+        //var heap_size=256;
         var sha_string_heap=new Array(heap_size);
         var sha_uint_heap=new Uint8Array(heap_size);
         function inc_do_test(){
         var n=document.getElementById('n').value;
+        var hps=0;
+        var str='';
         n=parseInt(n);
         document.getElementById('n').value=n+1;
         n=n*100;
         var results=document.getElementById('results');
         p=n*iterations;
         
-        //do_test(n);
-        //var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
-        //var str='sha256_new rounds '+n+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
-        //results.insertAdjacentHTML('afterbegin',str);
+        do_test(n);
+        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
+        var str='sha256_new rounds '+n+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
+        results.insertAdjacentHTML('afterbegin',str);
         
         /*
         do_test1(n);
@@ -42,18 +45,21 @@
         var str='sha256_asm rounds ' +n+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
         results.insertAdjacentHTML('afterbegin',str);
        */
-        
+        /*
         do_test3(n);
         var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
         var str='sha256_fast rounds ' +p+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
         results.insertAdjacentHTML('afterbegin',str);        
+        */
         
         do_test3a(n);
-        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
-        var str='sha256_fast_a rounds ' +p+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
+        hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
+        str='sha256_fast_a rounds ' +p+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
         results.insertAdjacentHTML('afterbegin',str);        
         
         results.insertAdjacentHTML('afterend','block size:'+Math.floor(heap_size/1024)+'KiB');
+
+        console.log(w_glob===w2_glob);
     }
     </script>
     <input type="text" value='1' id='n'/>

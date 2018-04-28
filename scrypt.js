@@ -155,10 +155,10 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
         dk = [];
   var password_len=password.length;
   var salt_len=salt.length;
-  console.log('s '+salt.join(','));
-  console.log('slen'+salt_len);
-  console.log('p '+password.join(','));
-  console.log('p_len'+password_len);
+  //console.log('s '+salt.join(','));
+  //console.log('slen'+salt_len);
+  //console.log('p '+password.join(','));
+  //console.log('p_len'+password_len);
     // inner = (password ^ ipad) || salt || counter
     for (i = 0; i < 64; i++) inner[i] = 0x36;
     for (i = 0; i < password_len; i++) inner[i] ^= password[i];
