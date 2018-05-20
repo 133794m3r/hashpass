@@ -11,7 +11,7 @@ function do_write(str){
 function do_test(n,r,p){
 total=microtime();
 var i=1;
-var j=120;
+var j=200;
 var l=0;
 var k=1;
 var strings=new Array(k);
@@ -30,11 +30,12 @@ n=Math.pow(2,n);
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
-        res=scrypt(tmp_str,tmp_str2,{
+        scrypt(tmp_str,tmp_str2,{
             N:n,
             r:r,
-            p:p
-        })
+            p:p,
+            encoding:'hex'
+        },function(x){res=x;})
         tmp_str2=tmp_str;
         tmp_str2=tmp;
     end=microtime();

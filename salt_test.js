@@ -177,8 +177,9 @@ salt_stddev=standard_deviation(times,salt_mean);
 */
 times=[];
 for(i=0;i<=num;i++){
-	start=microtime()
-	tmp=generate_salt2(passwords[i],usernames[i],urls[i]);
+	start=microtime();
+scrypt(passwords[i],tmp,{logN:14,r:10,p:1,encoding:'hex'},function(x){tmp=x});
+/*	tmp=generate_salt2(passwords[i],usernames[i],urls[i]);
         password=argon2_hash({
         pass:passwords[i],
         salt:tmp,
@@ -187,10 +188,18 @@ for(i=0;i<=num;i++){
         parallelism:1,
         type:0
         });
-	end=microtime()
+*/
+	end=microtime();
 	times[i]=(end-start);
 }
 //times=times.slice(arr_start,arr_end);
+var arr_start=1+(Math.ceil(num/20));
+var arr_end=-1*arr_start;
+times_sort=times.sort(function(a,b){
+        return a - b;
+    });
+times_sort=times_sort.slice(floor(num/20),-(round(num/20)));
+times=times_sort;
 true_mean=mean(times);
 true_stddev=standard_deviation(times,true_mean);
 var true_end=microtime()

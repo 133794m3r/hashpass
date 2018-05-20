@@ -1838,8 +1838,9 @@ var out=new Uint8Array(digest_length);
     var arr_len=0;
     //console.log(s);
     //console.log(typeof s);
-    for (var i = 0; i < s_len; i++) {
-        var c = s.charCodeAt(i);
+    var c=0,i=0;
+    for (i = 0; i < s_len; i++) {
+        c = s.charCodeAt(i);
         if (c < 128) {
             arr[arr_len++]=c;
         } else if (c > 127 && c < 2048) {

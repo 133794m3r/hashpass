@@ -1,34 +1,7 @@
-/*!
- * Fast "async" scrypt implementation in JavaScript.
- * Copyright (c) 2013-2016 Dmitry Chestnykh | BSD License
- * https://github.com/dchest/scrypt-async-js
- */
-
-/**
- * scrypt(password, salt, options, callback)
- *
- * where
- *
- * password and salt are strings or arrays of bytes (Array of Uint8Array)
- * options is
- *
- * {
- *    N:      // CPU/memory cost parameter, must be power of two
- *            // (alternatively, you can specify logN)
- *    r:      // block size
- *    p:      // parallelization parameter
- *    dkLen:  // length of derived key, default = 32
- *    encoding: // optional encoding:
- *                    "base64" - standard Base64 encoding
- *                    "hex" — hex encoding,
- *                    "binary" — Uint8Array,
- *                    undefined/null - hex
- * }
- *
- * Derives a key from password and salt and returns key
- *
- *
- */
+//old scrypt settings.
+//avg over 3 runs doing 200 times throwing out top and bottom 10%.
+//8.0727
+// ~2.4x as slow as native for older version.
 function scrypt(password, salt, logN, r, p,dkLen, encoding) {
   'use strict';
 
