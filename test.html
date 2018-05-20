@@ -7,6 +7,7 @@
     <script src="bcrypt_test.js" type="text/javascript"></script>
     <script src="math.js" type="text/javascript"></script>
     <script src="bcrypt.js" type="text/javascript"></script>
+    <script src="bcrypt-1.js" type="text/javascript"></script>
     <script src="sha1.js" type="text/javascript"></script>
     <script src="string.js" type='text/javascript'></script>
     <script src='math.js' type='text/javascript'></script>    
@@ -24,6 +25,7 @@
         var hps=round(1/(the_mean+(the_std_dev/2)),3);
         var str='rounds: '+rounds+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />';
         results.insertAdjacentHTML('afterbegin',str);
+        console.log('time total:'+round(true_end-true_start,4)+'s');
     }
     </script>
     <input type="text" value='4' id='rounds'/>

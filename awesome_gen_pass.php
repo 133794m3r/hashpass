@@ -1,4 +1,16 @@
 <?php
+/*
+*3.5ghz max clock.
+new
+std mean:51.35 ms std dev:0.81 ms hps:19.3232
+380x: 7342.816
+new js worst phone 1.86s
+new js old phone 1.14s
+true time:10.43
+*
+* avg 3 runs. 
+* HPS 19.1052
+*/
 	function mean($array){
 		$array_length=count($array);
 		$array_total=0;
@@ -97,12 +109,15 @@ function simplify($string,$max_len){
 }
 
 function generate_pass($password,$username,$url,$alt=false){
-    $n=32768;
+    //$n=32768;
+    $n=16384;
     $r=10;
-    $p=2;
-    $n=65536;
+    $p=1;
+/*
+    $n=65535;
     $r=6;
     $p=2;
+*/
 	/*
     if($alt==false){
         $salt=generate_salt($password,$username,$url);
@@ -125,9 +140,9 @@ $times=array();
 $start=0;
 $end=0;
 $tmp='';
-$num=150;
-$arr_start=round($num*(5/100))+1;
-$arr_end=-1*$arr_start;
+$num=200;
+$arr_start=floor($num/20);
+$arr_end=-1*round($num/20);
 $true_start=microtime(true);
 for($i=0;$i<=($num*2);$i++){
     $urls[$i]=sha1(uniqid().microtime());
@@ -162,7 +177,7 @@ echo 'old js phone '.$old_js_phone.'s'.PHP_EOL;
 */
 
 usleep(10);
-scrypt($passwords[0],$usernames[0],128,1,1,32);
+scrypt($passwords[0],$usernames[0],16,1,1,32);
 for($i=0;$i<=$num;$i++){
     $start=microtime(true);
     $tmp=generate_pass($passwords[$i],$usernames[$i],$urls[$i],false);
