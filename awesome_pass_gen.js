@@ -23,21 +23,21 @@ if(alt===false){
     p2=1;
 }
     password=scrypt(password,url,{
-        logN:n1,
+        log_n:n1,
         r:r2,
         p:p,
         encoding:'base64'}
     )
 
     username=scrypt(username,password,{
-        logN:n1,
+        log_n:n1,
         r:r2,
         p:p,
         encoding:'hex'}
     )
 
     url=scrypt(url,username,{
-        logN:n1,
+        log_n:n1,
         r:r2,
         p:p,
         encoding:'base64'}
@@ -45,7 +45,7 @@ if(alt===false){
     salt=url+password+username;
     salt2=username+url+password;
     salt=scrypt(salt,salt2,{
-        logN:n2,
+        log_n:n2,
         r:r,
         p:p2,
         encoding:'hex'}
@@ -295,7 +295,7 @@ function generate_pass(dbg=false){
     var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
     password=scrypt(password,salt,{
-        logN:n,
+        log_n:n,
         r:r,
         p:p,
         encoding:'hex'}
@@ -320,7 +320,7 @@ function generate_pass(dbg=false){
     time=Date.now();
     result=zxcvbn(password,inputs);
     time2=Date.now();
-    console.log('zxcvbn:'+((time2-time))+'ms');
+    console.log('zxcvblog_n:'+((time2-time))+'ms');
 
 	
     document.getElementById('gen_score').innerHTML=result.score;

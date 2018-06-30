@@ -5,7 +5,8 @@
 function scrypt(password, salt, logN, r, p,dkLen, encoding) {
   'use strict';
 
-  function SHA256(m) {
+function SHA256(m) {
+"use strict";
     /** @const */ var K = [
       0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
       0x59f111f1, 0x923f82a4, 0xab1c5ed5, 0xd807aa98, 0x12835b01,
@@ -24,14 +25,14 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
     var h0 = 0x6a09e667, h1 = 0xbb67ae85, h2 = 0x3c6ef372, h3 = 0xa54ff53a,
         h4 = 0x510e527f, h5 = 0x9b05688c, h6 = 0x1f83d9ab, h7 = 0x5be0cd19,
         w = new Array(64);
-/*
-     if(Int32Array){
+    /*
+    if(Int32Array){
       K=new Int32Array(K);
       w=new Int32Array(w);
     }
-    */
+*/
     function blocks(p,p_len) {
-      var off = 0, len = p_len;
+      var off = 0, len = p_len
       while (len >= 64) {
         var a = h0, b = h1, c = h2, d = h3, e = h4, f = h5, g = h6, h = h7,
             u, i, j, t1, t2;
@@ -47,7 +48,7 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
           t1 = ((u>>>17) | (u<<(32-17))) ^ ((u>>>19) | (u<<(32-19))) ^ (u>>>10);
 
           u = w[i-15];
-          t2 = ((u>>>7) | (u<<25)) ^ ((u>>>18) | (u<<14)) ^ (u>>>3);
+          t2 = ((u>>>7) | (u<<(32-7))) ^ ((u>>>18) | (u<<(32-18))) ^ (u>>>3);
 
           w[i] = (((t1 + w[i-7]) | 0) + ((t2 + w[i-16]) | 0)) | 0;
         }
@@ -57,7 +58,7 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
                ((e>>>25) | (e<<(32-25)))) + ((e & f) ^ (~e & g))) | 0) +
                ((h + ((K[i] + w[i]) | 0)) | 0)) | 0;
 
-          t2 = ((((a>>>2) | (a<<(32-2))) ^ ((a>>>13) | (a<<19)) ^
+          t2 = ((((a>>>2) | (a<<(32-2))) ^ ((a>>>13) | (a<<(32-13))) ^
                ((a>>>22) | (a<<(32-22)))) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
 
           h = g;
@@ -83,7 +84,7 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
         len -= 64;
       }
     }
-  var m_len=m.length;
+    var m_len=m.length;
     blocks(m,m_len);
 
     var i, bytesLeft = m_len % 64,
@@ -117,7 +118,6 @@ function scrypt(password, salt, logN, r, p,dkLen, encoding) {
       (h7>>>24) & 0xff, (h7>>>16) & 0xff, (h7>>>8) & 0xff, (h7>>>0) & 0xff
     ];
   }
-
   function PBKDF2_HMAC_SHA256_OneIter(password, salt, dkLen) {
     // compress password if it's longer than hash block length
     password = password.length <= 64 ? password : SHA256(password);
