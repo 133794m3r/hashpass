@@ -147,9 +147,9 @@ function bcrypt_hash(password,salt){
         0x20756060, 0x85cbfe4e, 0x8ae88dd8, 0x7aaaf9b0, 0x4cf9aa7e, 0x1948c25c, 0x02fb8a8c, 0x01c36ae4,
         0xd6ebe1f9, 0x90d4f869, 0xa65cdea0, 0x3f09252d, 0xc208e69f, 0xb74e6132, 0xce77e25b, 0x578fdfe3,
         0x3ac372e6];
+//  use top one to require a very slight increase in the custom algorithm.
 
-
-    obj.bf_crypt_ciphertext = [0x4f727068, 0x65616e42, 0x65686f6c, 0x64657253, 0x63727944,0x6f756274];
+    obj.bf_crypt_ciphertext = [0x4f727068, 0x65616e42, 0x65686f6c, 0x64657253, 0x63727944, 0x6f756274];
     obj.bf_crypt_ciphertext_len=6;
 	obj.base64_code = ['.', '/', 'A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I',
 			'J', 'K', 'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U', 'V',
@@ -554,18 +554,16 @@ function hashpw(password, salt) {
         	}
     	};
         hashed=ret;
-		var hashed_len=ret_len;
-		var hashed2=[];
-
- 		for(i=0;i<hashed_len;++i){
-			hashed2[i]=ret[i]>>>0;
-		}
-		
-        hashed=ret;	
-    console.log('h'+encode_base64(hashed, obj.bf_crypt_ciphertext_len * 4 - 1));
-	console.log('h2'+encode_base64(hashed2, obj.bf_crypt_ciphertext_len * 4 - 1));
-    console.log('slen'+obj.S_len);
-    console.log('plen'+obj.P_len);
+//		var hashed2=[];
+//
+// 		for(i=0;i<hashed_len;++i){
+//			hashed2[i]=ret[i]>>>0;
+//		}
+//
+//    console.log('h'+encode_base64(hashed, obj.bf_crypt_ciphertext_len * 4 - 1));
+//	console.log('h2'+encode_base64(hashed2, obj.bf_crypt_ciphertext_len * 4 - 1));
+//    console.log('slen'+obj.S_len);
+//    console.log('plen'+obj.P_len);
     var rs = [];
     var rs_len=0;
     rs[rs_len++]='$2';
