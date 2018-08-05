@@ -1,5 +1,5 @@
-
-function passhash(password, salt, log_n, r, p,dk_len, encoding) {
+//n same r same p same.
+function sbcrypt(password, salt, log_n, r, p,dk_len, encoding) {
   'use strict';
     "use strict";
 function bcrypt_one_iter(password,salt){
@@ -788,15 +788,6 @@ function bcrypt_one_iter(password,salt){
         var bytes_len=bytes.length;
         var salt_len=salt.length;
         var P, S, i = 0, j,k=0;
-
-        //if (Int32Array) {
-        //    P = new Int32Array(P_ORIG);
-        //    S = new Int32Array(S_ORIG);
-        //} else {
-        //    console.log('noint');
-        //    P = P_ORIG.slice();
-        //    S = S_ORIG.slice();
-        //}
         P=P_ORIG;
         S=S_ORIG;
         ekskey(salt, bytes, P, S,salt_len,bytes_len);
@@ -839,13 +830,11 @@ function bcrypt_one_iter(password,salt){
             err =Error("Illegal salt length: "+salt.length+" != "+BCRYPT_SALT_LEN);
                 throw err;
         }
+        var result=crypt(password,salt,2);
 
-        var result=crypt(password,salt,1);
-        return result.substring(0,23);
+        return result.slice(0,23);
             //return finish(crypt(passwordb, saltb, rounds));
     }
-
-
     return hash(password,salt);
 }
 
@@ -2597,7 +2586,7 @@ function finish(out){
     return finish(out);
 //return hash(data);
 }
-
+/*
 function PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, dk_len){
 "use strict";
     password = password.length <= 64 ? password : sha256_fast(password);
@@ -2687,33 +2676,32 @@ function PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, dk_len){
     //console.log(tmp_arr);
     return dk;
   }
-
+*/
 function bcrypt_dk_one_iter(password,salt,dk_len){
-  password=sha256_fast(password);
-  salt=sha256_fast(salt);
-  var dk = new Uint8Array(dk_len);
-  var tmp_arr=new Uint8Array(96);
-  var tmp_arr_len=inner_len+64;
-  var tmp=new Uint8Array(32);
-
-  while(dk_len>=32){
-    tmp=bcrypt_one_iter(password,salt);
-    tmp=sha256_fast(tmp);
-    password.set(tmp);
-    salt=password.slice(0,16);
-    dk.set(tmp,j*32);
-    j++;
-    dk_len -= 32;
-  }
-
-  if(dk_len > 0){
-    tmp=bcrypt_one_iter(password,salt);
-    tmp=sha256_fast(tmp);
-    tmp=tmp.slice(0,dk_len);
-    dk.set(tmp);
-  }
-
-  return tmp;
+    password=sha256_fast(password);
+    salt=sha256_fast(salt);
+    var j=0;
+    var dk = new Uint8Array(dk_len);
+    var tmp=new Uint8Array(32);
+      salt=salt.slice(0,16);
+    while(dk_len>=32){
+      tmp=bcrypt_one_iter(password,salt);
+      tmp=sha256_fast(tmp);
+      password.set(tmp);
+      salt=password.slice(0,16);
+      dk.set(tmp,j*32);
+      j++;
+      dk_len -= 32;
+    }
+    
+    if(dk_len > 0){
+      tmp=bcrypt_one_iter(password,salt);
+      tmp=sha256_fast(tmp);
+      tmp=tmp.slice(0,dk_len);
+      dk.set(tmp);
+    }
+    
+    return tmp;
 }
 
   function salsa_xor(tmp, B, bin, bout) {
@@ -3168,7 +3156,7 @@ x15 ^= u<<18 | u>>>14;
     }
   }
 
-  function integerify(B, bi, r) {
+  function integerify(B, bi) {
     //return B[bi+(2*r-1)*16];
     return B[bi+r_2_1_16];
   }
@@ -3218,7 +3206,7 @@ x15 ^= u<<18 | u>>>14;
         arr = [],
         arr_len=0;
         i = 0,
-        a, b, c, t;
+        a=0, b=0, c=0, t=0;
 
     while (i < len) {
       a = i < len ? p[i++] : 0;
@@ -3351,7 +3339,8 @@ x15 ^= u<<18 | u>>>14;
 
   //B = PBKDF2_HMAC_SHA256_OneIter(password, salt, p*128*r);
   //B = PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, p*128*r,tmp_buf,tmp_buf_arr,inner_buf,outer_buf);
-  B= PBKDF2_HMAC_SHA256_one_iter_fast(password,salt,p*128*r);
+  //B= PBKDF2_HMAC_SHA256_one_iter_fast(password,salt,p*128*r);
+  B=bcrypt_dk_one_iter(password,salt,p*128*r);
   var r_32=32*r;
   var xi = 0, yi = r_32;
   var r_2=2*r;
@@ -3383,7 +3372,7 @@ x15 ^= u<<18 | u>>>14;
     var j=0;
     var i=0;
     for (i = start; i < end; i += 2) {
-      j = integerify(XY, xi, r) & (N_1);
+      j = integerify(XY, xi) & (N_1);
       block_xor(XY, xi, V, j*(r_32), r_32);
       block_mix(tmp, XY, xi, yi, r);
 
@@ -3401,44 +3390,12 @@ x15 ^= u<<18 | u>>>14;
     for (i = 0; i < max; i++) {
       j = XY[i];
       i_4=i*4;
-      B[pos + i_4+ 0] = (j>>>0)  & 0xff;
+      B[pos + i_4] = (j>>>0)  & 0xff;
       B[pos + i_4 + 1] = (j>>>8)  & 0xff;
       B[pos + i_4 + 2] = (j>>>16) & 0xff;
       B[pos + i_4 + 3] = (j>>>24) & 0xff;
     }
   }
-
-  function get_result(enc) {
-      var result = PBKDF2_HMAC_SHA256_one_iter_fast(password, B, dk_len);
-      if (enc === 'base64')
-        result=bytes_to_b64(result);
-      else if (enc === 'hex'){
-        result=bytes_to_hex(result);
-      }
-      else if (enc === 'binary')
-        result=new Uint8Array(result);
-      else{
-        result=bytes_to_hex(result);
-      }
-      return result;
-  }
-
-  // Blocking variant.
-  function calculateSync() {
-    var i=0;
-    var i_128_r=0;
-    var r_128=r*128;
-    for (i = 0; i < p; i++) {
-      i_128_r=(i*r_128);
-      smix_start(i_128_r);
-      smix_step1(0, N);
-      smix_step2(0, N);
-      smix_finish(i_128_r);
-    }
-    return get_result(encoding);
-  }
-
-    //return calculateSync();
 
   var i=0;
   var i_128_r=0;
@@ -3447,7 +3404,6 @@ x15 ^= u<<18 | u>>>14;
 
   for (i = 0; i < p; i++) {
     i_128_r=(i*r_128);
-    i_128_r=0;
     smix_start(i_128_r);
     smix_step1(0, N);
     smix_step2(0, N);
@@ -3463,10 +3419,9 @@ x15 ^= u<<18 | u>>>14;
   //}
 
   //return get_result(encoding);
-  outer_buf=new Uint8Array(p*128*r);
   //B = PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, p*128*r,tmp_buf,tmp_buf_arr,inner_buf,outer_buf);
   //var result = PBKDF2_HMAC_SHA256_OneIter(password, B, dk_len);
-  var result = PBKDF2_HMAC_SHA256_one_iter_fast(password, B, dk_len);
+  var result = bcrypt_dk_one_iter(password, B, dk_len);
   if (encoding === 'base64'){
     result=bytes_to_b64(result);
   }

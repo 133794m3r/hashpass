@@ -1842,54 +1842,6 @@ function PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, dk_len){
     return dk;
   }
 
-  function PBKDF2_HMAC_SHA256_OneIter(password, salt, dk_len) {
-    // compress password if it's longer than hash block length
-    password = password.length <= 64 ? password : SHA256(password);
-    //password = password.length <= 64 ? password : sha256_fast(password);
-    var i, innerLen = 64 + salt.length + 4,
-        inner = new Array(innerLen),
-        outerKey = new Array(64),
-        dk = [];
-  var password_len=password.length;
-  var salt_len=salt.length;
-  //console.log('s '+salt.join(','));
-  //console.log('slen'+salt_len);
-  //console.log('p '+password.join(','));
-  //console.log('p_len'+password_len);
-    // inner = (password ^ ipad) || salt || counter
-    for (i = 0; i < 64; i++) inner[i] = 0x36;
-    for (i = 0; i < password_len; i++) inner[i] ^= password[i];
-    for (i = 0; i < salt_len; i++) inner[64+i] = salt[i];
-    for (i = innerLen - 4; i < innerLen; i++) inner[i] = 0;
-
-    // outerKey = password ^ opad
-    for (i = 0; i < 64; i++) outerKey[i] = 0x5c;
-    for (i = 0; i < password_len; i++) outerKey[i] ^= password[i];
-
-    // increments counter inside inner
-    function incrementCounter() {
-      for (var i = innerLen-1; i >= innerLen-4; i--) {
-        inner[i]++;
-        if (inner[i] <= 0xff) return;
-        inner[i] = 0;
-      }
-    }
-
-    // output blocks = SHA256(outerKey || SHA256(inner)) ...
-    while (dk_len >= 32) {
-      incrementCounter();
-      dk = dk.concat(SHA256(outerKey.concat(SHA256(inner))));
-      //dk = dk.concat(sha256_fast(outerKey.concat(sha256_fast(inner))));
-      dk_len -= 32;
-    }
-    if (dk_len > 0) {
-      incrementCounter();
-      dk = dk.concat(SHA256(outerKey.concat(SHA256(inner))).slice(0, dk_len));
-      //dk = dk.concat(sha256_fast(outerKey.concat(sha256_fast(inner))).slice(0, dk_len));
-    }
-    return dk;
-  }
-
   function salsa_xor(tmp, B, bin, bout) {
     var j0  = tmp[0]  ^ B[bin++];
     var j1  = tmp[1]  ^ B[bin++];
@@ -2624,7 +2576,6 @@ x15 ^= u<<18 | u>>>14;
 
   for (i = 0; i < p; i++) {
     i_128_r=(i*r_128);
-    i_128_r=0;
     smix_start(i_128_r);
     smix_step1(0, N);
     smix_step2(0, N);
