@@ -1,13 +1,10 @@
 /*
- * This is the one with my optimizations on it.
- * 
- * This optimized version of sha-1 is thanks to work by Jens Steube
- *  @ hashcat.net and his paper located at 
- *  https://hashcat.net/p12/js-sha1exp_169.pdf
- * 
- * It is still compatible with all of my test vectors(tested ~500 different 
- * strings of varying length to verify the correct output hash)
- */
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* Licensed AGPLv3 or Later
+* version 2.0.0b
+*/
 
 function sha1_optimized_fast(msg,out_type) {
     var v=0,str='';

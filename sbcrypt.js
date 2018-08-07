@@ -1,4 +1,10 @@
-//n same r same p same.
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* Licensed AGPLv3 or Later
+* version 2.0.0b
+*/
 function ucrypt(password, salt, log_n, r, p,dk_len, encoding) {
 
     "use strict";

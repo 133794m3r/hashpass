@@ -1,8 +1,9 @@
-/*is ~2x as slow as native code when minified and closure compiled.
-* hps
-* 8.901
-* overall ~2.1x as slow as native SSE2 version.
-* going to do ~400x the final hash function for guestimating total hashes possible by 20K USD hardware.
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* Licensed AGPLv3 or Later
+* version 2.0a
 */
 function scrypt(password, salt, log_n, r, p,dk_len, encoding) {
   'use strict';

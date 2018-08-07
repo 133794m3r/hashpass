@@ -1,3 +1,10 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* Licensed AGPLv3 or Later
+* version 2.0a
+*/
 //old scrypt settings.
 //avg over 3 runs doing 200 times throwing out top and bottom 10%.
 //8.0727
