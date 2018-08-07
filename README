@@ -1,14 +1,10 @@
-
-This is a simple password hasher using scrypt,which allows you to use it the same as you would if it was supergenpass unlike super gen pass, we are using a stronger algorithm with much stronger
-
-Overall this is considered at least version 1.0 as everything works and strength is high enough to make it extremely costly to guess a password that was used for generating the password from this system.
-It is licensed under the AGPLv3 or later.
-
-
+This is a password generator like supergenpass but that uses much stronger hashing(one-way encryption) and it version 2.0.0b and is considered generally safe to consume by the general public. As the systems included should give users who have their base password at least a score of 3 a very unlikely chance of someone manging to guess their password.
 
 HashPass
-Copyright (c) 2011-2017 133794m3r
+Copyright (c) 2011-2018 133794m3r
+AGPLv3 or Later
 
+Various files that are licensed differently are listed below.
 The scrypt js library minified in scrypt1.js is licensed under the MIT from the original source. I have included their link in the source file itself. It is no longer async but is now synchronous those looking for an async version should look at the source repo.
 Scrypt Async JS
 Copyright (c) 2013-2016 Dmitry Chestnykh | BSD License
