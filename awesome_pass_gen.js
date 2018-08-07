@@ -13,35 +13,69 @@ function generate_salt(password,username,url,alt=false){
     var r=8;
     var n2=9;
     var p2=1;
-    var r2=6;
-    password=scrypt(password,url,{
-        log_n:n1,
-        r:r2,
-        p:p,
-        encoding:'base64'}
-    )
+    var r2=6
+	if(alt==true){
+		password=scrypt(password,url,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'base64'}
+		)
 
-    username=scrypt(username,password,{
-        log_n:n1,
-        r:r2,
-        p:p,
-        encoding:'hex'}
-    )
+		username=scrypt(username,password,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'hex'}
+		)
 
-    url=scrypt(url,username,{
-        log_n:n1,
-        r:r2,
-        p:p,
-        encoding:'base64'}
-    )
+		url=scrypt(url,username,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'base64'}
+		)
+	}
+	else{
+		password=ucrypt(password,url,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'base64'}
+		)
+
+		username=ucrypt(username,password,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'hex'}
+		)
+
+		url=ucrypt(url,username,{
+			log_n:n1,
+			r:r2,
+			p:p,
+			encoding:'base64'}
+		)
+	}
     salt=url+password+username;
     salt2=username+url+password;
-    salt=scrypt(salt,salt2,{
-        log_n:n2,
-        r:r,
-        p:p2,
-        encoding:'hex'}
-    )
+	if(alt===true){
+		salt=scrypt(salt,salt2,{
+			log_n:n2,
+			r:r,
+			p:p2,
+			encoding:'hex'}
+		)
+	}
+	else{
+		salt=ucrypt(salt,salt2,{
+			log_n:n2,
+			r:r,
+			p:p2,
+			encoding:'hex'}
+		)
+	}
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
@@ -245,26 +279,22 @@ function generate_pass(dbg=false){
     else{
         document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
+
+    time=Date.now();
+    var salt=generate_salt(password,username,url,legacy_mode);
+	time4=Date.now();
     //using ~380x guesses as SSE2 scrypt running on CPU. Maybe 1300
-    if(legacy_mode===false){
+    if(legacy_mode===true){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
         p=2;
         r=6;
         n=16;
-    password=scrypt(password,salt,{
-        n:n,
-        r:r,
-        p:p,
-        encoding:'hex'}
-    )	
+    password=scrypt(password,salt,16,6,2,32,'hex');
     }
     else{
-
+		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+		password=ucrypt(password,salt,16,11,1,32,'hex');
     }
-    time=Date.now();
-    var salt=generate_salt(password,username,url,legacy_mode);
-	time4=Date.now();
-
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
     password=hex_decode(password);

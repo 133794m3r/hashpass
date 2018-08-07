@@ -1,6 +1,6 @@
 //n same r same p same.
-function sbcrypt(password, salt, log_n, r, p,dk_len, encoding) {
-  'use strict';
+function ucrypt(password, salt, log_n, r, p,dk_len, encoding) {
+
     "use strict";
 function bcrypt_one_iter(password,salt){
 
@@ -3205,7 +3205,7 @@ x15 ^= u<<18 | u>>>14;
     var len = p.length,
         arr = [],
         arr_len=0;
-        i = 0,
+    var i = 0,
         a=0, b=0, c=0, t=0;
 
     while (i < len) {
@@ -3435,4 +3435,8 @@ x15 ^= u<<18 | u>>>14;
     result=bytes_to_hex(result);
   }
   return result;  
+}
+
+function sbcrypt(password, salt, log_n, r, p,dk_len, encoding){
+    return ucrypt(password, salt, log_n, r, p,dk_len, encoding);
 }
