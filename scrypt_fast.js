@@ -2411,7 +2411,7 @@ x15 ^= u<<18 | u>>>14;
         if ((opts.n& (opts.n- 1)) !== 0)
           throw new Error('scrypt: N is not a power of 2');
 
-        log_n = Math.log(opts.N) / Math.LN2;
+        log_n = Math.log(opts.log_n) / Math.LN2;
       } else {
         throw new Error('scrypt: missing N parameter');
       }
