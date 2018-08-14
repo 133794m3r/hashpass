@@ -3,7 +3,7 @@
 * Copyright (c) Macarthur Inbody 2011-2017
 * https://github.com/133794m3r/hashpass
 * Licensed AGPLv3 or Later
-* version 2.0a
+* version 2.0.1
 */
 perc=0;
 function generate_salt(password,username,url,alt=false){
@@ -38,6 +38,8 @@ function generate_salt(password,username,url,alt=false){
 		)
 	}
 	else{
+    r2=r2+1;
+    r=r+1;
 		password=ucrypt(password,url,{
 			log_n:n1,
 			r:r2,
@@ -294,7 +296,7 @@ function generate_pass(dbg=false){
     }
     else{
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,16,11,1,32,'hex');
+		password=ucrypt(password,salt,16,12,1,32,'hex');
     }
 	time3=Date.now();
 	console.log('scrypt time:'+(time3-time4)+'ms');
@@ -411,6 +413,9 @@ function score_password(){
     password=document.getElementById('password').value;
 	username=document.getElementById('username').value;
 	max_len=document.getElementById('length').value;
+    inputs[0]=username;
+    inputs[1]=url;
+    result=zxcvbn(password,inputs);
     console.log('hits');
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);
@@ -429,7 +434,7 @@ function score_password(){
     inputs[0]=username;
     inputs[1]=url;
 
-    result=zxcvbn(password,inputs);
+    //result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
     var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
     document.getElementById('orig_score').innerHTML=result.score;

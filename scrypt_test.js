@@ -27,16 +27,16 @@ var tmp_str=Math.random().toString(16);
 var tmp_str2=Math.random().toString(16);
 var tmp='';
 n=Math.pow(2,n);
-
+var res='';
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
-        scrypt(tmp_str,tmp_str2,{
+        res=scrypt(tmp_str,tmp_str2,{
             N:n,
             r:r,
             p:p,
             encoding:'hex'
-        },function(x){res=x;})
+        })
         tmp_str2=tmp_str;
         tmp_str2=tmp;
     end=microtime();
