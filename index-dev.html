@@ -7,45 +7,6 @@
     <title>Password Generator using modern techniques.</title>
     <link rel="stylesheet" type='text/css' href='style.css' />
     <style>
-        body{
-        font-size:1em;
-        }
-        input{
-            left:5%;
-        }
-        label{
-            left:auto;
-            position: relative;
-            font-size:1.1em;
-        }
-        #feedback{
-            font-weight:600;
-            font-size:1.05em;
-        }
-        #score_explain{
-            font-weight:600;
-        }
-        .texts{
-            font-size:100%;
-            margin-bottom:0.5%;
-        }
-        #no_spec{
-            text-align: center; /* center checkbox horizontally */
-            vertical-align: middle; /* center checkbox vertically */
-        }
-        #legacy_mode{
-            text-align: center; /* center checkbox horizontally */
-            vertical-align: middle; /* center checkbox vertically */
-            margin-top:-0.05em;
-        }
-        #fonts{
-            font-size:1.1;
-            font-color:red;
-        }
-        #left{
-            text-align:left;
-            content-align:left;
-        }
     </style>
 </head>
 <body>
@@ -95,7 +56,7 @@
         &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
     </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" />
+    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass'/>
    <br />
    <p style="width:95%; font-size:105%">
     Your original score:<b id='orig_score'></b>
@@ -173,13 +134,21 @@
             </div>
         </div>
     </div>
-<script type="text/javascript" src="scrypt_fast.js"></script
+<script type="text/javascript" src="scrypt_fast.js" async></script>
 <!-- test -->
-<script type="text/javascript" src="awesome_pass_gen.js"></script>
-<script type='text/javascript' src='zxcvbn.js'></script>
-<script type='text/javascript' src='string.js'></script>
-<script type='text/javascript' src='math.js'></script>
-<script type="text/javascript" src="sbcrypt.js"></script>
+
+<script type="text/javascript" src="awesome_pass_gen.js" async></script>
+<script type='text/javascript' src='zxcvbn.js' async></script>
+<script type='text/javascript' src='string.js' async></script>
+<script type='text/javascript' src='math.js' async></script>
+<script type="text/javascript" src="sbcrypt.js" async></script>
+<script type='text/javascript'>
+    window.setTimeout(EnableButtons,300);
+    function EnableButtons(){
+        document.getElementById('generate_pass').disabled=false;
+        document.getElementById('score_pass').disabled=false;
+    }
+    </script>
 <!-- version 2.0.0b -->
 <!--
 

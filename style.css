@@ -76,3 +76,44 @@
 #full{
     height:5em;
 }
+
+
+body{
+    font-size:1em;
+}
+input{
+    left:5%;
+}
+label{
+    left:auto;
+    position: relative;
+    font-size:1.1em;
+}
+    #feedback{
+        font-weight:600;
+        font-size:1.05em;
+    }
+    #score_explain{
+        font-weight:600;
+    }
+    .texts{
+        font-size:100%;
+        margin-bottom:0.5%;
+    }
+    #no_spec{
+        text-align: center; /* center checkbox horizontally */
+        vertical-align: middle; /* center checkbox vertically */
+    }
+    #legacy_mode{
+        text-align: center; /* center checkbox horizontally */
+        vertical-align: middle; /* center checkbox vertically */
+        margin-top:-0.05em;
+    }
+    #fonts{
+        font-size:1.1;
+        font-color:red;
+    }
+    #left{
+        text-align:left;
+        content-align:left;
+    }
