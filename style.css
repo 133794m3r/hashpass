@@ -89,31 +89,71 @@ label{
     position: relative;
     font-size:1.1em;
 }
-    #feedback{
-        font-weight:600;
-        font-size:1.05em;
-    }
-    #score_explain{
-        font-weight:600;
-    }
-    .texts{
-        font-size:100%;
-        margin-bottom:0.5%;
-    }
-    #no_spec{
-        text-align: center; /* center checkbox horizontally */
-        vertical-align: middle; /* center checkbox vertically */
-    }
-    #legacy_mode{
-        text-align: center; /* center checkbox horizontally */
-        vertical-align: middle; /* center checkbox vertically */
-        margin-top:-0.05em;
-    }
-    #fonts{
-        font-size:1.1;
-        font-color:red;
-    }
-    #left{
-        text-align:left;
-        content-align:left;
-    }
+#feedback{
+    font-weight:600;
+    font-size:1.05em;
+}
+#score_explain{
+    font-weight:600;
+}
+.texts{
+    font-size:100%;
+    margin-bottom:0.5%;
+}
+#no_spec{
+    text-align: center; /* center checkbox horizontally */
+    vertical-align: middle; /* center checkbox vertically */
+}
+#legacy_mode{
+    text-align: center; /* center checkbox horizontally */
+    vertical-align: middle; /* center checkbox vertically */
+    margin-top:-0.05em;
+}
+#fonts{
+    font-size:1.1;
+    font-color:red;
+}
+#left{
+    text-align:left;
+    content-align:left;
+}
+.hidden{
+    visibility:hidden;
+}
+.scorebar_container{
+    border-radius: 0.5em;
+    background-color:black;
+    height:1.25em;
+    border-color:gray;
+    width:10%;
+    margin:auto;
+    position:absolute;
+    margin-top:0.2em;
+    margin-bottom:0.5em;
+    margin-left:0.2em;
+    border:3px;
+}
+.scorebar_completed{
+    border-radius: 0.5em;
+    background-color:blue;
+    top:0.2em;
+    left:0.2em;
+    position:absolute;
+    z-index:100;
+    bottom:0.2em;
+    height:auto;
+}
+.scorebar_txt{
+    position:absolute;
+    text-align:center;
+    color:white;
+    top:0.2em;
+    width:100%;
+    z-index:1000;
+}
+#orig_score_container{
+    margin-left:4em;
+}
+#gen_score_container{
+    margin-left:1em;
+}

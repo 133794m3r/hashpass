@@ -14,17 +14,6 @@
     <h1 style='text-align:center; position:relative' id='header'>
        Developer Version! Use <a href='https://133794mr3.github.io/hashpass/'>normal version</a>
     </h1>
-    <p style='width:95%'>
-        This site will hash your password with a modified version of scrypt(or if legacy mode is enabled it'll use the standard scrypt), the username, the site's name and your password for salt(to make it harder to guess). It will generate by default a 14 character
-        psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
-        of the boxes will change everything. Thus the entire thing is case sensitive.
-        To just score the passwrd you entered witout generating one just click the "Score Password" button.
-        You can change the length by changing the "Output Length" option
-        to make it the length of the password the maximum that you require. You can also disable the special character that is added onto the end if the site that you're using doesn't allow
-        it(only way to know is to try pasting the password into the site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll
-        give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 character
-<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i>
-<br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields. So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>
    <div id='left'>
     <label for='site_name'>
         Site Name:
@@ -56,15 +45,32 @@
         &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
     </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true'/>
+    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true' style='border-radius:0.5em;'>&emsp;&emsp;&emsp;
+    <input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true' style='border-radius:0.5em;'/>
    <br />
-   <p style="width:95%; font-size:105%">
-    Your original score:<b id='orig_score'></b>
+   <p style="width:50%; font-size:125%">
+    Your original score:
+    <span id='orig_score_container' class='scorebar_container'>
+      <span id='orig_score_txt' class='scorebar_txt'>
+
+      </span>
+      <span id='orig_score_bar' class='scorebar_completed' style="width:0%">
+
+      </span>
+    </span>
     <br/>
-    Generated password score:<b id='gen_score'></b>
-    <br /><span id='score_explain'>
+    <br/>
+    Generated password score:<span id='gen_score_container' class='scorebar_container'>
+      <span id='gen_score_txt' class='scorebar_txt'>
+
+      </span>
+      <span id='gen_score_bar' class='scorebar_completed' style="width:0%">
+
+      </span>
+    </span>
+    <br /><!--<span id='score_explain'>
     The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
-    If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>
+    If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>-->
     </p>
     <p style="width:95%">
     Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
@@ -91,6 +97,24 @@
         For those with more expereience make sure it is AES(Rijndael) and the Encryption Rounds is set to 100000(100,000). That should provide you with a basic level of protection
         from attackers trying to steal your passwords from the database so long as you have made sure the password you use to open that database scores at least a 2 via this tool's score password function.<br /><br />
     </p>
+    <div id='explanation area' class='hidden'>
+    <p style='width:95%'>
+        This site will hash your password with a modified version of scrypt(or if legacy mode is enabled it'll use the standard scrypt), the username, the site's name and
+        your password for salt(to make it harder to guess). It will generate by default a 14 character
+        psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
+        of the boxes will change everything. Thus the entire thing is case sensitive.
+        To just score the passwrd you entered witout generating one just click the "Score Password" button.
+        You can change the length by changing the "Output Length" option
+        to make it the length of the password the maximum that you require. You can also disable the special character that is added onto the end if the site that you're using doesn't allow
+        it(only way to know is to try pasting the password into the site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll
+        give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 character
+<br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i>
+<br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely
+accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields.
+So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>      
+      
+    </div>
+    
     <div class='modal' id='modal_spec'>
         <div class='modal_body'>
         <div class='modal_content'>
