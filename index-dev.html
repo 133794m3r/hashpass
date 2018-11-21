@@ -56,7 +56,7 @@
         &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
         <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
     </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass'/>
+    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true'>&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true'/>
    <br />
    <p style="width:95%; font-size:105%">
     Your original score:<b id='orig_score'></b>
@@ -143,7 +143,7 @@
 <script type='text/javascript' src='math.js' async></script>
 <script type="text/javascript" src="sbcrypt.js" async></script>
 <script type='text/javascript'>
-    window.setTimeout(EnableButtons,300);
+    window.setTimeout(EnableButtons,333);
     function EnableButtons(){
         document.getElementById('generate_pass').disabled=false;
         document.getElementById('score_pass').disabled=false;
