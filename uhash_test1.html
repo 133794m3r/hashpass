@@ -1,0 +1,52 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
+		"http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<META HTTP-EQUIV='CONTENT-TYPE' CONTENT='text/html; charset=utf-8'>
+    <title>uberhash test</title>
+        <script src="string.js" type='text/javascript'></script>
+        <script src="math.js" type="text/javascript"></script>
+        <script src='sbcrypt1.js' type='text/javascript'></script>
+        <script src='sbcrypt_test.js' type='text/javascript'></script>
+</head>
+<body>
+    <script type="text/javascript">
+        the_mean=0;
+        the_std_dev=0;
+        function inc_do_test(){
+        var n=document.getElementById('n').value;
+        var r=document.getElementById('r').value;
+        var p=document.getElementById('p').value;
+        n=parseInt(n);
+        r=parseInt(r);
+        p=parseInt(p);
+        document.getElementById('n').value=n+1;
+        if(n>=3&&r<=9){
+            document.getElementById('r').value=r+1;
+        }
+
+        var results=document.getElementById('results');
+        do_test(n,r,p);
+        var hps=((1/the_mean+(the_std_dev/2))).toFixed(3);
+		var phone_hps=1/(5*(the_mean+(the_std_dev/2)));
+        var str='n: '+n+' r:'+r+' p:'+p+'<br />'+'the mean:'+the_mean+'<br />std dev:'+the_std_dev+'<br /> hashes/second: '+hps+'<br />'+'phone hps: '+phone_hps+'<br />';;
+        results.insertAdjacentHTML('afterbegin',str);
+    }
+    </script>
+    <input type="text" value='1' id='n'/>
+    <input type='text' value='1' id='r' />
+    <input type='text' value='1' id='p' />
+    <input type="button" onclick="javascript:inc_do_test()" />
+    <p id="results">
+
+    </p>
+</body>
+<!--
+
+ Awesome Password Generator aka HashPass
+ Copyright (c) Macarthur Inbody 2011-2017
+licensed under AGPLv3
+ https://github.com/133794m3r/hashpass
+
+-->
+</html>
