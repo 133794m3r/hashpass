@@ -28,6 +28,7 @@
         Password:&nbsp;
         <input type="text" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
     </label>
+       <span id="show_hide" onclick="swap();">Show</span>
     <label for='length'>
         &nbsp;&nbsp;Output Lenght:&nbsp;
         <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
@@ -171,6 +172,18 @@ So be careful when entering the text and make sure it is what you typed especial
     function EnableButtons(){
         document.getElementById('generate_pass').disabled=false;
         document.getElementById('score_pass').disabled=false;
+    }
+    function switch(){
+        var val=Document.getElementById('show_hide').innerHTML;
+        if(val === "Show"){
+           val="Hide";
+           Document.getElementById('password').setAttribute('type','password');
+        }
+        else{
+            val="Show";
+            Document.getElementById('password').setAttribute('type','text');
+        }
+        Document.getElementById('show_hide').innerHTML(val);
     }
     </script>
 <!-- version 2.0.0b -->
