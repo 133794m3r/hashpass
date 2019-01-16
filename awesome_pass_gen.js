@@ -298,11 +298,11 @@ function generate_pass(dbg=false){
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,16,12,1,32,'hex');
     }
-	time3=Date.now();
-	console.log('scrypt time:'+(time3-time4)+'ms');
+    time3=Date.now();
+    console.log('scrypt time:'+(time3-time4)+'ms');
     password=hex_decode(password);
     password=base32_encode(password);
-	console.log('scrypt:'+password);
+    console.log('scrypt:'+password);
     password=simplify(password,max_len,no_spec,legacy_mode);
 
 //    password=password.substr(0,max_len);
@@ -319,9 +319,9 @@ function generate_pass(dbg=false){
     result=zxcvbn(password,inputs);
     time2=Date.now();
     console.log('zxcvblog_n:'+((time2-time))+'ms');
-
-	
-    document.getElementById('gen_score').innerHTML=result.score;
+    score_progress=(score*25);
+    document.getElementById('gen_score_txt').innerHTML=result.score;
+    document.getElementById('gen_score_bar').style("width:"+score_progress);
 /*
 //using ~380x guesses as SSE2 scrypt running on CPU.
 if(legacy_mode===false){
