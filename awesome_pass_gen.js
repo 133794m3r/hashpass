@@ -242,6 +242,9 @@ function generate_pass(dbg=false){
     var n=15;
 	var no_spec=document.getElementById('no_spec').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
+    var score=0;
+    var score_progress=0;
+    var warning='';
 	//password special strings will be one of $#@
     url=document.getElementById('site_name').value;
 	password=document.getElementById('password').value;
@@ -270,17 +273,33 @@ function generate_pass(dbg=false){
 	tmp=result.feedback.warning;
 	console.log(result.guesses);
     console.log(tmp);
-    var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
-    
-    document.getElementById('orig_score_txt').innerHTML=result.score;
-    var score_progress=((result.score)*23.75);
-    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%");    
+    warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
+
+    score=result.score;
+    if(score===0){
+        color='red';
+        document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
+    }
+    else if(score === 1){
+        color='orange';
+    }
+    else if(score === 2){
+        color='yellow';
+    }
+    else{
+        color='green';
+    }
+
+    document.getElementById('orig_score_txt').innerHTML=score;
+    score_progress=((score)*23.75);
+    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);    
+
 
     if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
-        console.log('hit');
+
 	    document.getElementById('feedback').innerHTML=warning;
     }
     else{
@@ -323,9 +342,25 @@ function generate_pass(dbg=false){
     result=zxcvbn(password,inputs);
     time2=Date.now();
     console.log('zxcvblog_n:'+((time2-time))+'ms');
-    score_progress=((result.score)*23.75);
-    document.getElementById('gen_score_txt').innerHTML=result.score;
-    document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%");
+
+    score=result.score;
+    console.log('b '+score);
+    if(score === 0){
+        color='red';
+    }
+    else if(score === 1){
+        color='orange';
+    }
+    else if(score === 2){
+        color='yellow';
+    }
+    else{
+        color='green';
+    }
+
+    score_progress=((score)*23.75);
+    document.getElementById('gen_score_txt').innerHTML=score;
+    document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);
 /*
 //using ~380x guesses as SSE2 scrypt running on CPU.
 if(legacy_mode===false){
@@ -413,6 +448,7 @@ function score_password(){
 	tmp='';
     var result='';
     var inputs=[];
+    var score=0;
     url=document.getElementById('site_name').value;
     password=document.getElementById('password').value;
 	username=document.getElementById('username').value;
@@ -437,9 +473,23 @@ function score_password(){
 
     inputs[0]=username;
     inputs[1]=url;
-
+    score=result.score;
     //result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
+    if(score===0){
+        color='red';
+        document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
+    }
+    else if(score === 1){
+        color='orange';
+    }
+    else if(score === 2){
+        color='yellow';
+    }
+    else{
+        color='green';
+    }
+
     var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
     document.getElementById('orig_score_txt').innerHTML=result.score;
     var score_progress=((result.score)*23.75);
