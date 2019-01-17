@@ -271,7 +271,11 @@ function generate_pass(dbg=false){
 	console.log(result.guesses);
     console.log(tmp);
     var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
-    document.getElementById('orig_score').innerHTML=result.score;
+    
+    document.getElementById('orig_score_txt').innerHTML=result.score;
+    var score_progress=((result.score)*23.75);
+    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%");    
+
     if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
@@ -319,9 +323,9 @@ function generate_pass(dbg=false){
     result=zxcvbn(password,inputs);
     time2=Date.now();
     console.log('zxcvblog_n:'+((time2-time))+'ms');
-    score_progress=(score*25);
+    score_progress=((result.score)*23.75);
     document.getElementById('gen_score_txt').innerHTML=result.score;
-    document.getElementById('gen_score_bar').style("width:"+score_progress);
+    document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%");
 /*
 //using ~380x guesses as SSE2 scrypt running on CPU.
 if(legacy_mode===false){
@@ -437,7 +441,9 @@ function score_password(){
     //result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
     var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
-    document.getElementById('orig_score').innerHTML=result.score;
+    document.getElementById('orig_score_txt').innerHTML=result.score;
+    var score_progress=((result.score)*23.75);
+    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%");    
 
     if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
