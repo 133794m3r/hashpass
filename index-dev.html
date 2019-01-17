@@ -28,7 +28,7 @@
         Password:&nbsp;
         <input type="text" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
     </label>
-       <span id="show_hide" onclick="swap();">Show</span>
+       <input type='button' id="show_hide" onclick="Javascripot:swap();" value="show" />
     <label for='length'>
         &nbsp;&nbsp;Output Lenght:&nbsp;
         <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
@@ -58,7 +58,8 @@
       <span id='orig_score_bar' class='scorebar_completed' style="width:0%">
 
       </span>
-    </span>
+    </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span id='low_score_warn' style="margin-left:29%;">test</span>
     <br/>
     <br/>
     Generated password score:<span id='gen_score_container' class='scorebar_container'>
@@ -174,16 +175,16 @@ So be careful when entering the text and make sure it is what you typed especial
         document.getElementById('score_pass').disabled=false;
     }
     function swap(){
-        var val=Document.getElementById('show_hide').innerHTML;
+        var val=document.getElementById('show_hide').value
         if(val === "Show"){
            val="Hide";
-           Document.getElementById('password').setAttribute('type','password');
+           document.getElementById('password').setAttribute('type','password');
         }
         else{
             val="Show";
-            Document.getElementById('password').setAttribute('type','text');
+            document.getElementById('password').setAttribute('type','text');
         }
-        Document.getElementById('show_hide').innerHTML(val);
+        document.getElementById('show_hide').value=val;
     }
     </script>
 <!-- version 2.0.0b -->
