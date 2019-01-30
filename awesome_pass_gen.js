@@ -320,13 +320,17 @@ function generate_pass(dbg=false){
     time=Date.now();
     var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
-    //using ~380x guesses as SSE2 scrypt running on CPU. Maybe 1300
+    /* 
+    * using ~380x guesses as SSE2 scrypt running on CPU whereas the state of the art gpu at the time can only
+    * do ~20x as fast as my own GPU which is itself only ~1.5x as fast as the cpu. So I am doing ~13x the rate
+    * that about $10K worth of GPUs can theoretically attempt in 2018. Hopefully this high of a ceiling can still
+    * keep that number within a reasonable amount for a long period of time. I will of course update this section
+    * with more accurate data every 5 years to keep guessing time accurate. I cannot test the hashing speed with my
+    * own gpu as it's way too damned slow to test.
+    */
     if(legacy_mode===true){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
-        p=2;
-        r=6;
-        n=16;
-    password=scrypt(password,salt,16,6,2,32,'hex');
+        password=scrypt(password,salt,16,6,2,32,'hex');
     }
     else{
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
