@@ -126,6 +126,7 @@ label{
     height:1.5em;
     border-color:gray;
     width:10%;
+    min-width:8.2em;
     margin:auto;
     position:absolute;
     margin-top:0.2em;

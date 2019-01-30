@@ -245,6 +245,7 @@ function generate_pass(dbg=false){
     var score=0;
     var score_progress=0;
     var warning='';
+    var warn_txt='';
 	//password special strings will be one of $#@
     url=document.getElementById('site_name').value;
 	password=document.getElementById('password').value;
@@ -278,24 +279,34 @@ function generate_pass(dbg=false){
     score=result.score;
     if(score===0){
         color='red';
+        warn_txt='Unsafe'
         document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
     }
     else if(score === 1){
         color='orange';
+        warn_txt='Bad'
     }
     else if(score === 2){
         color='yellow';
+        warn_txt='Acceptable'
+    }
+    else if(score === 3){
+        color='yellowgreen';
+        warn_txt='Safe'
     }
     else{
         color='green';
+        warn_txt='Perfect'
     }
-
+    document.getElementById('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
     document.getElementById('orig_score_txt').innerHTML=score;
     score_progress=((score)*23.75);
-    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);    
+    document.getElementById('low_score_warn').setAttribute('style',"margin-left:29%; background-color:black; color:"+color);
+    document.getElementById('low_score_warn').innerHTML=warn_txt;
+    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color); 
 
 
-    if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
+    if(result.score<=1 && ((inputs[0] === inputs[1])||(inputs[0] === password)||(inputs[1] === password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
@@ -345,18 +356,7 @@ function generate_pass(dbg=false){
 
     score=result.score;
     console.log('b '+score);
-    if(score === 0){
-        color='red';
-    }
-    else if(score === 1){
-        color='orange';
-    }
-    else if(score === 2){
-        color='yellow';
-    }
-    else{
-        color='green';
-    }
+    color='green';
 
     score_progress=((score)*23.75);
     document.getElementById('gen_score_txt').innerHTML=score;
@@ -445,18 +445,19 @@ function generate_wrapper(dbg=false){
 function score_password(){
     var legacy_mode=document.getElementById('no_legacy').checked;
     var tmp='';
-	tmp='';
+	var warn_txt='';
+    var warning='';
     var result='';
     var inputs=[];
     var score=0;
-    url=document.getElementById('site_name').value;
-    password=document.getElementById('password').value;
-	username=document.getElementById('username').value;
-	max_len=document.getElementById('length').value;
+    var score_progress=0;
+    var url=document.getElementById('site_name').value;
+    var password=document.getElementById('password').value;
+	var username=document.getElementById('username').value;
+	var max_len=document.getElementById('length').value;
     inputs[0]=username;
     inputs[1]=url;
     result=zxcvbn(password,inputs);
-    console.log('hits');
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);
         document.getElementById('password').value=password;
@@ -469,32 +470,38 @@ function score_password(){
 		url=url.substr(0,1).toUpperCase()+url.substr(1);
 		document.getElementById('site_name').value=url;
 	}
-
-
-    inputs[0]=username;
-    inputs[1]=url;
     score=result.score;
     //result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
     if(score===0){
         color='red';
+        warn_txt='Unsafe'
         document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
     }
     else if(score === 1){
         color='orange';
+        warn_txt='Bad'
     }
     else if(score === 2){
         color='yellow';
+        warn_txt='Acceptable'
+    }
+    else if(score === 3){
+        color='yellowgreen';
+        warn_txt='Safe'
     }
     else{
         color='green';
+        warn_txt='Perfect'
     }
-
-    var warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
+    document.getElementById('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
+    warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
     document.getElementById('orig_score_txt').innerHTML=result.score;
-    var score_progress=((result.score)*23.75);
-    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%");    
-
+    score_progress=((result.score)*23.75);
+    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);  
+    document.getElementById('low_score_warn').setAttribute('style',"margin-left:29%;"+"color:"+color);
+    document.getElementById('low_score_warn').innerHTML=warn_txt;
+    
     if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
