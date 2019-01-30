@@ -28,32 +28,20 @@
         Password:&nbsp;
         <input type="text" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
     </label>
-       <input type='button' id="show_hide" onclick="Javascripot:swap();" value="show" />
-    <label for='length'>
-        &nbsp;&nbsp;Output Lenght:&nbsp;
-        <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
-    </label>
-    <label for='no_legacy' id='legacy'>
-        &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
-        <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
-    </label>
+       <input type='button' id="show_hide" onclick="Javascripot:swap();" value="Show" />
     <br />
     <label for='result'>
         Result:&nbsp;&nbsp;&nbsp;
         <input type='text' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
-    </label>
-    <label for='no_spec' id='spec_label'>
-        &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
-        <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
-    </label><br /><br />
+    </label><br />
     <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true' style='border-radius:0.5em;'>&emsp;&emsp;&emsp;
     <input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true' style='border-radius:0.5em;'/>
    <br />
    <p style="width:50%; font-size:125%">
-    Your original score:
+    Original score:
     <span id='orig_score_container' class='scorebar_container'>
       <span id='orig_score_txt' class='scorebar_txt'>
-
+    &emsp;&emsp;
       </span>
       <span id='orig_score_bar' class='scorebar_completed' style="width:0%">
 
@@ -62,7 +50,8 @@
     <span id='low_score_warn' style="margin-left:29%;">test</span>
     <br/>
     <br/>
-    Generated password score:<span id='gen_score_container' class='scorebar_container'>
+    Generated score:&emsp;&emsp;&emsp;
+    <span id='gen_score_container' class='scorebar_container'>
       <span id='gen_score_txt' class='scorebar_txt'>
 
       </span>
@@ -73,6 +62,21 @@
     <br /><!--<span id='score_explain'>
     The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
     If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>-->
+    </p>
+    <p>
+    <label for='no_spec' id='spec_label'>
+        No Special Characters:&emsp;
+        <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
+    </label>
+
+    <label for='no_legacy' id='legacy'>
+        &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
+        <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
+    </label><br />
+    <label for='length'>
+        Output Lenght:&nbsp;
+        <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
+    </label>
     </p>
     <p style="width:95%">
     Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
