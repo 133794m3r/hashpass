@@ -5,6 +5,9 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
+body{
+    font-family:monospace;
+    }
 .modal {
     visibility:hidden; /* Hidden by default */
     position: fixed; /* Stay in place */
