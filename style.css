@@ -6,7 +6,6 @@
 * version 2.0.0b
 */
 body{
-    font-family:monospace;
     font-size:1em;
     }
 .modal {
@@ -100,6 +99,7 @@ label{
 .texts{
     font-size:100%;
     margin-bottom:0.5%;
+    font-family:monospace;
 }
 #no_spec{
     text-align: center; /* center checkbox horizontally */
