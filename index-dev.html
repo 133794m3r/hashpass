@@ -26,7 +26,7 @@
     </label> <br />
     <label for='password'>
         Password:&nbsp;
-        <input type="text" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
+        <input type="password" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
     </label>
        <input type='button' id="show_hide" onclick="Javascripot:swap();" value="Show" />
     <br />
@@ -180,8 +180,8 @@ So be careful when entering the text and make sure it is what you typed especial
     }
     function swap(){
         var val=document.getElementById('show_hide').value
-        if(val === "Show"){
-           val="Hide";
+        if(val === "Hide"){
+           val="Show";
            document.getElementById('password').setAttribute('type','password');
         }
         else{
