@@ -5,6 +5,9 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
+body{
+    font-size:1em;
+    }
 .modal {
     visibility:hidden; /* Hidden by default */
     position: fixed; /* Stay in place */
@@ -78,9 +81,6 @@
 }
 
 
-body{
-    font-size:1em;
-}
 input{
     left:5%;
 }
@@ -99,6 +99,7 @@ label{
 .texts{
     font-size:100%;
     margin-bottom:0.5%;
+    font-family:monospace;
 }
 #no_spec{
     text-align: center; /* center checkbox horizontally */
