@@ -459,8 +459,6 @@ function score_password(){
     var password=document.getElementById('password').value;
 	var username=document.getElementById('username').value;
 	var max_len=document.getElementById('length').value;
-    inputs[0]=username;
-    inputs[1]=url;
     result=zxcvbn(password,inputs);
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);
@@ -506,7 +504,7 @@ function score_password(){
     document.getElementById('low_score_warn').setAttribute('style',"margin-left:29%;"+"color:"+color);
     document.getElementById('low_score_warn').innerHTML=warn_txt;
     
-    if(result.score<=1 && ((inputs[0] == inputs[1])||(inputs[0] == password)||(inputs[1] == password))){
+    if(result.score<=1 && ((username == password)||(url == password))){
         document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
