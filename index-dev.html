@@ -32,8 +32,10 @@
     <br />
     <label for='result'>
         Result:&nbsp;&nbsp;&nbsp;
-        <input type='text' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
-    </label><br />
+        <input type='password' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
+    </label>
+           <!-- <input type='button' id="get_password" onclick="Javascripot:copy_password_to_clipboard();" value="Copy" /> -->
+<br />
     <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true' style='border-radius:0.5em;'>&emsp;&emsp;&emsp;
     <input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true' style='border-radius:0.5em;'/>
    <br />
@@ -163,7 +165,9 @@ So be careful when entering the text and make sure it is what you typed especial
                 </div>
             </div>
         </div>
+
     </div>
+<input type='text' style='visibility:hidden' id='result_hidden' />
 <script type="text/javascript" src="scrypt_fast.js" async></script>
 <!-- test -->
 
@@ -183,13 +187,26 @@ So be careful when entering the text and make sure it is what you typed especial
         if(val === "Hide"){
            val="Show";
            document.getElementById('password').setAttribute('type','password');
+           document.getElementById('result').setAttribute('type','password');
         }
         else{
             val="Hide";
             document.getElementById('password').setAttribute('type','text');
+            document.getElementById('result').setAttribute('type','text');
         }
         document.getElementById('show_hide').value=val;
     }
+/*
+function copy_password_to_clipboard(){
+    var txt=document.getElementById('result').value;
+    var txt2=document.getElementById('result_hidden').value=txt;
+    var txt3=document.getElementById('result_hidden');  
+txt3.select();
+document.execCommand("copy");
+
+    //alert('copied '+txt.value);
+}
+*/
     </script>
 <!-- version 2.0.0b -->
 <!--
