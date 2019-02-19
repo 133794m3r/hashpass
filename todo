@@ -1,0 +1,25 @@
+~--**Done**--~
+make password feedback at the top of the page and move down explanation lower. Also use color coding to show how severe the strength is.
+0 = bold red, w/ a "do not use".
+1 = red, w/ way too weak.
+2 = orange, w/ needs improvement.
+3 = yellow, w/ of average strength.
+4 = green, w/ a perfect strength.
+
+TODO:
+Also the colors will be the background color with the text with white text.
+
+also pop up a modal dialogue for strengths below 2.
+
+Overall next major update will be an uplift for the UI to make it look less like a wall of text and more like a real tool. 
+
+Versioning system will be as follows below:
+Major version will solely be for encryption/major algorithm changes.
+Minor version will be for UI updates and similar minor modifications.
+Revision will be for bug fixes.
+Hotfixes for typoes or similar issues that arise, and will be letered.
+It'll be as thus.
+Major.Minor.Revision-Hotfix.
+
+All will be single digits and hotfix will be alphabetical.
+
