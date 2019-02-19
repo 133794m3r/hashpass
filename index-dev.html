@@ -34,7 +34,7 @@
         Result:&nbsp;&nbsp;&nbsp;
         <input type='password' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
     </label>
-           <!-- <input type='button' id="get_password" onclick="Javascripot:copy_password_to_clipboard();" value="Copy" /> -->
+            <input type='button' id="get_password" onclick="javascript:copy_password_to_clipboard();" value="Copy" /> 
 <br />
     <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true' style='border-radius:0.5em;'>&emsp;&emsp;&emsp;
     <input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true' style='border-radius:0.5em;'/>
@@ -196,17 +196,18 @@ So be careful when entering the text and make sure it is what you typed especial
         }
         document.getElementById('show_hide').value=val;
     }
-/*
-function copy_password_to_clipboard(){
-    var txt=document.getElementById('result').value;
-    var txt2=document.getElementById('result_hidden').value=txt;
-    var txt3=document.getElementById('result_hidden');  
-txt3.select();
-document.execCommand("copy");
 
+function copy_password_to_clipboard(){
+swap();
+    var txt=document.getElementById('result');
+    //var txt2=document.getElementById('result_hidden').value=txt;
+    //var txt3=document.getElementById('result_hidden');  
+txt.select();
+document.execCommand("copy");
+console.log(txt.value);
+swap();
     //alert('copied '+txt.value);
 }
-*/
     </script>
 <!-- version 2.0.0b -->
 <!--
