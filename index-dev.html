@@ -74,6 +74,9 @@
     <label for='no_legacy' id='legacy'>
         &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
         <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
+    </label>
+    <label for='high_security' id='security'>
+        <input type='checkbox' onchange='javascript:change_security_mode()' id='no_security' />
     </label><br />
     <label for='length'>
         Output Lenght:&nbsp;
@@ -151,6 +154,24 @@ So be careful when entering the text and make sure it is what you typed especial
             </div>
         </div>
     </div>
+    <div class='modal' id='modal_security'>
+        <div class='modal_body'>
+            <div class='modal_content'>
+                <div class='caps' style='color:red'>
+                    <p><b>
+                    Enabling high security mode will take it longer for the password to be generated. If you are recovering a
+                    password make sure that it not checked as that was the old way of doing things.
+                    <br />
+                    Are you sure?
+                    </b></p>
+                </div>
+                <div class='buttons'>
+                    <input type='button' onclick='confirmed(1,"_security")' style='font-size:1.5em' value='YES' />
+                    &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_security")' style='font-size:2em' value="No I'm Not" />
+                </div>
+            </div>
+        </div>
+    </div>
     <div class='modal' id='modal_progress'>
         <div class='modal_body'>
             <div class='modal_content' id='full'>
@@ -208,6 +229,8 @@ console.log(txt.value);
 swap();
     //alert('copied '+txt.value);
 }
+    
+
     </script>
 <!-- version 2.0.0b -->
 <!--
