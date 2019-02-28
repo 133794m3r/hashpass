@@ -67,7 +67,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	}
     salt=url+password+username;
     salt2=username+url+password;
-	if(alt===true){
+	if(lower===true){
 		salt=scrypt(salt,salt2,{
 			log_n:n2,
 			r:r,
@@ -421,7 +421,7 @@ function no_legacy_check(){
 	}
 	return 0;
 }
-function high_security(){
+function change_security_mode(){
     var high_security=document.getElementById('no_security');
     if(high_security.checked===true){
         modal_toggle('_security');
