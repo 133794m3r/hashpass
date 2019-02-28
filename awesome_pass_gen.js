@@ -16,8 +16,8 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var p2=1;
     var r2=6
     if(higher===true){
-        r2=7
-        r=9
+        r2=8
+        r=10
     }
 	if(lower==true){
 		password=scrypt(password,url,{
