@@ -6,7 +6,7 @@
 * version 2.0.1
 */
 perc=0;
-function generate_salt(password,username,url,alt=false){
+function generate_salt(password,username,url,lower=false,higher=false){
 	var time=Date.now();
     var salt='';
     var n1=7;
@@ -15,7 +15,11 @@ function generate_salt(password,username,url,alt=false){
     var n2=9;
     var p2=1;
     var r2=6
-	if(alt==true){
+    if(higher===true){
+        r2=7
+        r=9
+    }
+	if(lower==true){
 		password=scrypt(password,url,{
 			log_n:n1,
 			r:r2,
@@ -79,17 +83,6 @@ function generate_salt(password,username,url,alt=false){
 			encoding:'hex'}
 		)
 	}
-	var time2=Date.now();
-	console.log('gen_salt:'+(time2-time)+'ms');
-    console.log(salt);
-    return salt;
-}
-function generate_salt_argon2(password,username,url){
-    var time=Date.now();
-    
-    
-
-
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
@@ -428,7 +421,13 @@ function no_legacy_check(){
 	}
 	return 0;
 }
-
+function high_security(){
+    var high_security=document.getElementById('no_security');
+    if(high_security.checked===true){
+        modal_toggle('_security');
+    }
+    return 0;
+}
 function confirmed(val,id){
 	var el=document.getElementById('no'+id);
 	el.checked=val;
