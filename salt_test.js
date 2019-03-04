@@ -27,12 +27,14 @@ function generate_salt(password,username,url){
 function generate_salt2(password,username,url){
     var salt='';
     var salt2='';
+
     var n1=10;
-    var p=1;
     var r1=11;
+    var p=1;
+
     var n2=9;
-    var p2=1;
     var r2=8;
+    var p2=1;
     password=ucrypt(password,url,n1,r1,p,32,'base64');
     username=ucrypt(username,password,n1,r1,p,32,'base64');
     url=ucrypt(url,username,n1,r1+1,p,32,'base64');
