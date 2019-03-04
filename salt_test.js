@@ -5,145 +5,40 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
+
 function generate_salt(password,username,url){
-	var time=microtime()
     var salt='';
-
-    scrypt(password,url,{
-        logN:7,
-        r:6,
-        p:1,
-        encoding:'base64'},
-        function(x){password=x;}
-    )
-
-    scrypt(username,password,{
-        logN:7,
-        r:6,
-        p:1,
-        encoding:'hex'},
-        function(x){username=x;}
-    )
-
-    scrypt(url,username,{
-        logN:7,
-        r:6,
-        p:1,
-        encoding:'base64'},
-        function(x){url=x;}
-    )
+    var salt2='';
+    var n1=7;
+    var p=1;
+    var r1=9;
+    var n2=9;
+    var p2=1;
+    var r2=7;
+    password=ucrypt(password,url,n1,r1,p,32,'base64');
+    username=ucrypt(username,password,n1,r1,p,32,'base64');
+    url=ucrypt(url,username,n1,r1,p,32,'base64');
     salt=url+password+username;
     salt2=username+url+password;
-    scrypt(salt,salt2,{
-        logN:9,
-        r:8,
-        p:1,
-        encoding:'hex'},
-        function(x){salt=x;}
-    )    
-	var time2=microtime()
+    ucrypt(salt,salt2,n2,r2,p,32,'hex');
     return salt;
 }
-function generate_salt3(password,username,url){
-    var time=microtime();
-    var salt='';
-    var tmp='';
-    var url=password+username+url;
-    n=1;
-    m=512;
-    p=1;
-    id=0;
-        tmp=argon2_hash({
-        pass:password,
-        salt:url,
-        time:n,
-        mem:r,
-        parallelism:p,
-        type:id
-        });
-    password=tmp;
 
-        tmp=argon2_hash({
-        pass:username,
-        salt:password,
-        time:n,
-        mem:r,
-        parallelism:p,
-        type:id
-        });
-    username=tmp;
-
-        tmp=argon2_hash({
-        pass:url,
-        salt:usernamee,
-        time:n,
-        mem:r,
-        parallelism:p,
-        type:id
-        });
-    url=tmp;
-
-        tmp=argon2_hash({
-        pass:password,
-        salt:url,
-        time:n,
-        mem:r,
-        parallelism:p,
-        type:id
-        });
-    url=tmp;
-
-    salt=url+password+username;
-    salt2=username+url+password;
-        tmp=argon2_hash({
-        pass:salt,
-        salt:salt2,
-        time:n,
-        mem:r+128,
-        parallelism:p,
-        type:id
-        });
-    salt=tmp;
-
-    return salt;
-}
 function generate_salt2(password,username,url){
-	var time=microtime()
     var salt='';
-
-    scrypt(password,url,{
-        logN:9,
-        r:7,
-        p:2,
-        encoding:'base64'},
-        function(x){password=x;}
-    )
-
-    scrypt(username,password,{
-        logN:9,
-        r:7,
-        p:2,
-        encoding:'hex'},
-        function(x){username=x;}
-    )
-
-    scrypt(url,username,{
-        logN:9,
-        r:7,
-        p:2,
-        encoding:'base64'},
-        function(x){url=x;}
-    )
+    var salt2='';
+    var n1=10;
+    var p=1;
+    var r1=11;
+    var n2=9;
+    var p2=1;
+    var r2=8;
+    password=ucrypt(password,url,n1,r1,p,32,'base64');
+    username=ucrypt(username,password,n1,r1,p,32,'base64');
+    url=ucrypt(url,username,n1,r1+1,p,32,'base64');
     salt=url+password+username;
     salt2=username+url+password;
-    scrypt(salt,salt2,{
-        logN:11,
-        r:10,
-        p:2,
-        encoding:'hex'},
-        function(x){salt=x;}
-    )    
-	var time2=microtime()
+    ucrypt(salt,salt2,n2,r2,p,32,'hex');
     return salt;
 }
 
@@ -156,6 +51,7 @@ var tmp='';
 var start=0;
 var end=0;
 var password='';
+var true_end=0;
 var true_start=microtime()
 var arr_start=1+(Math.floor(num/20));
 var arr_end=-1*arr_start;
@@ -185,23 +81,13 @@ salt_stddev=standard_deviation(times,salt_mean);
 times=[];
 for(i=0;i<=num;i++){
 	start=microtime();
-scrypt(passwords[i],tmp,{logN:14,r:10,p:1,encoding:'hex'},function(x){tmp=x});
-/*	tmp=generate_salt2(passwords[i],usernames[i],urls[i]);
-        password=argon2_hash({
-        pass:passwords[i],
-        salt:tmp,
-        time:1,
-        mem:2048+1024,
-        parallelism:1,
-        type:0
-        });
-*/
+    tmp=generate_salt(passwords[i],usernames[i],urls[i]);
 	end=microtime();
 	times[i]=(end-start);
 }
 //times=times.slice(arr_start,arr_end);
-var arr_start=1+(Math.ceil(num/20));
-var arr_end=-1*arr_start;
+arr_start=1+(Math.ceil(num/20));
+arr_end=-1*arr_start;
 times_sort=times.sort(function(a,b){
         return a - b;
     });
@@ -209,7 +95,41 @@ times_sort=times_sort.slice(floor(num/20),-(round(num/20)));
 times=times_sort;
 true_mean=mean(times);
 true_stddev=standard_deviation(times,true_mean);
-var true_end=microtime()
-console.log('true time:'+(true_end-true_start));
+
+            str='old salt: </br />';
+            hps=round(1/(true_mean+(true_stddev/2)),4);
+            str+='new mean:'+true_mean+'<br /> new stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
+            str+='phone time normal:'+round(1/(hps/15),3)+'s<br />';
+            str+='phone time worst: '+round(1/(hps/23),3)+'s<br />';
+            results.insertAdjacentHTML('afterbegin',str);
+
+
+times=[];
+for(i=0;i<=num;i++){
+	start=microtime();
+    tmp=generate_salt2(passwords[i],usernames[i],urls[i]);
+	end=microtime();
+	times[i]=(end-start);
+}
+//times=times.slice(arr_start,arr_end);
+arr_start=1+(Math.ceil(num/20));
+arr_end=-1*arr_start;
+times_sort=times.sort(function(a,b){
+        return a - b;
+    });
+times_sort=times_sort.slice(floor(num/20),-(round(num/20)));
+times=times_sort;
+true_mean=mean(times);
+true_stddev=standard_deviation(times,true_mean);
+true_end=microtime()
+
+            str='new salt: </br />';
+            hps=round(1/(true_mean+(true_stddev/2)),4);
+            str+='new mean:'+true_mean+'<br /> new stddev:'+true_stddev+'<br /> hps:'+hps+'<br />';
+            str+='phone time normal:'+round(1/(hps/15),3)+'s<br />';
+            str+='phone time worst: '+round(1/(hps/23),3)+'s<br />';
+            results.insertAdjacentHTML('afterbegin',str);
+console.log('true time 1:'+(true_end-true_start));
+
 
 }
