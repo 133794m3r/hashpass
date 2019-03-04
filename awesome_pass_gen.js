@@ -15,11 +15,8 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var n2=9;
     var p2=1;
     var r2=6
-    if(higher===true){
-        r1=10;
-        r2=8;
-    }
-	if(lower==true){
+    var r1a=r1;
+	if(lower===true && higher===false){
 		password=scrypt(password,url,{
 			log_n:n1,
 			r:r1,
@@ -42,8 +39,16 @@ function generate_salt(password,username,url,lower=false,higher=false){
 		)
 	}
 	else{
-    r2=r2+1;
-    r1=r1+1;
+        if(higher===true){
+            n1=11;
+            r1=11;
+            //r1a=12;
+            r2=8;
+        }
+        else{
+            r1=9
+            r2=7;
+        }
 		password=ucrypt(password,url,{
 			log_n:n1,
 			r:r1,
@@ -57,10 +62,9 @@ function generate_salt(password,username,url,lower=false,higher=false){
 			p:p,
 			encoding:'hex'}
 		)
-        r1++;
 		url=ucrypt(url,username,{
 			log_n:n1,
-			r:r1,
+			r:r1a,
 			p:p,
 			encoding:'base64'}
 		)
@@ -234,6 +238,7 @@ function generate_pass(dbg=false){
     var r=10;
     var n=15;
 	var no_spec=document.getElementById('no_spec').checked;
+    var higher_security=document.getElementById('no_security').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
     var score=0;
     var score_progress=0;
@@ -311,7 +316,7 @@ function generate_pass(dbg=false){
     }
 
     time=Date.now();
-    var salt=generate_salt(password,username,url,legacy_mode);
+    var salt=generate_salt(password,username,url,legacy_mode,higher_security);
 	time4=Date.now();
     /* 
     * using ~380x guesses as SSE2 scrypt running on CPU whereas the state of the art gpu at the time can only
