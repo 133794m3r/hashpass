@@ -11,56 +11,56 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var salt='';
     var n1=7;
     var p=1;
-    var r=8;
+    var r1=8;
     var n2=9;
     var p2=1;
     var r2=6
     if(higher===true){
-        r2=8
-        r=10
+        r1=10;
+        r2=8;
     }
 	if(lower==true){
 		password=scrypt(password,url,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
 
 		username=scrypt(username,password,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'hex'}
 		)
 
 		url=scrypt(url,username,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
 	}
 	else{
     r2=r2+1;
-    r=r+1;
+    r1=r1+1;
 		password=ucrypt(password,url,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
 
 		username=ucrypt(username,password,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'hex'}
 		)
-
+        r1++;
 		url=ucrypt(url,username,{
 			log_n:n1,
-			r:r2,
+			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
@@ -70,7 +70,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	if(lower===true){
 		salt=scrypt(salt,salt2,{
 			log_n:n2,
-			r:r,
+			r:r2,
 			p:p2,
 			encoding:'hex'}
 		)
@@ -78,7 +78,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	else{
 		salt=ucrypt(salt,salt2,{
 			log_n:n2,
-			r:r,
+			r:r2,
 			p:p2,
 			encoding:'hex'}
 		)
