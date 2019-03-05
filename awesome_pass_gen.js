@@ -64,7 +64,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
 		)
 		url=ucrypt(url,username,{
 			log_n:n1,
-			r:r1a,
+			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
