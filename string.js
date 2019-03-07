@@ -5,12 +5,12 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
-function base32_encode(string) {
+function base32_encode(data) {
     //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
     var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';
     var output='';
-    var iter= Math.floor((string.length / 5));
-    var leftover = string.length % 5;
+    var iter= Math.floor((data.length / 5));
+    var leftover = data.length % 5;
     var part1=0;
     var part1=0;
     var part2=0;
@@ -25,18 +25,20 @@ function base32_encode(string) {
     var str3='';
     var str4='';
     var str5='';
+    var i_5=0;
     var padding='';
     if (leftover != 0) {
        //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
        iter += 1;
     }
-
-    for (i = 0; i < iter; i++) {
-        str1=string.charCodeAt(i*5);
-        str2=string.charCodeAt((i*5)+1);
-        str3=string.charCodeAt((i*5)+2);
-        str4=string.charCodeAt((i*5)+3);
-        str5=string.charCodeAt((i*5)+4);
+    if(typeof data === 'string'){
+        for (i = 0; i < iter; i++) {
+        i_5=i*5;        
+        str1=data.charCodeAt(i_5);
+        str2=data.charCodeAt(i_5+1);
+        str3=data.charCodeAt(i_5+2);
+        str4=data.charCodeAt(i_5+3);
+        str5=data.charCodeAt(i_5+4);
         part1=(str1 >> 3);
         part2=( ((str1 & 0x07) << 2)
            | (str2 >> 6));
@@ -59,6 +61,39 @@ function base32_encode(string) {
         alphabet.charAt(part7)+
         alphabet.charAt(part8);
     }
+    }
+    else{
+    for (i = 0; i < iter; i++) {
+        i_5=i*5;
+        str1=data[i_5];
+        str2=data[(i_5+1)];
+        str3=data[(i_5+2)];
+        str4=data[(i_5+3)];
+        str5=data[(i_5+4)];
+        part1=(str1 >> 3);
+        part2=( ((str1 & 0x07) << 2)
+           | (str2 >> 6));
+        part3=( ((str2 & 0x3F) >> 1) );
+        part4=( ((str2 & 0x01) << 4)
+           | (str3 >> 4));
+        part5=( ((str3 & 0x0F) << 1)
+           | (str4 >> 7));
+        parts6=( ((str4 & 0x7F) >> 2));
+        part7=( ((str4 & 0x03) << 3)
+           | (str5 >> 5));
+        part8=( ((str5 & 0x1F) ));
+
+        output+=alphabet.charAt(part1)+
+        alphabet.charAt(part2)+
+        alphabet.charAt(part3)+
+        alphabet.charAt(part4)+
+        alphabet.charAt(part5)+
+        alphabet.charAt(part6)+
+        alphabet.charAt(part7)+
+        alphabet.charAt(part8);
+    }
+    }
+
 
     var replace = 0;
     if (leftover == 1) replace = 6;

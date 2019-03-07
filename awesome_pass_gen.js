@@ -40,10 +40,10 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	}
 	else{
         if(higher===true){
-            n1=11;
+            n1=8;
             r1=11;
-            //r1a=12;
-            r2=8;
+            r2=10;
+            n2=11;
         }
         else{
             r1=9
@@ -327,19 +327,23 @@ function generate_pass(dbg=false){
     * own gpu as it's way too damned slow to test.
     */
     if(legacy_mode===true){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
         password=scrypt(password,salt,16,6,2,32,'hex');
     }
     else{
-		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,16,12,1,32,'hex');
+        if(higher_security===false){
+		    password=ucrypt(password,salt,16,12,1,32,'binary');
+        }
+        else{
+            password=ucrypt(password,salt,16,13,1,32,'binary');
+        }
     }
+	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
-    password=hex_decode(password);
+    //password=hex_decode(password);
     password=base32_encode(password);
     console.log('scrypt:'+password);
-    password=simplify(password,max_len,no_spec,legacy_mode);
+    password=simplify(password,max_len,no_spec);
 
 //    password=password.substr(0,max_len);
     document.getElementById('result').value=password;
