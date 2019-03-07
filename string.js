@@ -138,52 +138,7 @@ while(index!==null){
 }
 return indexes;
 }
-/*function no_repeat_strings(string){
-  var tmp_str='';
-  var string_fixed='';
-  var strlen=string.length;
-  var extra_str='';
-  var prev_str=string.substr(0,1);
-  var cur_str='';
-  var string_fixed='';
-  var repeat_found=1;
-  var i=1;
-  var tmp_str_len=0;
-  var j=0;
-  var l=0;
-  while(repeat_found===1){
-    if( (i>strlen)&& (tmp_str_len>=1) && (j<=5)){
-      i=1;
-      string=extra_str+tmp_str;
-      if(string.substr(-1,1)===string.substr(-2,1)){
-        ins_place=(l%strlen);
-        string=string.substr(0,ins_place)+string.substr(-1,1)+string.substr(ins_place,(strlen-1));
-      }      
-      prev_str=string.substr(0,1);
-      tmp_str_len=0;
-      repeat_found=1;
-      extra_str='';
-      tmp_str='';
-      j=j+1;
-    }
-    else if((i>strlen)){
-      repeat_found=0;
-    }
-    cur_str=string.substr(i,1);
-    if(prev_str==cur_str){
-      tmp_str+=prev_str;
-      tmp_str_len=tmp_str.length;
-    }
-    else{
-      extra_str+=prev_str;
-    }
-    prev_str=cur_str;
-    i=i+1;
-  }
-  string_fixed=string;
- return string_fixed; 
-}
-*/
+
 function no_repeat_strings(string) {
   var tmp_str = '';
   var string_fixed = '';
