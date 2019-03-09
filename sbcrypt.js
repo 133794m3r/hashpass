@@ -288,91 +288,59 @@ function bcrypt_one_iter(password,salt){
 
         // 0
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[1];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[2];
         // 1
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[3];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[4];
         // 2
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[5];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[6];
         // 3
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[7];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[8];
         // 4
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[9];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[10];
         // 5
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[11];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[12];
         // 6
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[13];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[14];
         // 7
         n  =( ( S[l >>> 24] + (S[0x100 | ((l >> 16) & 0xff)]) ) ^ (S[0x200 | ((l >> 8) & 0xff)]) ) + (S[0x300 | (l & 0xff)]);
-        //n += S[0x100 | ((l >> 16) & 0xff)];
-//        n ^= S[0x200 | ((l >> 8) & 0xff)];
-//        n += S[0x300 | (l & 0xff)];
+
         r ^= n ^ P[15];
         n  = ( (S[r >>> 24] + S[0x100 | ((r >> 16) & 0xff)]) ^ S[0x200 | ((r >> 8) & 0xff)] ) + (S[0x300 | (r & 0xff)]) ;
-//        n += S[0x100 | ((r >> 16) & 0xff)];
-//        n ^= S[0x200 | ((r >> 8) & 0xff)];
-//        n += S[0x300 | (r & 0xff)];
+
         l ^= n ^ P[16];
 
         lr[off] = r ^ P[17];
@@ -810,10 +778,7 @@ function bcrypt_one_iter(password,salt){
             } else {
                 for (i = 0; i < 64; i++){
                     //3 iterations
-                    //for (j = 0; j < clen_1; j++){
-                    //    encipher(cdata, j << 1, P, S);
-                    //}
-                    encipher(cdata,0,P,S);
+
                     encipher(cdata,2,P,S);
                     encipher(cdata,4,P,S);
                 }
@@ -839,7 +804,6 @@ function bcrypt_one_iter(password,salt){
         var result=crypt(password,salt,2);
 
         return result.slice(0,23);
-            //return finish(crypt(passwordb, saltb, rounds));
     }
     return hash(password,salt);
 }
@@ -2408,26 +2372,7 @@ function hash_blocks(w, v, p, pos, len) {
             //a = (t1 + t2) | 0;
             ////64
 
-/*
-        for (i = 34; i < 64; i++) {
 
-            //0
-            t1 = (((((e >>> 6 | e << 26) ^ (e >>> 11 | e << 21) ^
-                (e >>> 25 | e << (7))) + ((e & f) ^ (~e & g))) | 0) +
-                ((h + ((K[i] + w[i]) | 0)) | 0)) | 0;
-            t2 = (((a >>> 2 | a << 30) ^ (a >>> 13 | a << 19) ^
-                (a >>> 22 | a << 10)) + ((a & b) ^ (a & c) ^ (b & c))) | 0;
-            h = g;
-            g = f;
-            f = e;
-            e = (d + t1) | 0;
-            d = c;
-            c = b;
-            b = a;
-            a = (t1 + t2) | 0;
-            //0
-        }
-        */
 
 
 
@@ -2447,7 +2392,7 @@ function hash_blocks(w, v, p, pos, len) {
         len -= 64;
     }
 
- //       console.log('w2 '+w.join(','));
+
 
     return pos;
 }
@@ -2513,14 +2458,7 @@ function finish(out){
         hash_blocks(temp,state,buffer,0,pad_len);
         finished=true;
     }
-    /*
-    //for(i=0;i < 8; i++){
-    //    out[i * 4] = (state[i] >>> 24) &0xff;
-    //    out[i*4 +1] = (state[i] >>> 16) &0xff;
-    //    out[i*4 +2] = (state[i] >>> 8) &0xff;
-    //    out[i*4 + 3] = (state[i] >>> 0) &0xff;
-    //}
-    */
+
     //0
         out[0] = (state[0] >>> 24) &0xff;
         out[1] = (state[0] >>> 16) &0xff;
@@ -2592,97 +2530,7 @@ function finish(out){
     return finish(out);
 //return hash(data);
 }
-/*
-function PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, dk_len){
-"use strict";
-    password = password.length <= 64 ? password : sha256_fast(password);
 
-
-    ////hash them both to make it possible to allocate arrays a single time to reduce cputime.
-    //password=sha256_fast(password);
-    //salt = sha256_fast(salt);
-    var password_len=password.length;
-    var salt_len=salt.length;
-    //var salt_len=32;
-    //var password_len=32;
-    var i, inner_len = 64 + salt_len + 4,
-        inner = new Uint8Array(inner_len),
-        outer_key = new Uint8Array(64),
-        dk = new Uint8Array(dk_len);
-    var tmp_arr=new Uint8Array(96);
-    var tmp_arr_len=inner_len+64;
-    var tmp=new Uint8Array(32);
-    //var tmp=tmp_buf;
-    //var inner=inner_buf;
-    //var outer_key=outer_buf;
-    //var tmp_arr=tmp_buf_arr;
-    var j=0;
-    var i_4=inner_len-4;
-    // inner = (password ^ ipad) || salt || counter
-    for (i = 0; i < 64; i++){
-      inner[i] = 0x36;
-    }
-    for (i = 0; i < password_len; i++){
-      inner[i] ^= password[i];
-    }
-    for (i = 0; i < salt_len; i++){
-      inner[64+i] = salt[i];
-    }
-    for (i = i_4; i < inner_len; i++){
-      inner[i] = 0;
-    }
-
-    // outer_key = password ^ opad
-    for (i = 0; i < 64; i++){
-      outer_key[i] = 0x5c;
-    }
-    for (i = 0; i < password_len; i++){
-      outer_key[i] ^= password[i];
-    }
-
-    // increments counter inside inner
-    function increment_counter() {
-        var i=inner_len-1;
-      for (; i >= i_4; i--) {
-        inner[i]++;
-        if (inner[i] <= 0xff){
-          return 0;
-        }
-        inner[i] = 0;
-      }
-    }
-    //console.log(outer_key.concat(inner));
-    // output blocks = SHA256(outer_key || SHA256(inner)) ...
-    while (dk_len >= 32) {
-      increment_counter();
-      tmp=sha256_fast(inner);
-      tmp_arr.set(outer_key);
-      //tmp_arr=outer_key;
-      tmp_arr.set(tmp,64);
-      tmp=sha256_fast(tmp_arr);
-      //dk = dk.concat(sha256_fast(outer_key.concat(sha256_fast(inner))));
-      //console.log('t'+tmp);
-      dk.set(tmp,j*32);
-      //tmp=tmp.fill(0);
-      j++;
-      dk_len -= 32;
-    }
-    if (dk_len > 0) {
-      increment_counter();
-      tmp=sha256_fast(inner);
-      tmp_arr.set(outer_key);
-      tmp_arr.set(tmp,64);
-      tmp=sha256_fast(tmp_arr);
-      tmp=tmp.slice(0,dk_len)
-      dk.set(tmp);
-      //dk = dk.concat(sha256_fast(outer_key.concat(sha256_fast(inner))).slice(0, dkLen));
-    }
-    //console.log('inn'+inner);
-    //console.log('out'+outer_key);
-    //console.log(tmp_arr);
-    return dk;
-  }
-*/
 function bcrypt_dk_one_iter(password,salt,dk_len){
     password=sha256_fast(password);
     salt=sha256_fast(salt);
@@ -2733,85 +2581,7 @@ function bcrypt_dk_one_iter(password,salt,dk_len){
         x8 = j8, x9 = j9, x10 = j10, x11 = j11, x12 = j12, x13 = j13, x14 = j14,
         x15 = j15;
 
-  /*
-  //for (i = 0; i < 8; i += 2) {
-  //     //0
-  ////
-  //  u =  x0 + x12;
-  //  x4 ^= u<<7  | u>>>25;
-  //  u =  x4 +  x0;
-  //  x8 ^= u<<9  | u>>>23;
-  //  u =  x8 +  x4;
-  //  x12 ^= u<<13 | u>>>19;
-  //  u = x12 +  x8;
-  //  x0 ^= u<<18 | u>>>14;
-  //
-  //  u =  x5 +  x1;
-  //  x9 ^= u<<7  | u>>>25;
-  //  u =  x9 +  x5;
-  //  x13 ^= u<<9  | u>>>23;
-  //  u = x13 +  x9;
-  //  x1 ^= u<<13 | u>>>19;
-  //  u =  x1 + x13;
-  //  x5 ^= u<<18 | u>>>14;
-  //
-  //  u = x10 +  x6;
-  //  x14 ^= u<<7  | u>>>25;
-  //  u = x14 + x10;
-  //  x2 ^= u<<9  | u>>>23;
-  //  u =  x2 + x14;
-  //  x6 ^= u<<13 | u>>>19;
-  //  u =  x6 +  x2;
-  //  x10 ^= u<<18 | u>>>14;
-  //
-  //  u = x15 + x11;
-  //  x3 ^= u<<7  | u>>>25;
-  //  u =  x3 + x15;
-  //  x7 ^= u<<9  | u>>>23;
-  //  u =  x7 +  x3;
-  //  x11 ^= u<<13 | u>>>19;
-  //  u = x11 +  x7;
-  //  x15 ^= u<<18 | u>>>14;
-  //
-  //  u =  x0 +  x3;
-  //  x1 ^= u<<7  | u>>>25;
-  //  u =  x1 +  x0;
-  //  x2 ^= u<<9  | u>>>23;
-  //  u =  x2 +  x1;
-  //  x3 ^= u<<13 | u>>>19;
-  //  u =  x3 +  x2;
-  //  x0 ^= u<<18 | u>>>14;
-  //
-  //  u =  x5 +  x4;
-  //  x6 ^= u<<7  | u>>>25;
-  //  u =  x6 +  x5;
-  //  x7 ^= u<<9  | u>>>23;
-  //  u =  x7 +  x6;
-  //  x4 ^= u<<13 | u>>>19;
-  //  u =  x4 +  x7;
-  //  x5 ^= u<<18 | u>>>14;
-  //
-  //  u = x10 +  x9;
-  //  x11 ^= u<<7  | u>>>25;
-  //  u = x11 + x10;
-  //  x8 ^= u<<9  | u>>>23;
-  //  u =  x8 + x11;
-  //  x9 ^= u<<13 | u>>>19;
-  //  u =  x9 +  x8;
-  //  x10 ^= u<<18 | u>>>14;
-  //
-  //  u = x15 + x14;
-  //  x12 ^= u<<7  | u>>>25;
-  //  u = x12 + x15;
-  //  x13 ^= u<<9  | u>>>23;
-  //  u = x13 + x12;
-  //  x14 ^= u<<13 | u>>>19;
-  //  u = x14 + x13;
-  //  x15 ^= u<<18 | u>>>14;
-  //
-  ////0 end
-  //}
-*/
+
          //0
     u =  x0 + x12;
     x4 ^= u<<7  | u>>>25;
@@ -3137,7 +2907,7 @@ x15 ^= u<<18 | u>>>14;
   //convert to a version using subarray instead of looping over.
   // cannot do with block xor as its pointless.
   function block_copy(dst, di, src, si, len) {
-    //while (len--) dst[di++] = src[si++];
+
     dst.set(src.subarray(si,(si+len)),di);
   }
 
@@ -3153,8 +2923,6 @@ x15 ^= u<<18 | u>>>14;
     var bout_i_8=0;
     block_copy(tmp, 0, B, bin + (r_2_1_16), 16);
     for (i = 0; i < r_2; i += 2) {
-      //i_16=i*16;
-      //i_8=i*8;
       bin_i_16=bin+(i*16);
       bout_i_8=bout+(i*8);
       salsa_xor(tmp, B, bin_i_16,      bout_i_8);
@@ -3236,8 +3004,6 @@ x15 ^= u<<18 | u>>>14;
     var arr = [];
     var s_len=s.length;
     var arr_len=0;
-    //console.log(s);
-    //console.log(typeof s);
     for (var i = 0; i < s_len; i++) {
         var c = s.charCodeAt(i);
         if (c < 128) {
@@ -3291,11 +3057,7 @@ x15 ^= u<<18 | u>>>14;
     throw new Error('scrypt: invalid p');
   }
 
-  /*
-   if(p >2){
-    p=2;
-  }
-  */
+
   if (r <= 0){
     throw new Error('scrypt: invalid r');
   }
@@ -3322,30 +3084,10 @@ x15 ^= u<<18 | u>>>14;
     salt=string_to_int8_array(salt);
   }
 
-  //if (typeof Int32Array !== 'undefined') {
-    //XXX We can use Uint32Array, but Int32Array is faster in Safari.
     XY = new Int32Array(64*r);
     V = new Int32Array(32*N*r);
     tmp = new Int32Array(16);
-    //B = new Int32Array(p*128*r);
-    //tmp_buf=new Uint8Array(32);
-   // tmp_buf_arr=new Uint8Array(96);
-    //inner_buf=new Uint8Array(100);
-    //outer_buf=new Uint8Array(64)
-  //} else {
-  //  XY = [];
-  //  V = [];
-  //  tmp = new Array(16);
-  //  B = [];
-  //  tmp_buf=new Array(32);
-  //  tmp_buf_arr=new Array(96);
-  //  inner_buf=new Array(68+salt.length);
-  //  outer_buf=new Array(64);
-  //}
 
-  //B = PBKDF2_HMAC_SHA256_OneIter(password, salt, p*128*r);
-  //B = PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, p*128*r,tmp_buf,tmp_buf_arr,inner_buf,outer_buf);
-  //B= PBKDF2_HMAC_SHA256_one_iter_fast(password,salt,p*128*r);
   B=bcrypt_dk_one_iter(password,salt,p*128*r);
   var r_32=32*r;
   var xi = 0, yi = r_32;
@@ -3423,10 +3165,6 @@ x15 ^= u<<18 | u>>>14;
   //  smix_step2(0, N);
   //  smix_finish(i_128_r);
   //}
-
-  //return get_result(encoding);
-  //B = PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, p*128*r,tmp_buf,tmp_buf_arr,inner_buf,outer_buf);
-  //var result = PBKDF2_HMAC_SHA256_OneIter(password, B, dk_len);
   var result = bcrypt_dk_one_iter(password, B, dk_len);
   if (encoding === 'base64'){
     result=bytes_to_b64(result);
