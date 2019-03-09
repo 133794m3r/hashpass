@@ -15,7 +15,10 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var n2=9;
     var p2=1;
     var r1=6
-	if(lower===true && higher===false){
+
+
+
+	if(lower==true && higher === false){
 
 		password=scrypt(password,url,{
 			log_n:n1,
@@ -39,28 +42,29 @@ function generate_salt(password,username,url,lower=false,higher=false){
 		)
 	}
 	else{
-        if(higher===true){
-            n1=8;
-            r1=11;
-            r2=10;
-            n2=11;
-        }
-        else {
-            r1=9
-            r2=7;
-        }
+
+    if(higher===true){
+        r1=8
+        r2=10
+    }
+  
+	r1=r1+1;
+    r2=r2+1;
+
 		password=ucrypt(password,url,{
 			log_n:n1,
 			r:r1,
 			p:p,
 			encoding:'base64'}
 		)
+
 		username=ucrypt(username,password,{
 			log_n:n1,
 			r:r1,
 			p:p,
 			encoding:'hex'}
 		)
+
 		url=ucrypt(url,username,{
 			log_n:n1,
 			r:r1,
@@ -68,10 +72,8 @@ function generate_salt(password,username,url,lower=false,higher=false){
 			encoding:'base64'}
 		)
 	}
-
     salt=url+password+username;
     salt2=username+url+password;
-
 	if(lower===true){
 		salt=scrypt(salt,salt2,{
 			log_n:n2,
@@ -239,8 +241,8 @@ function generate_pass(dbg=false){
     var r=10;
     var n=15;
 	var no_spec=document.getElementById('no_spec').checked;
-    var higher_security=document.getElementById('no_security').checked;
     var legacy_mode=document.getElementById('no_legacy').checked;
+	var higher_security=document.getElementById('no_security').checked;
     var score=0;
     var score_progress=0;
     var warning='';
@@ -317,7 +319,7 @@ function generate_pass(dbg=false){
     }
 
     time=Date.now();
-    var salt=generate_salt(password,username,url,legacy_mode,higher_security);
+    var salt=generate_salt(password,username,url,legacy_mode);
 	time4=Date.now();
     /* 
     * using ~380x guesses as SSE2 scrypt running on CPU whereas the state of the art gpu at the time can only
@@ -328,23 +330,26 @@ function generate_pass(dbg=false){
     * own gpu as it's way too damned slow to test.
     */
     if(legacy_mode===true){
-        password=scrypt(password,salt,16,6,2,32,'hex');
-    }
-    else{
-        if(higher_security===false){
-		    password=ucrypt(password,salt,16,12,1,32,'binary');
-        }
-        else{
-            password=ucrypt(password,salt,16,13,1,32,'binary');
-        }
-    }
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+        password=scrypt(password,salt,16,6,2,32,'binary');
+		
+    }
+	else if(higher_security===false){
+		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+		password=ucrypt(password,salt,16,12,1,32,'binary');	
+	}
+    else{
+		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+		password=ucrypt(password,salt,16,13,1,32,'binary');
+    }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
+
     //password=hex_decode(password);
-    password=base32_encode(password);
+    password=base32_encode(password,false);
+
     console.log('scrypt:'+password);
-    password=simplify(password,max_len,no_spec);
+    password=simplify(password,max_len,no_spec,legacy_mode);
 
 //    password=password.substr(0,max_len);
     document.getElementById('result').value=password;
