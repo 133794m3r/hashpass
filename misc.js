@@ -71,3 +71,8 @@ function permute(arr) {
     return makeResult();
   };
 }
+
+function select_by_id(element_id){
+var element=document.getElementById(element_id);
+return element;
+}
