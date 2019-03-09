@@ -2689,7 +2689,7 @@ function bcrypt_dk_one_iter(password,salt,dk_len){
     var j=0;
     var dk = new Uint8Array(dk_len);
     var tmp=new Uint8Array(32);
-      salt=salt.slice(0,16);
+    salt=salt.slice(0,16);
     while(dk_len>=32){
       tmp=bcrypt_one_iter(password,salt);
       tmp=sha256_fast(tmp);
