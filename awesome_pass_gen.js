@@ -9,6 +9,7 @@ perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
     var time=Date.now();
     var salt='';
+    var sal2='';
     var n1=7;
     var p=1;
     var r1=6;
@@ -41,6 +42,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
 			encoding:'base64'}
 		)
 	}
+    
 	else{
 
     if(higher===true){
@@ -92,8 +94,9 @@ function generate_salt(password,username,url,lower=false,higher=false){
 			encoding:'hex'}
 		)
 	}
-	var time2=Date.now();
-	console.log('gen_salt:'+(time2-time)+'ms');
+    
+    var time2=Date.now();
+    console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
     return salt;
 }
@@ -242,35 +245,35 @@ function generate_pass(dbg=false){
     var p=1;
     var r=10;
     var n=15;
-	var no_spec=document.getElementById('no_spec').checked;
-    var legacy_mode=document.getElementById('no_legacy').checked;
-	var higher_security=document.getElementById('no_security').checked;
+	var no_spec=select_by_id('no_spec').checked;
+    var legacy_mode=select_by_id('no_legacy').checked;
+	var higher_security=select_by_id('no_security').checked;
     var score=0;
     var score_progress=0;
     var warning='';
     var warn_txt='';
 	//password special strings will be one of $#@
-    url=document.getElementById('site_name').value;
-	password=document.getElementById('password').value;
-	username=document.getElementById('username').value;
-	max_len=document.getElementById('length').value;
+    url=select_by_id('site_name').value;
+	password=select_by_id('password').value;
+	username=select_by_id('username').value;
+	max_len=select_by_id('length').value;
     inputs[0]=username;inputs[1]=url;
 	if(max_len === ''){
 		max_len=14;
-		document.getElementById('length').value=14;
+		select_by_id('length').value=14;
 	}
     if(password !== ''){
         tmp=password.length;
         password=password.substr(0,1).toUpperCase()+password.substr(1,tmp);
-        document.getElementById('password').value=password;
+        select_by_id('password').value=password;
     }
 	if(username !== ''){
 		username=username.substr(0,1).toUpperCase()+username.substr(1);
-		document.getElementById('username').value=username;
+		select_by_id('username').value=username;
 	}
 	if(url !==''){
 		url=url.substr(0,1).toUpperCase()+url.substr(1);
-		document.getElementById('site_name').value=url;
+		select_by_id('site_name').value=url;
 	}
 	tmp='';
     result=zxcvbn(password,inputs);
@@ -301,23 +304,22 @@ function generate_pass(dbg=false){
         color='green';
         warn_txt='Perfect'
     }
-    document.getElementById('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
-    document.getElementById('orig_score_txt').innerHTML=score;
+    select_by_id('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
+    select_by_id('orig_score_txt').innerHTML=score;
     score_progress=((score)*23.75);
-    document.getElementById('low_score_warn').setAttribute('style',"margin-left:29%; background-color:black; color:"+color);
-    document.getElementById('low_score_warn').innerHTML=warn_txt;
-    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color); 
+    select_by_id('low_score_warn').setAttribute('style',"margin-left:29%; background-color:black; color:"+color);
+    select_by_id('low_score_warn').innerHTML=warn_txt;
+    select_by_id('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color); 
 
 
     if(result.score<=1 && ((inputs[0] === inputs[1])||(inputs[0] === password)||(inputs[1] === password))){
-        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
+        select_by_id('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
-
-	    document.getElementById('feedback').innerHTML=warning;
+	    select_by_id('feedback').innerHTML=warning;
     }
     else{
-        document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
+        select_by_id('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
 
     time=Date.now();
@@ -332,16 +334,16 @@ function generate_pass(dbg=false){
     * own gpu as it's way too damned slow to test.
     */
     if(legacy_mode===true){
-	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+	    select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
         password=scrypt(password,salt,16,6,2,32,'binary');
 		
     }
 	else if(higher_security===false){
-		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,16,12,1,32,'binary');
 	}
     else{
-		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
+		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,17,12,1,32,'binary');
 	        max_len++;
     }
@@ -355,7 +357,7 @@ function generate_pass(dbg=false){
     password=simplify(password,max_len,no_spec,legacy_mode);
 
 //    password=password.substr(0,max_len);
-    document.getElementById('result').value=password;
+    select_by_id('result').value=password;
     time2=Date.now();
     var total=time2-time;
     console.log('total:'+((time2-time))+'ms');
@@ -374,8 +376,8 @@ function generate_pass(dbg=false){
     color='green';
 
     score_progress=((score)*23.75);
-    document.getElementById('gen_score_txt').innerHTML=score;
-    document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);
+    select_by_id('gen_score_txt').innerHTML=score;
+    select_by_id('gen_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);
 
 //using ~380x guesses as SSE2 scrypt running on CPU.
 
@@ -384,10 +386,10 @@ function generate_pass(dbg=false){
 *actually using for their system and moved real times to the orginal one as that' the one where
 I control the strengths.
 */
-document.getElementById('gen_time').innerHTML=display_time(result.guesses/9000);
+select_by_id('gen_time').innerHTML=display_time(result.guesses/9000);
 modal_toggle('_progress');
 
-document.getElementById('generate_pass').disabled=false
+select_by_id('generate_pass').disabled=false
 
 return;
 }
@@ -395,9 +397,9 @@ return;
 
 
 function percent_update(percent){
-	var completed_perc=document.getElementById('completed_perc');
-	var perc_text=document.getElementById('perc_text');
-	var perc_done=document.getElementById('perc_done');
+	var completed_perc=select_by_id('completed_perc');
+	var perc_text=select_by_id('perc_text');
+	var perc_done=select_by_id('perc_done');
 	percent=percent+'%';
 	
 	perc_text.innerHTML=percent;
@@ -406,7 +408,7 @@ function percent_update(percent){
 }
 
 function modal_toggle(id){
-	var el=document.getElementById('modal'+id);
+	var el=select_by_id('modal'+id);
 	var visible=el.style.visibility;
 	if(visible==="visible"){
 		el.style.visibility='hidden';
@@ -418,42 +420,42 @@ function modal_toggle(id){
 }
 
 function no_spec_check(){
-	var no_spec=document.getElementById('no_spec');
+	var no_spec=select_by_id('no_spec');
 	if(no_spec.checked===true){
 		modal_toggle('_spec');
 	}
 	return 0;
 }
 function no_legacy_check(){
-	var no_legacy=document.getElementById('no_legacy');
+	var no_legacy=select_by_id('no_legacy');
 	if(no_legacy.checked===true){
 		modal_toggle('_legacy');
 	}
 	return 0;
 }
 function change_security_mode(){
-    var high_security=document.getElementById('no_security');
+    var high_security=select_by_id('no_security');
     if(high_security.checked===true){
         modal_toggle('_security');
     }
     return 0;
 }
 function confirmed(val,id){
-	var el=document.getElementById('no'+id);
+	var el=select_by_id('no'+id);
 	el.checked=val;
 	modal_toggle(id);
 	return 0;
 }
 
 function generate_wrapper(dbg=false){
-	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
-    setTimeout(function(){document.getElementById('generate_pass').disabled=true;},1);
+	setTimeout(function()select_by_id('modal_progress').style.visibility='visible'},0);
+    setTimeout(function(){select_by_id('generate_pass').disabled=true;},1);
 	var interval=setTimeout(function(){percent_update(70);},2);
 	setTimeout(function(){generate_pass(dbg)},45);
 }
 
 function score_password(){
-    var legacy_mode=document.getElementById('no_legacy').checked;
+    var legacy_mode=select_by_id('no_legacy').checked;
     var tmp='';
 	var warn_txt='';
     var warning='';
@@ -461,22 +463,22 @@ function score_password(){
     var inputs=[];
     var score=0;
     var score_progress=0;
-    var url=document.getElementById('site_name').value;
-    var password=document.getElementById('password').value;
-	var username=document.getElementById('username').value;
-	var max_len=document.getElementById('length').value;
+    var url=select_by_id('site_name').value;
+    var password=select_by_id('password').value;
+	var username=select_by_id('username').value;
+	var max_len=select_by_id('length').value;
     result=zxcvbn(password,inputs);
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);
-        document.getElementById('password').value=password;
+        select_by_id('password').value=password;
     }
 	if(username !== ''){
 		username=username.substr(0,1).toUpperCase()+username.substr(1);
-		document.getElementById('username').value=username;
+		select_by_id('username').value=username;
 	}
 	if(url !==''){
 		url=url.substr(0,1).toUpperCase()+url.substr(1);
-		document.getElementById('site_name').value=url;
+		select_by_id('site_name').value=url;
 	}
     score=result.score;
     //result=zxcvbn(password,inputs);
@@ -484,7 +486,7 @@ function score_password(){
     if(score===0){
         color='red';
         warn_txt='Unsafe'
-        document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
+        select_by_id('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
     }
     else if(score === 1){
         color='orange';
@@ -502,25 +504,25 @@ function score_password(){
         color='green';
         warn_txt='Perfect'
     }
-    document.getElementById('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
+    select_by_id('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
     warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
-    document.getElementById('orig_score_txt').innerHTML=result.score;
+    select_by_id('orig_score_txt').innerHTML=result.score;
     score_progress=((result.score)*23.75);
-    document.getElementById('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);  
-    document.getElementById('low_score_warn').setAttribute('style',"margin-left:29%;"+"color:"+color);
-    document.getElementById('low_score_warn').innerHTML=warn_txt;
+    select_by_id('orig_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);  
+    select_by_id('low_score_warn').setAttribute('style',"margin-left:29%;"+"color:"+color);
+    select_by_id('low_score_warn').innerHTML=warn_txt;
     
     if(result.score<=1 && ((username == password)||(url == password))){
-        document.getElementById('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
+        select_by_id('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
         console.log('hit');
-	    document.getElementById('feedback').innerHTML=warning;
+	    select_by_id('feedback').innerHTML=warning;
     }
     else{
-        document.getElementById('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
+        select_by_id('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
     //for scoring password I am using in between as I don't know how they're using it will show up as different but still it should be fine.
-        document.getElementById('orig_time').innerHTML=display_time(result.guesses/3000);
+        select_by_id('orig_time').innerHTML=display_time(result.guesses/3000);
 
 }
