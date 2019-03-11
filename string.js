@@ -5,6 +5,73 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
+function base32_encode_old(string){
+ //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
+    var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';
+    var output='';
+    var iter= Math.floor((string.length / 5));
+    var leftover = string.length % 5;
+    var part1=0;
+    var part1=0;
+    var part2=0;
+    var part3=0;
+    var part4=0;
+    var part5=0;
+    var part6=0;
+    var part7=0;
+    var part8=0;
+    var str1='';
+    var str2='';
+    var str3='';
+    var str4='';
+    var str5='';
+    var padding='';
+    if (leftover != 0) {
+       //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
+       iter += 1;
+    }
+
+    for (i = 0; i < iter; i++) {
+        str1=string.charCodeAt(i*5);
+        str2=string.charCodeAt((i*5)+1);
+        str3=string.charCodeAt((i*5)+2);
+        str4=string.charCodeAt((i*5)+3);
+        str5=string.charCodeAt((i*5)+4);
+        part1=(str1 >> 3);
+        part2=( ((str1 & 0x07) << 2)
+           | (str2 >> 6));
+        part3=( ((str2 & 0x3F) >> 1) );
+        part4=( ((str2 & 0x01) << 4)
+           | (str3 >> 4));
+        part5=( ((str3 & 0x0F) << 1)
+           | (str4 >> 7));
+        parts6=( ((str4 & 0x7F) >> 2));
+        part7=( ((str4 & 0x03) << 3)
+           | (str5 >> 5));
+        part8=( ((str5 & 0x1F) ));
+
+        output+=alphabet.charAt(part1)+
+        alphabet.charAt(part2)+
+        alphabet.charAt(part3)+
+        alphabet.charAt(part4)+
+        alphabet.charAt(part5)+
+        alphabet.charAt(part6)+
+        alphabet.charAt(part7)+
+        alphabet.charAt(part8);
+    }
+
+    var replace = 0;
+    if (leftover == 1) replace = 6;
+    else if (leftover == 2) replace = 4;
+    else if (leftover == 3) replace = 3;
+    else if (leftover == 4) replace = 1;
+    var j=(i*8);
+
+    for (i = 0; i < replace; i++) padding+='=';
+    replace=(j)-replace;
+    output=output.substr(0,replace)+padding;
+return output;
+}
 function base32_encode(data,string=true) {
     //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
