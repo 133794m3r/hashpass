@@ -45,12 +45,12 @@ function generate_salt(password,username,url,lower=false,higher=false){
 
     if(higher===true){
         r1=9;
-		n1=9;
-		n2=11;
-        r2=12;
+        n1=9;
+        n2=12;
+        r2=13;
     }
-  
-	r1=r1+1;
+    
+    r1=r1+1;
     r2=r2+1;
 
 		password=ucrypt(password,url,{
@@ -343,6 +343,7 @@ function generate_pass(dbg=false){
     else{
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,17,12,1,32,'binary');
+	        max_len++;
     }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
