@@ -6,76 +6,67 @@
 * version 2.0.1
 */
 perc=0;
-function generate_salt(password,username,url,lower=false,higher=false){
-    var time=Date.now();
+function generate_salt(password,username,url,alt=false){
+	var time=Date.now();
     var salt='';
     var n1=7;
     var p=1;
-    var r2=8;
+    var r=8;
     var n2=9;
     var p2=1;
-    var r1=6
-
-    if(higher===true){
-        r1=8
-        r2=10
-    }
-
-	if(lower==true){
-
+    var r2=6
+	if(alt==true){
 		password=scrypt(password,url,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'base64'}
 		)
 
 		username=scrypt(username,password,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'hex'}
 		)
 
 		url=scrypt(url,username,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'base64'}
 		)
 	}
 	else{
-
-    r1=r1+1;
     r2=r2+1;
-
+    r=r+1;
 		password=ucrypt(password,url,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'base64'}
 		)
 
 		username=ucrypt(username,password,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'hex'}
 		)
 
 		url=ucrypt(url,username,{
 			log_n:n1,
-			r:r1,
+			r:r2,
 			p:p,
 			encoding:'base64'}
 		)
 	}
     salt=url+password+username;
     salt2=username+url+password;
-	if(lower===true){
+	if(alt===true){
 		salt=scrypt(salt,salt2,{
 			log_n:n2,
-			r:r2,
+			r:r,
 			p:p2,
 			encoding:'hex'}
 		)
@@ -83,11 +74,22 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	else{
 		salt=ucrypt(salt,salt2,{
 			log_n:n2,
-			r:r2,
+			r:r,
 			p:p2,
 			encoding:'hex'}
 		)
 	}
+	var time2=Date.now();
+	console.log('gen_salt:'+(time2-time)+'ms');
+    console.log(salt);
+    return salt;
+}
+function generate_salt_argon2(password,username,url){
+    var time=Date.now();
+    
+    
+
+
 	var time2=Date.now();
 	console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
@@ -336,10 +338,8 @@ function generate_pass(dbg=false){
     }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
-
     password=hex_decode(password);
-    password=base32_encode(password);
-
+    password=base32_encode_old(password);
     console.log('scrypt:'+password);
     password=simplify(password,max_len,no_spec,legacy_mode);
 
@@ -428,13 +428,7 @@ function no_legacy_check(){
 	}
 	return 0;
 }
-function change_security_mode(){
-    var high_security=document.getElementById('no_security');
-    if(high_security.checked===true){
-        modal_toggle('_security');
-    }
-    return 0;
-}
+
 function confirmed(val,id){
 	var el=document.getElementById('no'+id);
 	el.checked=val;
@@ -524,3 +518,4 @@ function score_password(){
         document.getElementById('orig_time').innerHTML=display_time(result.guesses/3000);
 
 }
+

@@ -11,10 +11,10 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var salt='';
     var n1=7;
     var p=1;
-    var r2=8;
+    var r1=6;
     var n2=9;
     var p2=1;
-    var r1=6
+    var r2=8;
 
 
 
@@ -44,8 +44,10 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	else{
 
     if(higher===true){
-        r1=8
-        r2=10
+        r1=9;
+		n1=9;
+		n2=11;
+        r2=12;
     }
   
 	r1=r1+1;
@@ -336,11 +338,11 @@ function generate_pass(dbg=false){
     }
 	else if(higher_security===false){
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,16,12,1,32,'binary');	
+		password=ucrypt(password,salt,16,12,1,32,'binary');
 	}
     else{
 		document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,16,13,1,32,'binary');
+		password=ucrypt(password,salt,17,12,1,32,'binary');
     }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
@@ -362,9 +364,9 @@ function generate_pass(dbg=false){
 	}
 
     time=Date.now();
-    result=zxcvbn(password,inputs);
+    result=zxcvbn(password);
     time2=Date.now();
-    console.log('zxcvblog_n:'+((time2-time))+'ms');
+    console.log('zxcvbn:'+((time2-time))+'ms');
 
     score=result.score;
     console.log('b '+score);
@@ -373,17 +375,9 @@ function generate_pass(dbg=false){
     score_progress=((score)*23.75);
     document.getElementById('gen_score_txt').innerHTML=score;
     document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);
-/*
-//using ~380x guesses as SSE2 scrypt running on CPU.
-if(legacy_mode===false){
-	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2650);
-}
-//old version ~380x guesses
-else{
-    document.getElementById('gen_time').innerHTML=display_time(result.guesses/3550);
-}
 
-*/
+//using ~380x guesses as SSE2 scrypt running on CPU.
+
 /*
 *switched the generated one back to a more realistic estimate because I don't know what sites are
 *actually using for their system and moved real times to the orginal one as that' the one where
@@ -391,9 +385,9 @@ I control the strengths.
 */
 document.getElementById('gen_time').innerHTML=display_time(result.guesses/9000);
 modal_toggle('_progress');
-	//setTimeout(percent_update(99),4);
+
 document.getElementById('generate_pass').disabled=false
-//alert(total+'ms');
+
 return;
 }
 
@@ -451,9 +445,6 @@ function confirmed(val,id){
 }
 
 function generate_wrapper(dbg=false){
-	//setTimeout(document.getElementById('generate_pass').disabled=true,0);
-	//var timeout=setTimeout(modal_toggle('_progress'),0);
-	//setTimeout(function(){document.getElementById('header').innerHTML='changed'},0);
 	setTimeout(function(){document.getElementById('modal_progress').style.visibility='visible'},0);
     setTimeout(function(){document.getElementById('generate_pass').disabled=true;},1);
 	var interval=setTimeout(function(){percent_update(70);},2);
