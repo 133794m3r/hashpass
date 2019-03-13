@@ -7,6 +7,10 @@ make password feedback at the top of the page and move down explanation lower. A
 4 = green, w/ a perfect strength.
 
 TODO:
+*Important*
+#1 major thing. Move over basic code from index-dev into index for the copying of the password and also other such functions once I confirm that everythign is currently working.
+
+
 Also the colors will be the background color with the text with white text.
 
 also pop up a modal dialogue for strengths below 2.
