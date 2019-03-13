@@ -448,9 +448,9 @@ function confirmed(val,id){
 }
 
 function generate_wrapper(dbg=false){
-	setTimeout(function()select_by_id('modal_progress').style.visibility='visible'},0);
-    setTimeout(function(){select_by_id('generate_pass').disabled=true;},1);
-	var interval=setTimeout(function(){percent_update(70);},2);
+	setTimeout(function(){select_by_id('modal_progress').style.visibility='visible'},0);
+    setTimeout(function(){select_by_id('generate_pass').disabled=true},1);
+	var interval=setTimeout(function(){percent_update(70)},2);
 	setTimeout(function(){generate_pass(dbg)},45);
 }
 
