@@ -49,7 +49,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
         r1=9;
         n1=9;
         n2=12;
-        r2=13;
+        r2=14;
     }
     
     r1=r1+1;
@@ -341,11 +341,13 @@ function generate_pass(dbg=false){
 	else if(higher_security===false){
 		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,16,12,1,32,'binary');
+        select_by_id('length').value=14;
 	}
     else{
 		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,17,12,1,32,'binary');
-	        max_len++;
+		password=ucrypt(password,salt,17,14,1,32,'binary');
+	    max_len++;
+        select_by_id('length').value=max_len;
     }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
