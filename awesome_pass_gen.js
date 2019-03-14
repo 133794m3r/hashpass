@@ -340,12 +340,9 @@ function generate_pass(dbg=false){
 	    document.getElementById('orig_time').innerHTML=display_time(result.guesses/1300);
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
-    //password=hex_decode(password);
     password=base32_encode(password);
     console.log('scrypt:'+password);
     password=simplify(password,max_len,no_spec);
-
-//    password=password.substr(0,max_len);
     document.getElementById('result').value=password;
     time2=Date.now();
     var total=time2-time;
@@ -367,17 +364,7 @@ function generate_pass(dbg=false){
     score_progress=((score)*23.75);
     document.getElementById('gen_score_txt').innerHTML=score;
     document.getElementById('gen_score_bar').setAttribute('style',"width:"+score_progress+"%; background-color:"+color);
-/*
-//using ~380x guesses as SSE2 scrypt running on CPU.
-if(legacy_mode===false){
-	document.getElementById('gen_time').innerHTML=display_time(result.guesses/2650);
-}
-//old version ~380x guesses
-else{
-    document.getElementById('gen_time').innerHTML=display_time(result.guesses/3550);
-}
 
-*/
 /*
 *switched the generated one back to a more realistic estimate because I don't know what sites are
 *actually using for their system and moved real times to the orginal one as that' the one where
@@ -385,9 +372,8 @@ I control the strengths.
 */
 document.getElementById('gen_time').innerHTML=display_time(result.guesses/9000);
 modal_toggle('_progress');
-	//setTimeout(percent_update(99),4);
 document.getElementById('generate_pass').disabled=false
-//alert(total+'ms');
+
 return;
 }
 
@@ -481,7 +467,6 @@ function score_password(){
 		document.getElementById('site_name').value=url;
 	}
     score=result.score;
-    //result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
     if(score===0){
         color='red';
