@@ -101,7 +101,7 @@ function generate_salt(password,username,url,lower=false,higher=false){
     return salt;
 }
 function simplify(password,max_len,no_spec,legacy_mode){
-
+console.log('ml '+max_len);
 var time=Date.now();
 var str=password;
 var reg=new RegExp("[^0-9]",'g');
@@ -115,8 +115,10 @@ var num_str='';
 var len=tmp.length;
 var chars_order=0;
 var tmp_str='';
+var num_len=0;
 password=password.replace(reg2,"");
 console.log(password);
+console.log(tmp);
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);
@@ -132,6 +134,7 @@ num_str=tmp.substr(1);
 num_str=no_repeat_strings(num_str);
 
 special_str=(parseInt(num_str.substr(0,2)))%3;
+num_len=num_str.length;
 if(no_spec===false){
 	switch(special_str){
 		case 0:
@@ -146,28 +149,28 @@ if(no_spec===false){
 	}
 }
 else{
-	if(num_str.length>=5){
+	if(num_len>=5){
 		tmp_str=num_str.substr(-1,1);
 	}
 	else{
 		tmp_str=str_char.substr(-1,1);
 	}
 }
-
-if(num_str.length>=5){
-	num_str_len=Math.floor((max_len/2));
+//total_len=num_len+floor(max_len/2);
+if(num_len>=5){
+//if(total_len>=max_len){
+	num_str_len=round((max_len/2));
 	//password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
 	str_char=str_char.substr(0,num_str_len-2);
 	num_str=num_str.substr(0,(max_len-num_str_len)-1);
 }
 else{
-	max_len=(max_len-num_str.length);
+	total_len1=(max_len-num_len);
 	//password=password.substr(0,max_len-1)+num_str.substr(0);
-	str_char=str_char.substr(0,max_len-3);
+	str_char=str_char.substr(0,total_len-3);
 	num_str.substr(0);
 }
-//console.log('num '+num_str);
-//console.log('str '+str_char);
+
 
 
     chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%10;
@@ -345,9 +348,8 @@ function generate_pass(dbg=false){
 	}
     else{
 		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
+        max_len++;
 		password=ucrypt(password,salt,17,14,1,32,'binary');
-	    max_len++;
-        select_by_id('length').value=max_len;
     }
     time3=Date.now();
     console.log('scrypt time:'+(time3-time4)+'ms');
