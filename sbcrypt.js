@@ -72,7 +72,7 @@ function bcrypt_one_iter(password,salt){
                           "Q", "R", "S", "T", "U", "V", "W", "X", "Y", "Z", "a", "b", "c", "d", "e", "f", "g", "h",
                           "i", "j", "k", "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", "w", "x", "y", "z",
                           "0", "1", "2", "3", "4", "5", "6", "7", "8", "9"];
-        //var b64_alphabet="./ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789".split('');
+
         var off = 0,
             rs = [],
             rs_len=0,
@@ -778,7 +778,7 @@ function bcrypt_one_iter(password,salt){
             } else {
                 for (i = 0; i < 64; i++){
                     //3 iterations
-
+                    encipher(cdata,0,P,S);
                     encipher(cdata,2,P,S);
                     encipher(cdata,4,P,S);
                 }
@@ -2537,7 +2537,7 @@ function bcrypt_dk_one_iter(password,salt,dk_len){
     var j=0;
     var dk = new Uint8Array(dk_len);
     var tmp=new Uint8Array(32);
-      salt=salt.slice(0,16);
+    salt=salt.slice(0,16);
     while(dk_len>=32){
       tmp=bcrypt_one_iter(password,salt);
       tmp=sha256_fast(tmp);
