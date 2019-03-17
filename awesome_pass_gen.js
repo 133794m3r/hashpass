@@ -156,18 +156,26 @@ else{
 		tmp_str=str_char.substr(-1,1);
 	}
 }
+num_str_len=round(max_len/2);
 //total_len=num_len+floor(max_len/2);
-if(num_len>=5){
+if ( max_len-num_str_len-1 <= num_len ){
+//if(num_len>=5){
 //if(total_len>=max_len){
-	num_str_len=round((max_len/2));
+	//num_str_len=round((max_len/2));
 	//password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
 	str_char=str_char.substr(0,num_str_len-2);
+	//str_char=str_char.substr(0,(max_len-num_str_len)-1);
 	num_str=num_str.substr(0,(max_len-num_str_len)-1);
+	//num_str=num_str.substr(0,num_str_len-2);
+}
+else if(num_len >= 5){
+	str_char=str_char.substr(0,(max_len-num_str_len)-1);
+	num_str=num_str.substr(0,(num_str_len)-2);
 }
 else{
 	total_len1=(max_len-num_len);
 	//password=password.substr(0,max_len-1)+num_str.substr(0);
-	str_char=str_char.substr(0,total_len-3);
+	str_char=str_char.substr(0,total_len1-3);
 	num_str.substr(0);
 }
 
