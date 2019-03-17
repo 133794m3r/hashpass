@@ -158,6 +158,9 @@ else{
 }
 num_str_len=round(max_len/2);
 //total_len=num_len+floor(max_len/2);
+//max_len-((num_str_len-2)+(max_len-num_str_len-1))-num_len
+//15 - (6+7)
+ 
 if ( max_len-num_str_len-1 <= num_len ){
 //if(num_len>=5){
 //if(total_len>=max_len){
@@ -168,7 +171,8 @@ if ( max_len-num_str_len-1 <= num_len ){
 	num_str=num_str.substr(0,(max_len-num_str_len)-1);
 	//num_str=num_str.substr(0,num_str_len-2);
 }
-else if(num_len >= 5){
+//else if(num_len >= 5){
+if( (max_len-3 - (( (max_len-num_str_len)-1) )) <= num_len ){
 	str_char=str_char.substr(0,(max_len-num_str_len)-1);
 	num_str=num_str.substr(0,(num_str_len)-2);
 }
@@ -229,6 +233,7 @@ else{
 //password=password+tmp_str;
 var time2=Date.now();
 console.log('pass '+password);
+console.log('pass_len '+password.length);
 console.log('simplify:'+(time2-time)+'ms');
 return password;
 
