@@ -37,34 +37,63 @@
     </label> <br />
     <label for='password'>
         Password:&nbsp;
-        <input type="text" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
+        <input type="password" class="texts" id='password' value="" autocorrect="off" spellcheck="false" autocomplete="false">
     </label>
-    <label for='length'>
-        &nbsp;&nbsp;Output Lenght:&nbsp;
-        <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
-    </label>
-    <label for='no_legacy' id='legacy'>
-        &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
-        <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
-    </label>
+    <input type='button' id="show_hide" onclick="Javascripot:swap();" value="Show" />
     <br />
     <label for='result'>
         Result:&nbsp;&nbsp;&nbsp;
         <input type='text' id='result' class='texts' onclick='javascript:this.setSelectionRange(0, this.value.length)' autocorrect="off">
     </label>
-    <label for='no_spec' id='spec_label'>
-        &nbsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;No Special Characters:&emsp;
-        <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
-    </label><br /><br />
-    <input type='submit'  onclick='JavaScript:generate_wrapper(false);' value='Generate A Password' id='generate_pass' disabled="true">&emsp;&emsp;&emsp;<input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled="true"/>
+    <input type='button' id="get_password" onclick="javascript:copy_password_to_clipboard();" value="Copy" />
+    <br />
+    <input type='submit'  onclick='JavaScript:generate_wrapper(true);' value='Generate A Password' id='generate_pass' disabled='true' style='border-radius:0.5em;'>&emsp;&emsp;&emsp;
+    <input type='submit' onclick="JavaScript:score_password();" value="Score Password(s)" id='score_pass' disabled='true' style='border-radius:0.5em;'/>
    <br />
-   <p style="width:95%; font-size:105%">
-    Your original score:<b id='orig_score'></b>
+<p style="width:50%; font-size:125%">
+    Original score:
+    <span id='orig_score_container' class='scorebar_container'>
+      <span id='orig_score_txt' class='scorebar_txt'>
+    &emsp;&emsp;
+      </span>
+      <span id='orig_score_bar' class='scorebar_completed' style="width:0%">
+
+      </span>
+    </span>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+    <span id='low_score_warn' style="margin-left:29%;">test</span>
     <br/>
-    Generated password score:<b id='gen_score'></b>
-    <br /><span id='score_explain'>
+    <br/>
+    Generated score:&emsp;&emsp;&emsp;
+    <span id='gen_score_container' class='scorebar_container'>
+      <span id='gen_score_txt' class='scorebar_txt'>
+
+      </span>
+      <span id='gen_score_bar' class='scorebar_completed' style="width:0%">
+
+      </span>
+    </span>
+    <br /><!--<span id='score_explain'>
     The score is from 0 through 4, with a higher score meaning a more secure password. A score of 3 or higher is what's considered safe for your password not being cracked in an attack.
-    If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>
+    If it's below 3 it means that if a site is hacked and their passwords are stolen you can assume your password won't really be safe.</span>-->
+    </p>
+    <p>
+    <label for='no_spec' id='spec_label'>
+        No Special Characters:&emsp;
+        <input type='checkbox' onchange="javascript:no_spec_check()" id='no_spec'>
+    </label>
+
+    <label for='no_legacy' id='legacy'>
+        &emsp;&emsp;Enable Legacy Mode:&emsp;&emsp;&emsp;
+        <input type='checkbox' onchange='javascript:no_legacy_check()' id='no_legacy'>
+    </label>
+    <label for='high_security' id='security'>
+        High Security Mode:
+        <input type='checkbox' onchange='javascript:change_security_mode()' id='no_security' />
+    </label><br />
+    <label for='length'>
+        Output Lenght:&nbsp;
+        <input type='text' id='length' class='texts' value='14' style="width:2em;" onclick='javascript:this.setSelectionRange(0, this.value.length)'>
+    </label>
     </p>
     <p style="width:95%">
     Time to crack original password :<b id='orig_time'></b><br />Some Suggestions for Your Original Password:&nbsp;<span id='feedback'></span>
@@ -137,7 +166,7 @@
   <!--- <script type='text/javascript' src='out.js'></script> -->
 
 <script type="text/javascript" src="scrypt_fast.min.js" async></script>
-<script type="text/javascript" src="awesome_pass_gen-combined.min.js" async></script>
+<script type="text/javascript" src="awesome_pass_gen-combined.min.js.1" async></script>
 <script type='text/javascript' src='zxcvbn.js' async></script>
 <script type="text/javascript" src="sbcrypt1.js" async></script>
 <script type='text/javascript'>
@@ -146,6 +175,32 @@
         document.getElementById('generate_pass').disabled=false;
         document.getElementById('score_pass').disabled=false;
     }
+    function swap(){
+        var val=document.getElementById('show_hide').value
+        if(val === "Hide"){
+           val="Show";
+           document.getElementById('password').setAttribute('type','password');
+           document.getElementById('result').setAttribute('type','password');
+        }
+        else{
+            val="Hide";
+            document.getElementById('password').setAttribute('type','text');
+            document.getElementById('result').setAttribute('type','text');
+        }
+        document.getElementById('show_hide').value=val;
+    }
+
+function copy_password_to_clipboard(){
+swap();
+    var txt=document.getElementById('result');
+    //var txt2=document.getElementById('result_hidden').value=txt;
+    //var txt3=document.getElementById('result_hidden');  
+txt.select();
+document.execCommand("copy");
+console.log(txt.value);
+swap();
+    //alert('copied '+txt.value);
+}
     </script>
 <!-- version 2.0.0b -->
 <!--
