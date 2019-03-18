@@ -1,11 +1,12 @@
 function do_test(){
-    var usernames=new Array('test','1234','username','user');
-    var passwords=new Array('password','pass','letmein','password123');
-    var urls=new Array('example.com','website','url','thing');
+    var usernames=new Array('Test','1234','Username','User');
+    var passwords=new Array('Password','Hunter2','Test','Qwerty123');
+    var urls=new Array('Example.com','Website','Url','Test');
     var salts={'legacy':[],'lower':[],'higher':[]};
-    var finalized_hashes=new Array();
+    var hashes={'legacy':[],'lower':[],'higher':[]};
     var indexes=new Array([0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,1,0],[0,1,1],[0,1,2],[0,1,3],[0,2,0],[0,2,1],[0,2,2],[0,2,3],[0,3,0],[0,3,1],[0,3,2],[0,3,3],[1,0,0],[1,0,1],[1,0,2],[1,0,3],[1,1,0],[1,1,1],[1,1,2],[1,1,3],[1,2,0],[1,2,1],[1,2,2],[1,2,3],[1,3,0],[1,3,1],[1,3,2],[1,3,3],[2,0,0],[2,0,1],[2,0,2],[2,0,3],[2,1,0],[2,1,1],[2,1,2],[2,1,3],[2,2,0],[2,2,1],[2,2,2],[2,2,3],[2,3,0],[2,3,1],[2,3,2],[2,3,3],[3,0,0],[3,0,1],[3,0,2],[3,0,3],[3,1,0],[3,1,1],[3,1,2],[3,1,3],[3,2,0],[3,2,1],[3,2,2],[3,2,3],[3,3,0],[3,3,1],[3,3,2],[3,3,3]);
-    var simplfied=new Array();
+    var simplfied_strings=new Array();
+    var final_hashes={'legacy':[],'lower':[],'higher':[]};
     var i=0;
     var tmp='';
     var j=0;
@@ -16,13 +17,16 @@ function do_test(){
     var higher=false;
     for(i=0;i<3;i++){
         string=salts_strings[i];
-    for(j=0;j<64;j++){
-        for(k=0;k<3;k++){
-            salts[string][j][k]=generate_salt(passwords[indexes[j][k]],usernames[indexes[j][k]],urls[indexes[j][k]]);
+        for(j=0;j<64;j++){
+            for(k=0;k<3;k++){
+                salts[string][j][k]=generate_salt(passwords[indexes[j][k]], usernames[indexes[j][k]], urls[indexes[j][k]],i);
+                generate_pass(higher_lower,salts[string][j][k],passwords[k])
+            }
         }
     }
-    }
-    console.log()
+
+    console.log(JSON.stringify(salts));
+
 }
 
 function generate_salt_dbg(password,username,url,higher_lower){
@@ -130,4 +134,19 @@ function generate_salt_dbg(password,username,url,higher_lower){
     console.log('gen_salt:'+(time2-time)+'ms');
     console.log(salt);
     return salt;
+}
+function generate_pass_dbg(higher_lower,salt,password){
+    max_len=14;
+    switch(higher_lower){
+        case 0:
+            password=scrypt(password,salt,16,6,2,32,'binary');
+        break;
+        case 1:
+            password=ucrypt(password,salt,16,12,1,32,'binary');
+        break;
+        case 2:
+            max_len++;
+            password=ucrypt(password,salt,17,14,1,32,'binary');
+        break;
+    }
 }
