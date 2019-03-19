@@ -14,7 +14,7 @@
     <h1 style='text-align:center; position:relative' id='header'>
        Awesome Password Generator
     </h1>
-    <p style='width:95%'>
+<!--    <p style='width:95%'>
         This site will hash your password with scrypt, the username, the site's name and your password for salt(to make it harder to guess). It will generate by default a 14 character
         psuedo-random password that will always be the same for the same inputs(what you entered), changing one letter in any
         of the boxes will change everything. Thus the entire thing is case sensitive.
@@ -24,7 +24,7 @@
         it(only way to know is to try pasting the password into the site. If it doesn't work and says the password isn't allowed then check the box, and click generate password again and it'll
         give you a new password that doesn't have the special character on the end. Please note that the maximum length that it can generate is around 53-55 character
 <br /><p><b>If the score for the original password is below 2 it is considered weak below 1 is extremely weak. You want the original score to be <i>at least 1</i>
-<br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields. So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>
+<br />We use <a href='https://github.com/dropbox/zxcvbn/blob/master/README.md'>ZXCVBN</a> to guess the strengths of the passwords. It has been shown to be extremely accurate for guessing how long it would take for a hacker to guess a password. Also note that spellchecking/suggestions may not be disabled on your browser for the input fields. So be careful when entering the text and make sure it is what you typed especially on the password field.</b></p>-->
    <div id='left'>
     <label for='site_name'>
         Site Name:
@@ -159,6 +159,24 @@
 
                     </span>
                     <span id='completed_perc' style='width:0%'></span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class='modal' id='modal_security'>
+        <div class='modal_body'>
+            <div class='modal_content'>
+                <div class='caps' style='color:red'>
+                    <p><b>
+                    Enabling high security mode will take it longer for the password to be generated. If you are recovering a
+                    password make sure that it not checked as that was the old way of doing things.
+                    <br />
+                    Are you sure?
+                    </b></p>
+                </div>
+                <div class='buttons'>
+                    <input type='button' onclick='confirmed(1,"_security")' style='font-size:1.5em' value='YES' />
+                    &nbsp;&nbsp; <input type='button' onclick='confirmed(0,"_security")' style='font-size:2em' value="No I'm Not" />
                 </div>
             </div>
         </div>
