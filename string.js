@@ -73,7 +73,6 @@ function base32_encode_old(string){
 return output;
 }
 function base32_encode(data,string=true) {
-    //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
 
     var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';
     var output='';

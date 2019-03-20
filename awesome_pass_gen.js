@@ -9,7 +9,7 @@ perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
     var time=Date.now();
     var salt='';
-    var sal2='';
+    var salt2='';
     var n1=7;
     var p=1;
     var r1=6;
@@ -96,12 +96,10 @@ function generate_salt(password,username,url,lower=false,higher=false){
 	}
     
     var time2=Date.now();
-    console.log('gen_salt:'+(time2-time)+'ms');
-    console.log(salt);
+    //console.log('gen_salt:'+(time2-time)+'ms');
     return salt;
 }
 function simplify(password,max_len,no_spec,legacy_mode){
-console.log('ml '+max_len);
 var time=Date.now();
 var str=password;
 var reg=new RegExp("[^0-9]",'g');
@@ -117,8 +115,6 @@ var chars_order=0;
 var tmp_str='';
 var num_len=0;
 password=password.replace(reg2,"");
-console.log(password);
-console.log(tmp);
 var tmp2=password.length;
 var special_str=0;
 password_tmp=password.substr(1);

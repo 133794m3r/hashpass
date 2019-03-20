@@ -1,3 +1,4 @@
+"use strict"
 function do_test(){
     var usernames=new Array('Test','1234','Username','User');
     var passwords=new Array('Password','Hunter2','Test','Qwerty123');
@@ -6,11 +7,11 @@ function do_test(){
     array_basic_structure['legacy']=new Array(64);
     array_basic_structure['lower']=new Array(64);
     array_basic_structure['higher']=new Array(64);
-    var salts=array_basic_structure;
-    var hashes=array_basic_structure;
+    var salts={'legacy':new Array(64),'lower':new Array(64),'higher':new Array(64)};
+    var hashes={'legacy':new Array(64),'lower':new Array(64),'higher':new Array(64)};
     var indexes=new Array([0,0,0],[0,0,1],[0,0,2],[0,0,3],[0,1,0],[0,1,1],[0,1,2],[0,1,3],[0,2,0],[0,2,1],[0,2,2],[0,2,3],[0,3,0],[0,3,1],[0,3,2],[0,3,3],[1,0,0],[1,0,1],[1,0,2],[1,0,3],[1,1,0],[1,1,1],[1,1,2],[1,1,3],[1,2,0],[1,2,1],[1,2,2],[1,2,3],[1,3,0],[1,3,1],[1,3,2],[1,3,3],[2,0,0],[2,0,1],[2,0,2],[2,0,3],[2,1,0],[2,1,1],[2,1,2],[2,1,3],[2,2,0],[2,2,1],[2,2,2],[2,2,3],[2,3,0],[2,3,1],[2,3,2],[2,3,3],[3,0,0],[3,0,1],[3,0,2],[3,0,3],[3,1,0],[3,1,1],[3,1,2],[3,1,3],[3,2,0],[3,2,1],[3,2,2],[3,2,3],[3,3,0],[3,3,1],[3,3,2],[3,3,3]);
     var simplfied_strings=new Array();
-    var final_hashes=array_basic_structure;
+    var final_hashes={'legacy':[],'lower':[],'higher':[]};
     var i=0;
     var tmp='';
     var j=0;
@@ -24,13 +25,15 @@ function do_test(){
         for(j=0;j<64;j++){
             //for(k=0;k<3;k++){
                 //tmp=k;
-                salts[string][j]=generate_salt(passwords[indexes[j][0]], usernames[indexes[j][1]], urls[indexes[j][2]],i);
-                hashes[string][j][k]=generate_hash_dbg(i,salts[string][j],passwords[indexes[j][0]]);
-                final_hashes[string][j][k]=simplify_dbg(hashes[string][j],i);
+                salts[string][j]=generate_salt_dbg(passwords[indexes[j][0]], usernames[indexes[j][1]], urls[indexes[j][2]],i);
+                hashes[string][j]=generate_hash_dbg(i,salts[string][j],passwords[indexes[j][0]]);
+                final_hashes[string][j]=simplify_dbg(hashes[string][j],i);
             //}
         }
     }
-
+    console.log(JSON.stringify(hashes));
+    console.log(JSON.stringify(salts));
+    console.log(JSON.stringify(final_hashes));
 }
 /*
  * TODO:
@@ -39,14 +42,16 @@ function do_test(){
 function generate_salt_dbg(password,username,url,higher_lower){
     var time=Date.now();
     var salt='';
-    var sal2='';
+    var salt2='';
     var n1=7;
     var p=1;
     var r1=6;
     var n2=9;
     var p2=1;
     var r2=8;
-        
+    var higher=0;
+    var lower=0;
+
     n1=round(n1/2);
     n2=round(n2/2);
     r1=round(r1/2);
@@ -151,8 +156,8 @@ function generate_salt_dbg(password,username,url,higher_lower){
 	}
 
     var time2=Date.now();
-    console.log('gen_salt:'+(time2-time)+'ms');
-    console.log(salt);
+    //console.log('gen_salt:'+(time2-time)+'ms');
+    //console.log(salt);
     return salt;
 }
 function generate_hash_dbg(higher_lower,salt,password){
@@ -174,7 +179,7 @@ function generate_hash_dbg(higher_lower,salt,password){
         break;
     }
     hashed_password=base32_encode(hashed_password,false);
-    return password;
+    return hashed_password;
 }
 function simplify_dbg(password,higher_lower,no_spec=false){
 var str=password;
@@ -194,6 +199,8 @@ var num_len=0;
 password=password.replace(reg2,"");
 var tmp2=password.length;
 var special_str=0;
+var num_str_len=0;
+var total_len1=0;
 password_tmp=password.substr(1);
 password_tmp=no_repeat_strings(password_tmp);
 str_char=password_tmp;
