@@ -20,7 +20,7 @@ function do_test(){
     var lower=false;
     var higher=false;
     for(i=0;i<3;i++){
-        string=salts_string[i];
+        string=salts_strings[i];
         for(j=0;j<64;j++){
             //for(k=0;k<3;k++){
                 //tmp=k;
