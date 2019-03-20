@@ -3020,165 +3020,238 @@ x15 ^= u<<18 | u>>>14;
     arr=Int8Array.from(arr);
     return arr;
   }
-  // Generate key.
 
-  var MAX_UINT = (-1)>>>0;
-
-  if (typeof log_n === "object") {
-    // Called as: scrypt(password, salt, opts, callback)
-    if (arguments.length > 4) {
-      throw new Error('scrypt: incorrect number of arguments');
+  function base32_encode(data) {
+    var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';
+    var output='';
+    var iter= Math.floor((data.length / 5));
+    var leftover = data.length % 5;
+    var part1=0;
+    var part1=0;
+    var part2=0;
+    var part3=0;
+    var part4=0;
+    var part5=0;
+    var part6=0;
+    var part7=0;
+    var part8=0;
+    var str1='';
+    var str2='';
+    var str3='';
+    var str4='';
+    var str5='';
+    var padding='';
+    var j=0;
+    var replace=0;
+    if (leftover != 0) {
+       //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
+       iter += 1;
     }
 
-    var opts = log_n;
-
-    var callback = r;
-    log_n = opts.log_n;
-    if (typeof log_n === 'undefined') {
-      if (typeof opts.N !== 'undefined') {
-        if (opts.N < 2 || opts.N > MAX_UINT)
-          throw new Error('scrypt: N is out of range');
-
-        if ((opts.N & (opts.N - 1)) !== 0)
-          throw new Error('scrypt: N is not a power of 2');
-
-        log_n = Math.log(opts.N) / Math.LN2;
-      } else {
-        throw new Error('scrypt: missing N parameter');
-      }
+    for (i = 0; i < iter; i++) {
+        i_5=i*5;
+        str1=data[(i_5)];
+        str2=data[(i_5+1)];
+        str3=data[(i_5+2)];
+        str4=data[(i_5+3)];
+        str5=data[(i_5+4)];
+        part1=(str1 >> 3);
+        part2=( ((str1 & 0x07) << 2)
+           | (str2 >> 6));
+        part3=( ((str2 & 0x3F) >> 1) );
+        part4=( ((str2 & 0x01) << 4)
+           | (str3 >> 4));
+        part5=( ((str3 & 0x0F) << 1)
+           | (str4 >> 7));
+        parts6=( ((str4 & 0x7F) >> 2));
+        part7=( ((str4 & 0x03) << 3)
+           | (str5 >> 5));
+        part8=( ((str5 & 0x1F) ));
+        output+=alphabet.charAt(part1)+
+        alphabet.charAt(part2)+
+        alphabet.charAt(part3)+
+        alphabet.charAt(part4)+
+        alphabet.charAt(part5)+
+        alphabet.charAt(part6)+
+        alphabet.charAt(part7)+
+        alphabet.charAt(part8);
     }
-    p = opts.p || 1;
-    r = opts.r;
-    dk_len = opts.dk_len || 32;
-    encoding = opts.encoding;
-  }
+    replace = 0;
+    if (leftover == 1) replace = 6;
+    else if (leftover == 2) replace = 4;
+    else if (leftover == 3) replace = 3;
+    else if (leftover == 4) replace = 1;
+    j=(i*8);
 
-  if (p < 1){
-    throw new Error('scrypt: invalid p');
-  }
+    for (i = 0; i < replace; i++) padding+='=';
+    replace=(j)-replace;
+    output=output.substr(0,replace)+padding;
+    return output;
 
-
-  if (r <= 0){
-    throw new Error('scrypt: invalid r');
-  }
-
-  if (log_n < 1 || log_n > 31){
-    throw new Error('scrypt: log_n must be between 1 and 31');
   }
 
 
-  var N = (1<<log_n)>>>0,
-      XY, V, B, tmp,tmp_buf,tmp_buf_arr,inner_buf,outer_buf;
+    var MAX_UINT = (-1)>>>0;
 
-  if (r*p >= 1<<30 || r > MAX_UINT/128/p || r > MAX_UINT/256 || N > MAX_UINT/128/r){
-    throw new Error('scrypt: parameters are too large');
-  }
+    if (typeof log_n === "object") {
+      // Called as: scrypt(password, salt, opts, callback)
+        if (arguments.length > 4) {
+            throw new Error('scrypt: incorrect number of arguments');
+        }
 
-  // Decode strings.
-  if (typeof password === 'string'){
-    //password = string_to_bytes(password);
-    password=string_to_int8_array(password);
-  }
-  if (typeof salt === 'string'){
-    //salt = string_to_bytes(salt);
-    salt=string_to_int8_array(salt);
-  }
+        var opts = log_n;
+
+        var callback = r;
+        log_n = opts.log_n;
+        if (typeof log_n === 'undefined') {
+            if (typeof opts.N !== 'undefined') {
+                if (opts.N < 2 || opts.N > MAX_UINT)
+                    throw new Error('scrypt: N is out of range');
+
+                if ((opts.N & (opts.N - 1)) !== 0)
+                throw new Error('scrypt: N is not a power of 2');
+
+                log_n = Math.log(opts.N) / Math.LN2;
+            }
+            else{
+                throw new Error('scrypt: missing N parameter');
+            }
+        }
+        p = opts.p || 1;
+        r = opts.r;
+        dk_len = opts.dk_len || 32;
+        encoding = opts.encoding;
+    }
+
+    if (p < 1){
+      throw new Error('scrypt: invalid p');
+    }
+
+
+    if (r <= 0){
+        throw new Error('scrypt: invalid r');
+    }
+
+    if (log_n < 1 || log_n > 31){
+        throw new Error('scrypt: log_n must be between 1 and 31');
+    }
+
+
+    var N = (1<<log_n)>>>0,
+        XY, V, B, tmp,tmp_buf,tmp_buf_arr,inner_buf,outer_buf;
+
+    if (r*p >= 1<<30 || r > MAX_UINT/128/p || r > MAX_UINT/256 || N > MAX_UINT/128/r){
+       throw new Error('scrypt: parameters are too large');
+    }
+
+    // Decode strings.
+    if (typeof password === 'string'){
+      //password = string_to_bytes(password);
+       password=string_to_int8_array(password);
+    }
+    if (typeof salt === 'string'){
+      //salt = string_to_bytes(salt);
+        salt=string_to_int8_array(salt);
+    }
 
     XY = new Int32Array(64*r);
     V = new Int32Array(32*N*r);
     tmp = new Int32Array(16);
 
-  B=bcrypt_dk_one_iter(password,salt,p*128*r);
-  var r_32=32*r;
-  var xi = 0, yi = r_32;
-  var r_2=2*r;
-  var r_16=r*16;
-  var r_2_1_16=(r_2-1)*16;
-  function smix_start(pos) {
-    var i=0;
-    var j=0;
-    for (i = 0; i < r_32; i++) {
-      j = pos + i*4;
-      XY[xi+i] = ((B[j+3] & 0xff)<<24) | ((B[j+2] & 0xff)<<16) |
-                 ((B[j+1] & 0xff)<<8)  | ((B[j+0] & 0xff)<<0);
+    B=bcrypt_dk_one_iter(password,salt,p*128*r);
+    var r_32=32*r;
+    var xi = 0, yi = r_32;
+    var r_2=2*r;
+    var r_16=r*16;
+    var r_2_1_16=(r_2-1)*16;
+    function smix_start(pos) {
+        var i=0;
+        var j=0;
+        for (i = 0; i < r_32; i++) {
+            j = pos + i*4;
+            XY[xi+i] = ((B[j+3] & 0xff)<<24) | ((B[j+2] & 0xff)<<16) |
+                       ((B[j+1] & 0xff)<<8)  | ((B[j+0] & 0xff)<<0);
+        }
     }
-  }
 
-  function smix_step1(start, end) {
-    var i=0;
-    for (i = start; i < end; i += 2) {
-      block_copy(V, i*(r_32), XY, xi, (r_32));
-      block_mix(tmp, XY, xi, yi, r);
+    function smix_step1(start, end) {
+      var i=0;
+      for (i = start; i < end; i += 2) {
+        block_copy(V, i*(r_32), XY, xi, (r_32));
+        block_mix(tmp, XY, xi, yi, r);
 
-      block_copy(V, (i+1)*(r_32), XY, yi, (r_32));
-      block_mix(tmp, XY, yi, xi, r);
+        block_copy(V, (i+1)*(r_32), XY, yi, (r_32));
+        block_mix(tmp, XY, yi, xi, r);
+      }
     }
-  }
 
-  function smix_step2(start, end) {
-    var N_1=N-1;
-    var j=0;
-    var i=0;
-    for (i = start; i < end; i += 2) {
-      j = integerify(XY, xi) & (N_1);
-      block_xor(XY, xi, V, j*(r_32), r_32);
-      block_mix(tmp, XY, xi, yi, r);
+    function smix_step2(start, end) {
+        var N_1=N-1;
+        var j=0;
+        var i=0;
+        for (i = start; i < end; i += 2) {
+          j = integerify(XY, xi) & (N_1);
+          block_xor(XY, xi, V, j*(r_32), r_32);
+          block_mix(tmp, XY, xi, yi, r);
 
-      j = integerify(XY, yi, r) & (N_1);
-      block_xor(XY, yi, V, j*(r_32), r_32);
-      block_mix(tmp, XY, yi, xi, r);
+          j = integerify(XY, yi, r) & (N_1);
+          block_xor(XY, yi, V, j*(r_32), r_32);
+          block_mix(tmp, XY, yi, xi, r);
+        }
     }
-  }
 
-  function smix_finish(pos) {
-    var max=32*r;
-    var i=0;
-    var j=0;
-    var i_4=0;
-    for (i = 0; i < max; i++) {
-      j = XY[i];
-      i_4=i*4;
-      B[pos + i_4] = (j>>>0)  & 0xff;
-      B[pos + i_4 + 1] = (j>>>8)  & 0xff;
-      B[pos + i_4 + 2] = (j>>>16) & 0xff;
-      B[pos + i_4 + 3] = (j>>>24) & 0xff;
+    function smix_finish(pos) {
+        var max=32*r;
+        var i=0;
+        var j=0;
+        var i_4=0;
+        for (i = 0; i < max; i++) {
+          j = XY[i];
+          i_4=i*4;
+          B[pos + i_4] = (j>>>0)  & 0xff;
+          B[pos + i_4 + 1] = (j>>>8)  & 0xff;
+          B[pos + i_4 + 2] = (j>>>16) & 0xff;
+          B[pos + i_4 + 3] = (j>>>24) & 0xff;
+        }
     }
-  }
 
-  var i=0;
-  var i_128_r=0;
-  var r_128=r*128;
+    var i=0;
+    var i_128_r=0;
+    var r_128=r*128;
 
 
-  for (i = 0; i < p; i++) {
-    i_128_r=(i*r_128);
-    smix_start(i_128_r);
-    smix_step1(0, N);
-    smix_step2(0, N);
-    smix_finish(i_128_r);
-  }
+    for (i = 0; i < p; i++) {
+      i_128_r=(i*r_128);
+      smix_start(i_128_r);
+      smix_step1(0, N);
+      smix_step2(0, N);
+      smix_finish(i_128_r);
+    }
 
-  //if(p===2){
-  //  i_128_r=r_128;
-  //  smix_start(i_128_r);
-  //  smix_step1(0, N);
-  //  smix_step2(0, N);
-  //  smix_finish(i_128_r);
-  //}
-  var result = bcrypt_dk_one_iter(password, B, dk_len);
-  if (encoding === 'base64'){
-    result=bytes_to_b64(result);
-  }
-  else if (encoding === 'hex'){
-    result=bytes_to_hex(result);
-  }
-  else if (encoding === 'binary'){
-    result=new Uint8Array(result);
-  }
-  else{
-    result=bytes_to_hex(result);
-  }
-  return result;  
+    //if(p===2){
+    //  i_128_r=r_128;
+    //  smix_start(i_128_r);
+    //  smix_step1(0, N);
+    //  smix_step2(0, N);
+    //  smix_finish(i_128_r);
+    //}
+    var result = bcrypt_dk_one_iter(password, B, dk_len);
+    if(encoding === 'base64'){
+      result=bytes_to_b64(result);
+    }
+    else if(encoding === 'hex'){
+      result=bytes_to_hex(result);
+    }
+    else if(encoding === 'binary'){
+      result=new Uint8Array(result);
+    }
+    else if(encoding==='base32'){
+      result=base32_encode(result);
+    }
+    else{
+      result=bytes_to_hex(result);
+    }
+    return result;
 }
 
 function sbcrypt(password, salt, log_n, r, p,dk_len, encoding){
