@@ -20,23 +20,16 @@ function do_test(){
     var lower=false;
     var higher=false;
     for(i=0;i<3;i++){
-        string=salts_strings[i];
-        tmp=i;
+
         for(j=0;j<64;j++){
-            tmp=j;
-            console.log(j);
-            for(k=0;k<3;k++){
-                tmp=k;
-                salts[string][j][k]=generate_salt(passwords[indexes[j][k]], usernames[indexes[j][k]], urls[indexes[j][k]],i);
-                hashes[string][j][k]=generate_hash_dbg(i,salts[string][j][k],passwords[k]);
-                final_hashes[string][j][k]=simplify_dbg(hashes[string][j][k],i);
-            }
+            //for(k=0;k<3;k++){
+                //tmp=k;
+                salts[string][j]=generate_salt(passwords[indexes[j][0]], usernames[indexes[j][1]], urls[indexes[j][2]],i);
+                hashes[string][j][k]=generate_hash_dbg(i,salts[string][j],passwords[indexes[j][0]]);
+                final_hashes[string][j][k]=simplify_dbg(hashes[string][j],i);
+            //}
         }
     }
-
-    console.log('salts='+JSON.stringify(salts));
-    console.log('hashes='+JSON.stringify(hashes));
-    console.log('final_hashes='+JSON.stringify(final_hashes));
 
 }
 /*
