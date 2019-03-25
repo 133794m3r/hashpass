@@ -2443,7 +2443,7 @@ function finish(out){
         var tmp=pad_len-8;
         i=left+1;
         buffer[left] = 0x80;
-        for (i;i<tmp; i++) {
+        for (i=0;i<tmp; i++) {
             buffer[i]=0;
         }
 
