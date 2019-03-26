@@ -3242,9 +3242,9 @@ x15 ^= u<<18 | u>>>14;
     else if(encoding === 'hex'){
       result=bytes_to_hex(result);
     }
-    else if(encoding === 'binary'){
-      result=new Uint8Array(result);
-    }
+    //else if(encoding === 'binary'){
+    //  result=new Uint8Array(result);
+    //}
     else if(encoding==='base32'){
       result=base32_encode(result);
     }
