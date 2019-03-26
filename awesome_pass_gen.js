@@ -350,7 +350,7 @@ function generate_pass(dbg=false){
         password=scrypt(password,salt,16,6,2,32,'binary');
 		
     }
-	else if(higher_security===true){
+	else if(higher_security===false){
 		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
 		password=ucrypt(password,salt,16,12,1,32,'binary');
         select_by_id('length').value=14;
