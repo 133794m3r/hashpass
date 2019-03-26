@@ -2545,8 +2545,9 @@ x15 ^= u<<18 | u>>>14;
       else if (enc === 'hex'){
         result=bytes_to_hex(result);
       }
-      else if (enc === 'binary')
+      else if (enc === 'binary'){
         result=new Uint8Array(result);
+      }
       else{
         result=bytes_to_hex(result);
       }
