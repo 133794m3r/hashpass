@@ -8,7 +8,7 @@
 "use strict"
 var perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
-    var time=Date.now();
+    //var time=Date.now();
     var salt='';
     var salt2='';
     var n1=7;
@@ -20,31 +20,13 @@ function generate_salt(password,username,url,lower=false,higher=false){
 
 
 
-	if(lower==true && higher === false){
+    if(lower==true && higher === false){
+        password=scrypt(password,url,n1,r1,p,'base64');
+        username=scrypt(username,password,n1,r1,p,'hex');
+        url=scrypt(url,username,n1,r1,p,'base64');
+    }
 
-		password=scrypt(password,url,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'base64'}
-		)
-
-		username=scrypt(username,password,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'hex'}
-		)
-
-		url=scrypt(url,username,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'base64'}
-		)
-	}
-    
-	else{
+    else{
 
     if(higher===true){
         r1=9;
@@ -56,186 +38,160 @@ function generate_salt(password,username,url,lower=false,higher=false){
     r1=r1+1;
     r2=r2+1;
 
-		password=ucrypt(password,url,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'base64'}
-		)
-
-		username=ucrypt(username,password,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'hex'}
-		)
-
-		url=ucrypt(url,username,{
-			log_n:n1,
-			r:r1,
-			p:p,
-			encoding:'base64'}
-		)
-	}
+    password=ucrypt(password,url,n1,r1,p,'base64');
+    username=ucrypt(username,password,n1,r1,p,'hex');
+    url=ucrypt(url,username,n1,r1,p,'base64');
+    
+    }
     salt=url+password+username;
     salt2=username+url+password;
-	if(lower===true){
-		salt=scrypt(salt,salt2,{
-			log_n:n2,
-			r:r2,
-			p:p2,
-			encoding:'hex'}
-		)
-	}
-	else{
-		salt=ucrypt(salt,salt2,{
-			log_n:n2,
-			r:r2,
-			p:p2,
-			encoding:'hex'}
-		)
-	}
+    if(lower===true){
+        salt=scrypt(salt,salt2,n2,r2,p2,'hex');
+    }
+    else{
+        salt=ucrypt(salt,salt2,n2,r2,p2,'hex');
+    }
     
-    var time2=Date.now();
+    //var time2=Date.now();
     //console.log('gen_salt:'+(time2-time)+'ms');
     return salt;
 }
 function simplify(password,max_len,no_spec,legacy_mode){
-var time=Date.now();
-var str=password;
-var reg=new RegExp("[^0-9]",'g');
-var reg2=new RegExp("[^a-z]","g");
-var password_tmp='';
-var tmp=str.replace(reg,'');
-var cap_char='';
-var str_char='';
-var num='';
-var num_str='';
-var len=tmp.length;
-var chars_order=0;
-var tmp_str='';
-var num_len=0;
-var perc=0;
-var total_len1=0;
-var num_str_len=0;
-password=password.replace(reg2,"");
-var tmp2=password.length;
-var special_str=0;
-password_tmp=password.substr(1);
-password_tmp=no_repeat_strings(password_tmp);
-str_char=password_tmp;
-cap_char=password.substr(0,1).toUpperCase();
-//password=password.substr(0,1).toUpperCase()+password_tmp;
-num=tmp.substr(0,1);
-//password=str.substr(tmp[0],1)+password;
+    var time=Date.now();
+    var str=password;
+    var reg=new RegExp("[^0-9]",'g');
+    var reg2=new RegExp("[^a-z]","g");
+    var password_tmp='';
+    var tmp=str.replace(reg,'');
+    var cap_char='';
+    var str_char='';
+    var num='';
+    var num_str='';
+    var len=tmp.length;
+    var chars_order=0;
+    var tmp_str='';
+    var num_len=0;
+    var perc=0;
+    var total_len1=0;
+    var num_str_len=0;
+    password=password.replace(reg2,"");
+    var tmp2=password.length;
+    var special_str=0;
+    password_tmp=password.substr(1);
+    password_tmp=no_repeat_strings(password_tmp);
+    str_char=password_tmp;
+    cap_char=password.substr(0,1).toUpperCase();
+    //password=password.substr(0,1).toUpperCase()+password_tmp;
+    num=tmp.substr(0,1);
+    //password=str.substr(tmp[0],1)+password;
 
 
-num_str=tmp.substr(1);
-num_str=no_repeat_strings(num_str);
+    num_str=tmp.substr(1);
+    num_str=no_repeat_strings(num_str);
 
-special_str=(parseInt(num_str.substr(0,2)))%3;
-num_len=num_str.length;
-if(no_spec===false){
-	switch(special_str){
-		case 0:
-			tmp_str='$';
-			break;
-		case 1:
-			tmp_str='#';
-			break;
-		case 2:
-			tmp_str='@';
-			break;
-	}
-}
-else{
-	if(num_len>=5){
-		tmp_str=num_str.substr(-1,1);
-	}
-	else{
-		tmp_str=str_char.substr(-1,1);
-	}
-}
-num_str_len=round(max_len/2);
-//total_len=num_len+floor(max_len/2);
-//max_len-((num_str_len-2)+(max_len-num_str_len-1))-num_len
-//15 - (6+7)
- 
-if ( max_len-num_str_len-1 <= num_len ){
-//if(num_len>=5){
-//if(total_len>=max_len){
-	//num_str_len=round((max_len/2));
-	//password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
-	str_char=str_char.substr(0,num_str_len-2);
-	//str_char=str_char.substr(0,(max_len-num_str_len)-1);
-	num_str=num_str.substr(0,(max_len-num_str_len)-1);
-	//num_str=num_str.substr(0,num_str_len-2);
-}
-//else if(num_len >= 5){
-if( (max_len-3 - (( (max_len-num_str_len)-1) )) <= num_len ){
-	str_char=str_char.substr(0,(max_len-num_str_len)-1);
-	num_str=num_str.substr(0,(num_str_len)-2);
-}
-else{
-	total_len1=(max_len-num_len);
-	//password=password.substr(0,max_len-1)+num_str.substr(0);
-	str_char=str_char.substr(0,total_len1-3);
-	num_str.substr(0);
-}
+    special_str=(parseInt(num_str.substr(0,2)))%3;
+    num_len=num_str.length;
+    if(no_spec===false){
+        switch(special_str){
+            case 0:
+                tmp_str='$';
+                break;
+            case 1:
+                tmp_str='#';
+                break;
+            case 2:
+                tmp_str='@';
+                break;
+        }
+    }
+    else{
+        if(num_len>=5){
+            tmp_str=num_str.substr(-1,1);
+        }
+        else{
+            tmp_str=str_char.substr(-1,1);
+        }
+    }
+    num_str_len=round(max_len/2);
+    //total_len=num_len+floor(max_len/2);
+    //max_len-((num_str_len-2)+(max_len-num_str_len-1))-num_len
+    //15 - (6+7)
+
+    if ( max_len-num_str_len-1 <= num_len ){
+    //if(num_len>=5){
+    //if(total_len>=max_len){
+        //num_str_len=round((max_len/2));
+        //password=password.substr(0,num_str_len)+num_str.substr(0,(max_len-num_str_len)-1);
+        str_char=str_char.substr(0,num_str_len-2);
+        //str_char=str_char.substr(0,(max_len-num_str_len)-1);
+        num_str=num_str.substr(0,(max_len-num_str_len)-1);
+        //num_str=num_str.substr(0,num_str_len-2);
+    }
+    //else if(num_len >= 5){
+    if( (max_len-3 - (( (max_len-num_str_len)-1) )) <= num_len ){
+        str_char=str_char.substr(0,(max_len-num_str_len)-1);
+        num_str=num_str.substr(0,(num_str_len)-2);
+    }
+    else{
+        total_len1=(max_len-num_len);
+        //password=password.substr(0,max_len-1)+num_str.substr(0);
+        str_char=str_char.substr(0,total_len1-3);
+        num_str.substr(0);
+    }
 
 
-
+    
     chars_order=(password.charCodeAt(1)+password.charCodeAt(1)+password.charCodeAt(2))%10;
-  //  password='example2';
-   // console.log(chars_order);
-	switch(chars_order){
-		case 0:
-			//A0bcdefg123@
-			password=cap_char+num+str_char+num_str+tmp_str;
-			break;
-		case 1:
-			//@123Abcdefg0
-			password=tmp_str+num_str+cap_char+str_char+num;
-			break;
-		case 2:
-			//0@A123bcdefg
-			password=num+tmp_str+cap_char+num_str+str_char;
-			break;
-		case 3:
-			//A123@bcdefg0
-			password=cap_char+num_str+tmp_str+str_char+num;
-			break;
-		case 4:
-			//123Abcdefg@0
-			password=num_str+cap_char+str_char+tmp_str+num;
-			break;
-		case 5:
-			//123A0bcdefg@
-			password=num_str+cap_char+num+str_char+tmp_str;
-			break;
-		case 6:
-			//bcdefg1230A
-			password=tmp_str+num_str+str_char+num+cap_char;
-			break;
-		case 7:
-			//123@bcdefgA0
-			password=num_str+tmp_str+str_char+cap_char+num;
-			break;
-		case 8:
-			//bcdefg123@A0
-			password=str_char+num_str+tmp_str+cap_char+num;
-			break;
-		case 9:
-			//0bcdefg123@A
-			password=num+str_char+num_str+tmp_str+cap_char;
-			break;
-	}
-//password=password+tmp_str;
-var time2=Date.now();
-console.log('pass '+password);
-console.log('pass_len '+password.length);
-console.log('simplify:'+(time2-time)+'ms');
-return password;
+      //  password='example2';
+       // console.log(chars_order);
+    switch(chars_order){
+        case 0:
+            //A0bcdefg123@
+            password=cap_char+num+str_char+num_str+tmp_str;
+            break;
+        case 1:
+            //@123Abcdefg0
+            password=tmp_str+num_str+cap_char+str_char+num;
+            break;
+        case 2:
+            //0@A123bcdefg
+            password=num+tmp_str+cap_char+num_str+str_char;
+            break;
+        case 3:
+            //A123@bcdefg0
+            password=cap_char+num_str+tmp_str+str_char+num;
+            break;
+        case 4:
+            //123Abcdefg@0
+            password=num_str+cap_char+str_char+tmp_str+num;
+            break;
+        case 5:
+            //123A0bcdefg@
+            password=num_str+cap_char+num+str_char+tmp_str;
+            break;
+        case 6:
+            //bcdefg1230A
+            password=tmp_str+num_str+str_char+num+cap_char;
+            break;
+        case 7:
+            //123@bcdefgA0
+            password=num_str+tmp_str+str_char+cap_char+num;
+            break;
+        case 8:
+            //bcdefg123@A0
+            password=str_char+num_str+tmp_str+cap_char+num;
+            break;
+        case 9:
+            //0bcdefg123@A
+            password=num+str_char+num_str+tmp_str+cap_char;
+            break;
+        }
+    //password=password+tmp_str;
+    var time2=Date.now();
+    console.log('pass '+password);
+    console.log('pass_len '+password.length);
+    console.log('simplify:'+(time2-time)+'ms');
+    return password;
 
 }
 
@@ -252,47 +208,47 @@ function generate_pass(dbg=false){
     var password='';
     var url='';
     var result='';
-	var time3=0;
-	var time2=0;
-	var time=0;
-	var time4=0;
+    var time3=0;
+    var time2=0;
+    var time=0;
+    var time4=0;
     var warning='';
     var p=1;
     var r=10;
     var n=15;
-	var no_spec=select_by_id('no_spec').checked;
+    var no_spec=select_by_id('no_spec').checked;
     var legacy_mode=select_by_id('no_legacy').checked;
-	var higher_security=select_by_id('no_security').checked;
+    var higher_security=select_by_id('no_security').checked;
     var score=0;
     var score_progress=0;
     var warn_txt='';
     var color='';
-	//password special strings will be one of $#@
+    //password special strings will be one of $#@
     url=select_by_id('site_name').value;
-	password=select_by_id('password').value;
-	username=select_by_id('username').value;
-	max_len=select_by_id('length').value;
+    password=select_by_id('password').value;
+    username=select_by_id('username').value;
+    max_len=select_by_id('length').value;
     inputs[0]=username;inputs[1]=url;
-	if(max_len === ''){
-		max_len=14;
-		select_by_id('length').value=14;
-	}
+    if(max_len === ''){
+        max_len=14;
+        select_by_id('length').value=14;
+    }
     if(password !== ''){
         tmp=password.length;
         password=password.substr(0,1).toUpperCase()+password.substr(1,tmp);
         select_by_id('password').value=password;
     }
-	if(username !== ''){
-		username=username.substr(0,1).toUpperCase()+username.substr(1);
-		select_by_id('username').value=username;
-	}
-	if(url !==''){
-		url=url.substr(0,1).toUpperCase()+url.substr(1);
-		select_by_id('site_name').value=url;
-	}
-	tmp='';
+    if(username !== ''){
+        username=username.substr(0,1).toUpperCase()+username.substr(1);
+        select_by_id('username').value=username;
+    }
+    if(url !==''){
+        url=url.substr(0,1).toUpperCase()+url.substr(1);
+        select_by_id('site_name').value=url;
+    }
+    tmp='';
     result=zxcvbn(password,inputs);
-	tmp=result.feedback.warning;
+    tmp=result.feedback.warning;
 
     warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
 
@@ -318,6 +274,7 @@ function generate_pass(dbg=false){
         color='green';
         warn_txt='Perfect'
     }
+
     select_by_id('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
     select_by_id('orig_score_txt').innerHTML=score;
     score_progress=((score)*23.75);
@@ -330,7 +287,7 @@ function generate_pass(dbg=false){
         select_by_id('feedback').innerHTML='Do not use your username or site name in the password! '+warning;
     }
     else if(result.score<=2){
-	    select_by_id('feedback').innerHTML=warning;
+        select_by_id('feedback').innerHTML=warning;
     }
     else{
         select_by_id('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
@@ -338,7 +295,7 @@ function generate_pass(dbg=false){
 
     time=Date.now();
     var salt=generate_salt(password,username,url,legacy_mode);
-	time4=Date.now();
+    time4=Date.now();
     /* 
     * using ~380x guesses as SSE2 scrypt running on CPU whereas the state of the art gpu at the time can only
     * do ~20x as fast as my own GPU which is itself only ~1.5x as fast as the cpu. So I am doing ~13x the rate
@@ -348,19 +305,19 @@ function generate_pass(dbg=false){
     * own gpu as it's way too damned slow to test.
     */
     if(legacy_mode===true){
-	    select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
+        select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
         password=scrypt(password,salt,16,6,2,32,'binary');
-		
+        
     }
-	else if(higher_security===false){
-		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
-		password=ucrypt(password,salt,16,12,1,32,'binary');
+    else if(higher_security===false){
+        select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
+        password=ucrypt(password,salt,16,12,1,32,'binary');
         select_by_id('length').value=14;
-	}
+    }
     else{
-		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
+        select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
         max_len++;
-		password=ucrypt(password,salt,18,16,1,32,'binary');
+        password=ucrypt(password,salt,18,16,1,32,'binary');
     }
     time3=Date.now();
 
@@ -373,8 +330,6 @@ function generate_pass(dbg=false){
     select_by_id('result').value=password;
     time2=Date.now();
     var total=time2-time;
-
-
 
 
     time=Date.now();
@@ -403,11 +358,10 @@ modal_toggle('_progress');
 
 select_by_id('generate_pass').disabled=false
 
-	if(dbg===true){
+    if(dbg===true){
         console.log(result.guesses);
         console.log(tmp);        
-
-		alert('total new values:'+total);
+        alert('total new values:'+total);
         console.log('scrypt time:'+(time3-time4)+'ms');
         console.log('total:'+((time2-time))+'ms');
         console.log('b '+score);
@@ -416,46 +370,47 @@ select_by_id('generate_pass').disabled=false
     }
 
 return 0;
+
 }
 
 
 
 function percent_update(percent){
-	var completed_perc=select_by_id('completed_perc');
-	var perc_text=select_by_id('perc_text');
-	var perc_done=select_by_id('perc_done');
-	percent=percent+'%';
-	
-	perc_text.innerHTML=percent;
-	perc_done.innerHTML=percent;
-	completed_perc.style.width=percent;
+    var completed_perc=select_by_id('completed_perc');
+    var perc_text=select_by_id('perc_text');
+    var perc_done=select_by_id('perc_done');
+    percent=percent+'%';
+    
+    perc_text.innerHTML=percent;
+    perc_done.innerHTML=percent;
+    completed_perc.style.width=percent;
 }
 
 function modal_toggle(id){
-	var el=select_by_id('modal'+id);
-	var visible=el.style.visibility;
-	if(visible==="visible"){
-		el.style.visibility='hidden';
-	}
-	else{
-		el.style.visibility='visible';
-	}
-	return 0;
+    var el=select_by_id('modal'+id);
+    var visible=el.style.visibility;
+    if(visible==="visible"){
+        el.style.visibility='hidden';
+    }
+    else{
+        el.style.visibility='visible';
+    }
+    return 0;
 }
 
 function no_spec_check(){
-	var no_spec=select_by_id('no_spec');
-	if(no_spec.checked===true){
-		modal_toggle('_spec');
-	}
-	return 0;
+    var no_spec=select_by_id('no_spec');
+    if(no_spec.checked===true){
+        modal_toggle('_spec');
+    }
+    return 0;
 }
 function no_legacy_check(){
-	var no_legacy=select_by_id('no_legacy');
-	if(no_legacy.checked===true){
-		modal_toggle('_legacy');
-	}
-	return 0;
+    var no_legacy=select_by_id('no_legacy');
+    if(no_legacy.checked===true){
+        modal_toggle('_legacy');
+    }
+    return 0;
 }
 function change_security_mode(){
     var high_security=select_by_id('no_security');
@@ -465,23 +420,23 @@ function change_security_mode(){
     return 0;
 }
 function confirmed(val,id){
-	var el=select_by_id('no'+id);
-	el.checked=val;
-	modal_toggle(id);
-	return 0;
+    var el=select_by_id('no'+id);
+    el.checked=val;
+    modal_toggle(id);
+    return 0;
 }
 
 function generate_wrapper(dbg=false){
-	setTimeout(function(){select_by_id('modal_progress').style.visibility='visible'},0);
+    setTimeout(function(){select_by_id('modal_progress').style.visibility='visible'},0);
     setTimeout(function(){select_by_id('generate_pass').disabled=true},1);
-	var interval=setTimeout(function(){percent_update(70)},2);
-	setTimeout(function(){generate_pass(dbg)},45);
+    var interval=setTimeout(function(){percent_update(70)},2);
+    setTimeout(function(){generate_pass(dbg)},45);
 }
 
 function score_password(){
     var legacy_mode=select_by_id('no_legacy').checked;
     var tmp='';
-	var warn_txt='';
+    var warn_txt='';
     var warning='';
     var result='';
     var inputs=[];
@@ -489,24 +444,24 @@ function score_password(){
     var score_progress=0;
     var url=select_by_id('site_name').value;
     var password=select_by_id('password').value;
-	var username=select_by_id('username').value;
-	var max_len=select_by_id('length').value;
+    var username=select_by_id('username').value;
+    var max_len=select_by_id('length').value;
     var color='';
     result=zxcvbn(password,inputs);
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);
         select_by_id('password').value=password;
     }
-	if(username !== ''){
-		username=username.substr(0,1).toUpperCase()+username.substr(1);
-		select_by_id('username').value=username;
-	}
-	if(url !==''){
-		url=url.substr(0,1).toUpperCase()+url.substr(1);
-		select_by_id('site_name').value=url;
-	}
+    if(username !== ''){
+        username=username.substr(0,1).toUpperCase()+username.substr(1);
+        select_by_id('username').value=username;
+    }
+    if(url !==''){
+        url=url.substr(0,1).toUpperCase()+url.substr(1);
+        select_by_id('site_name').value=url;
+    }
     score=result.score;
-	tmp=result.feedback.warning;
+    tmp=result.feedback.warning;
     if(score===0){
         color='red';
         warn_txt='Unsafe'
@@ -541,12 +496,12 @@ function score_password(){
     }
     else if(result.score<=2){
         console.log('hit');
-	    select_by_id('feedback').innerHTML=warning;
+        select_by_id('feedback').innerHTML=warning;
     }
     else{
         select_by_id('feedback').innerHTML='Score is 3 or above and thus suggestions not necessary';
     }
     //for scoring password I am using in between as I don't know how they're using it will show up as different but still it should be fine.
-        select_by_id('orig_time').innerHTML=display_time(result.guesses/3000);
+    sselect_by_id('orig_time').innerHTML=display_time(result.guesses/3000);
 
 }
