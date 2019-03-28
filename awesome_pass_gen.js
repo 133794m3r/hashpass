@@ -292,8 +292,7 @@ function generate_pass(dbg=false){
 	tmp='';
     result=zxcvbn(password,inputs);
 	tmp=result.feedback.warning;
-	console.log(result.guesses);
-    console.log(tmp);
+
     warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
 
     score=result.score;
@@ -360,32 +359,29 @@ function generate_pass(dbg=false){
     else{
 		select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
         max_len++;
-		password=ucrypt(password,salt,17,14,1,32,'binary');
+		password=ucrypt(password,salt,18,16,1,32,'binary');
     }
     time3=Date.now();
-    console.log('scrypt time:'+(time3-time4)+'ms');
+
 
     //password=hex_decode(password);
     password=base32_encode(password,false);
-    console.log('scrypt:'+password);
+
     password=simplify(password,max_len,no_spec,legacy_mode);
 //    password=password.substr(0,max_len);
     select_by_id('result').value=password;
     time2=Date.now();
     var total=time2-time;
-    console.log('total:'+((time2-time))+'ms');
 
-	if(dbg===true){
-		alert('total new values:'+total);
-	}
+
+
 
     time=Date.now();
     result=zxcvbn(password);
     time2=Date.now();
-    console.log('zxcvbn:'+((time2-time))+'ms');
+
 
     score=result.score;
-    console.log('b '+score);
     color='green';
 
     score_progress=((score)*23.75);
@@ -406,7 +402,19 @@ modal_toggle('_progress');
 
 select_by_id('generate_pass').disabled=false
 
-return;
+	if(dbg===true){
+        console.log(result.guesses);
+        console.log(tmp);        
+
+		alert('total new values:'+total);
+        console.log('scrypt time:'+(time3-time4)+'ms');
+        console.log('total:'+((time2-time))+'ms');
+        console.log('b '+score);
+        console.log('zxcvbn:'+((time2-time))+'ms');
+            
+    }
+
+return 0;
 }
 
 
