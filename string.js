@@ -5,13 +5,13 @@
 * Licensed AGPLv3 or Later
 * version 2.0.0b
 */
+"use strict"
 function base32_encode_old(string){
  //var alphabet = "ABCDEFGHIJKLMNOPQRSTUVWXYZ234567";
     var alphabet = 'ybndrfg8ejkmcpqxot1uwisza345h769';
     var output='';
     var iter= Math.floor((string.length / 5));
     var leftover = string.length % 5;
-    var part1=0;
     var part1=0;
     var part2=0;
     var part3=0;
@@ -25,6 +25,8 @@ function base32_encode_old(string){
     var str3='';
     var str4='';
     var str5='';
+    var i_5=0;
+    var i=0;
     var padding='';
     if (leftover != 0) {
        //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
@@ -45,7 +47,7 @@ function base32_encode_old(string){
            | (str3 >> 4));
         part5=( ((str3 & 0x0F) << 1)
            | (str4 >> 7));
-        parts6=( ((str4 & 0x7F) >> 2));
+        part6=( ((str4 & 0x7F) >> 2));
         part7=( ((str4 & 0x03) << 3)
            | (str5 >> 5));
         part8=( ((str5 & 0x1F) ));
@@ -79,7 +81,6 @@ function base32_encode(data,string=true) {
     var iter= Math.floor((data.length / 5));
     var leftover = data.length % 5;
     var part1=0;
-    var part1=0;
     var part2=0;
     var part3=0;
     var part4=0;
@@ -93,6 +94,8 @@ function base32_encode(data,string=true) {
     var str4='';
     var str5='';
     var padding='';
+    var i_5=0;
+    var i=0;
     if (leftover != 0) {
        //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
        iter += 1;
@@ -114,7 +117,7 @@ function base32_encode(data,string=true) {
            | (str3 >> 4));
         part5=( ((str3 & 0x0F) << 1)
            | (str4 >> 7));
-        parts6=( ((str4 & 0x7F) >> 2));
+        part6=( ((str4 & 0x7F) >> 2));
         part7=( ((str4 & 0x03) << 3)
            | (str5 >> 5));
         part8=( ((str5 & 0x1F) ));
@@ -144,7 +147,7 @@ else{
            | (str3 >> 4));
         part5=( ((str3 & 0x0F) << 1)
            | (str4 >> 7));
-        parts6=( ((str4 & 0x7F) >> 2));
+        part6=( ((str4 & 0x7F) >> 2));
         part7=( ((str4 & 0x03) << 3)
            | (str5 >> 5));
         part8=( ((str5 & 0x1F) ));
@@ -260,6 +263,7 @@ function no_repeat_strings(string) {
   var tmp_str_len = 0;
   var j = 0;
   var l = 0;
+  var ins_place=0;
   while (repeat_found === 1) {
     if ((i > strlen) && (tmp_str_len >= 1) && (j <= 100)) {
         l =l+i+j;
@@ -344,7 +348,7 @@ else
 };
 
 function b64_decode(str){
-    var chr0, chr1, chr2,chr3, rez = '', arr = [], i = 0, j = 0, code = 0,k=0;;
+    var chr0, chr1, chr2,chr3,chr4, rez = '', arr = [], i = 0, j = 0, code = 0,k=0;;
 	var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789+/=';
     var strlen=str.length;
     var bits=0;

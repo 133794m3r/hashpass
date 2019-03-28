@@ -5,7 +5,7 @@
 * Licensed AGPLv3 or Later
 * version 2.0.1
 */
-perc=0;
+var perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
     var time=Date.now();
     var salt='';
@@ -114,6 +114,9 @@ var len=tmp.length;
 var chars_order=0;
 var tmp_str='';
 var num_len=0;
+var perc=0;
+var total_len1=0;
+var num_str_len=0;
 password=password.replace(reg2,"");
 var tmp2=password.length;
 var special_str=0;
@@ -253,7 +256,6 @@ function generate_pass(dbg=false){
 	var time=0;
 	var time4=0;
     var warning='';
-    var tmp='';
     var p=1;
     var r=10;
     var n=15;
@@ -262,8 +264,8 @@ function generate_pass(dbg=false){
 	var higher_security=select_by_id('no_security').checked;
     var score=0;
     var score_progress=0;
-    var warning='';
     var warn_txt='';
+    var color='';
 	//password special strings will be one of $#@
     url=select_by_id('site_name').value;
 	password=select_by_id('password').value;
@@ -480,6 +482,7 @@ function score_password(){
     var password=select_by_id('password').value;
 	var username=select_by_id('username').value;
 	var max_len=select_by_id('length').value;
+    var color='';
     result=zxcvbn(password,inputs);
     if(password !== ''){
         password=password.substr(0,1).toUpperCase()+password.substr(1);

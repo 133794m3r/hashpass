@@ -5,6 +5,7 @@
 * Licensed AGPLv3 or Later
 * version 2.0a
 */
+"use strict"
 function scrypt(password, salt, log_n, r, p,dk_len, encoding) {
   'use strict';
 
@@ -46,9 +47,7 @@ var K = new Uint32Array([
         //state[5] = 0x9b05688c;
         //state[6] = 0x1f83d9ab;
         //state[7] = 0x5be0cd19;
-        var buffer_length = 0;
-        var bytes_hashed = 0;
-        var finished = false;
+
 
 
 function hash_blocks(w, v, p, pos, len) {
@@ -1619,8 +1618,8 @@ function hash_blocks(w, v, p, pos, len) {
 
 
 // Hash implements SHA256 hash algorithm.
-function update(data,data_len){
-    if(data_len === void 0){data_len=data.length}
+function update(data,data_len=0){
+    if(data_len ===  0){data_len=data.length}
     if(finished){
         throw new Error("SHA256: CAN'T UPDATE FINISHED");
     }
@@ -1630,7 +1629,7 @@ function update(data,data_len){
     if(buffer_length > 0){
         while (buffer_length < 64 && data_len > 0){
             buffer[buffer_length++] = data[data_pos++];
-            dataLength--;
+            data_len--;
         }
 
         if(buffer_length === 64){
@@ -1661,7 +1660,7 @@ function finish(out){
         var tmp=pad_len-8;
         i=left+1;
         buffer[left] = 0x80;
-        for (i;i<tmp; i++) {
+        for (;i<tmp; i++) {
             buffer[i]=0;
         }
         
