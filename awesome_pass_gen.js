@@ -2,9 +2,10 @@
 * Awesome Password Generator aka HashPass
 * Copyright (c) 133794m3r aka Macarthur Inbody 2011-2019
 * https://github.com/133794m3r/hashpass
-* Licensed AGPLv3 or Later
+* Licensed GNU AGPLv3 or Later
 * version 2.0.1
 */
+"use strict"
 var perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
     var time=Date.now();
