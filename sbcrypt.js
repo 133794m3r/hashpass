@@ -546,7 +546,7 @@ function bcrypt_one_iter(password,salt){
 
 //lr to lr={l:0,r:0};
         //18i 0
-        sw = streamtoword(key, 0);
+        sw = streamtoword(key, 0,key_len);
         //offp = sw.offp,
         P[0] = P[0] ^ sw.key;
 
@@ -638,7 +638,7 @@ function bcrypt_one_iter(password,salt){
         offp = 0;
 
         //9i 0
-        sw = streamtoword(data, 0);
+        sw = streamtoword(data, 0,data_len);
        // offp = sw.offp,
         lr[0] ^= sw.key,
         sw = streamtoword(data, sw.offp,data_len);
@@ -847,9 +847,9 @@ var K = new Uint32Array([
         //state[5] = 0x9b05688c;
         //state[6] = 0x1f83d9ab;
         //state[7] = 0x5be0cd19;
-        var buffer_length = 0;
-        var bytes_hashed = 0;
-        var finished = false;
+
+
+
 
 
 function hash_blocks(w, v, p, pos, len) {
@@ -2401,8 +2401,11 @@ function hash_blocks(w, v, p, pos, len) {
 
 
 // Hash implements SHA256 hash algorithm.
-function update(data,data_len){
-    if(data_len === void 0){data_len=data.length}
+function update(data,data_len=0){
+
+    if(data_len === 0){
+        data_len=data.length
+    }
     if(finished){
         throw new Error("SHA256: CAN'T UPDATE FINISHED");
     }
@@ -2412,7 +2415,7 @@ function update(data,data_len){
     if(buffer_length > 0){
         while (buffer_length < 64 && data_len > 0){
             buffer[buffer_length++] = data[data_pos++];
-            dataLength--;
+            data_len--;
         }
 
         if(buffer_length === 64){
@@ -3006,7 +3009,6 @@ x15 ^= u<<18 | u>>>14;
     var iter= Math.floor((data.length / 5));
     var leftover = data.length % 5;
     var part1=0;
-    var part1=0;
     var part2=0;
     var part3=0;
     var part4=0;
@@ -3019,6 +3021,7 @@ x15 ^= u<<18 | u>>>14;
     var str3='';
     var str4='';
     var str5='';
+    var i_5=0;
     var padding='';
     if (leftover != 0) {
        //for (var i = 0; i < (5-leftover); i++) { s += '\x00'; }
@@ -3041,7 +3044,7 @@ x15 ^= u<<18 | u>>>14;
            | (str3 >> 4));
         part5=( ((str3 & 0x0F) << 1)
            | (str4 >> 7));
-        parts6=( ((str4 & 0x7F) >> 2));
+        part6=( ((str4 & 0x7F) >> 2));
         part7=( ((str4 & 0x03) << 3)
            | (str5 >> 5));
         part8=( ((str5 & 0x1F) ));
@@ -3071,7 +3074,7 @@ else{
            | (str3 >> 4));
         part5=( ((str3 & 0x0F) << 1)
            | (str4 >> 7));
-        parts6=( ((str4 & 0x7F) >> 2));
+        part6=( ((str4 & 0x7F) >> 2));
         part7=( ((str4 & 0x03) << 3)
            | (str5 >> 5));
         part8=( ((str5 & 0x1F) ));
@@ -3104,8 +3107,9 @@ else{
     var arr = [];
     var s_len=s.length;
     var arr_len=0;
+    var c=0;
     for (var i = 0; i < s_len; i++) {
-        var c = s.charCodeAt(i);
+        c = s.charCodeAt(i);
         if (c < 128) {
             arr[arr_len++]=c;
         } else if (c > 127 && c < 2048) {
@@ -3224,7 +3228,7 @@ else{
       block_xor(XY, xi, V, j*(r_32), r_32);
       block_mix(tmp, XY, xi, yi, r);
 
-      j = integerify(XY, yi, r) & (N_1);
+      j = integerify(XY, yi) & (N_1);
       block_xor(XY, yi, V, j*(r_32), r_32);
       block_mix(tmp, XY, yi, xi, r);
     }

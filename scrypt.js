@@ -39,10 +39,11 @@ function SHA256(m) {
     }
 */
     function blocks(p,p_len) {
-      var off = 0, len = p_len
+      var off = 0, len = p_len;
+      var a=0,b=0,c=0,d=0,e=0,f=0,g=0,h=0;
+      var  u=0, i=0, j=0, t1=0, t2=0;
       while (len >= 64) {
-        var a = h0, b = h1, c = h2, d = h3, e = h4, f = h5, g = h6, h = h7,
-            u, i, j, t1, t2;
+        a = h0, b = h1, c = h2, d = h3, e = h4, f = h5, g = h6, h = h7;
 
         for (i = 0; i < 16; i++) {
           j = off + i*4;
@@ -583,7 +584,7 @@ x15 ^= u<<18 | u>>>14;
 
     var len = p.length,
         arr = [],
-        arr_len=0;
+        arr_len=0,
         i = 0,
         a, b, c, t;
 
@@ -681,7 +682,7 @@ x15 ^= u<<18 | u>>>14;
   }
   B = PBKDF2_HMAC_SHA256_OneIter(password, salt, p*128*r);
 
-  var xi = 0, yi = 32 * r;
+  var xi = 0, yi = 32 * r,i=0;
 
   function smixStart(pos) {
     for (var i = 0; i < 32*r; i++) {
@@ -714,7 +715,8 @@ x15 ^= u<<18 | u>>>14;
   }
 
   function smixFinish(pos) {
-    for (var i = 0; i < 32*r; i++) {
+    var i=0;
+    for (i = 0; i < 32*r; i++) {
       var j = XY[xi+i];
       B[pos + i*4 + 0] = (j>>>0)  & 0xff;
       B[pos + i*4 + 1] = (j>>>8)  & 0xff;
@@ -723,31 +725,27 @@ x15 ^= u<<18 | u>>>14;
     }
   }
 
-  function getResult(enc) {
-      var result = PBKDF2_HMAC_SHA256_OneIter(password, B, dkLen);
-      if (enc === 'base64')
-        result=bytesToBase64(result);
-      else if (enc === 'hex'){
-        result=bytesToHex(result);
-      }
-      else if (enc === 'binary')
-        result=new Uint8Array(result);
-      else{
-        result=bytesToHex(result);
-      }
-      return result;
-  }
+
 
   // Blocking variant.
-  function calculateSync() {
-    for (var i = 0; i < p; i++) {
+
+    for (i = 0; i < p; i++) {
       smixStart(i*128*r);
       smixStep1(0, N);
       smixStep2(0, N);
       smixFinish(i*128*r);
     }
-    return getResult(encoding);
-  }
-
-    return calculateSync();
+    
+    PBKDF2_HMAC_SHA256_OneIter(password, B, dkLen);
+      if (encoding === 'base64')
+        result=bytesToBase64(result);
+      else if (encoding === 'hex'){
+        result=bytesToHex(result);
+      }
+      else if (encoding === 'binary')
+        result=new Uint8Array(result);
+      else{
+        result=bytesToHex(result);
+      }
+      return result;
 }
