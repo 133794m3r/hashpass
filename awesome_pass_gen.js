@@ -8,7 +8,7 @@
 "use strict"
 var perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
-    //var time=Date.now();
+    var time=Date.now();
     var salt='';
     var salt2='';
     var n1=7;
@@ -21,9 +21,9 @@ function generate_salt(password,username,url,lower=false,higher=false){
 
 
     if(lower==true && higher === false){
-        password=scrypt(password,url,n1,r1,p,'base64');
-        username=scrypt(username,password,n1,r1,p,'hex');
-        url=scrypt(url,username,n1,r1,p,'base64');
+        password=scrypt(password,url,n1,r1,p,32,'base64');
+        username=scrypt(username,password,n1,r1,p,32,'hex');
+        url=scrypt(url,username,n1,r1,p,32,'base64');
     }
 
     else{
@@ -31,35 +31,35 @@ function generate_salt(password,username,url,lower=false,higher=false){
     if(higher===true){
         r1=9;
         n1=9;
-        n2=12;
-        r2=14;
+        n2=13;
+        r2=15;
     }
     
     r1=r1+1;
     r2=r2+1;
 
-    password=ucrypt(password,url,n1,r1,p,'base64');
-    username=ucrypt(username,password,n1,r1,p,'hex');
-    url=ucrypt(url,username,n1,r1,p,'base64');
+    password=ucrypt(password,url,n1,r1,p,32,'base64');
+    username=ucrypt(username,password,n1,r1,p,32,'hex');
+    url=ucrypt(url,username,n1,r1,p,32,'base64');
     
     }
     salt=url+password+username;
     salt2=username+url+password;
     if(lower===true){
-        salt=scrypt(salt,salt2,n2,r2,p2,'hex');
+        salt=scrypt(salt,salt2,n2,r2,p2,32,'hex');
     }
     else{
-        salt=ucrypt(salt,salt2,n2,r2,p2,'hex');
+        salt=ucrypt(salt,salt2,n2,r2,p2,32,'hex');
     }
     
-    //var time2=Date.now();
-    //console.log('gen_salt:'+(time2-time)+'ms');
+    var time2=Date.now();
+    console.log('gen_salt:'+(time2-time)+'ms');
     return salt;
 }
 function simplify(password,max_len,no_spec,legacy_mode){
     var time=Date.now();
     var str=password;
-    var reg=new RegExp("[^0-9]",'g');
+    var reg=new RegExp("[^0-9]","g");
     var reg2=new RegExp("[^a-z]","g");
     var password_tmp='';
     var tmp=str.replace(reg,'');
@@ -128,7 +128,7 @@ function simplify(password,max_len,no_spec,legacy_mode){
         //num_str=num_str.substr(0,num_str_len-2);
     }
     //else if(num_len >= 5){
-    if( (max_len-3 - (( (max_len-num_str_len)-1) )) <= num_len ){
+    else if( (max_len-3 - (( (max_len-num_str_len)-1) )) <= num_len ){
         str_char=str_char.substr(0,(max_len-num_str_len)-1);
         num_str=num_str.substr(0,(num_str_len)-2);
     }
@@ -317,7 +317,7 @@ function generate_pass(dbg=false){
     else{
         select_by_id('orig_time').innerHTML=display_time(result.guesses/1300);
         max_len++;
-        password=ucrypt(password,salt,18,16,1,32,'binary');
+        password=ucrypt(password,salt,17,16,1,32,'binary');
     }
     time3=Date.now();
 
@@ -431,6 +431,7 @@ function generate_wrapper(dbg=false){
     setTimeout(function(){select_by_id('generate_pass').disabled=true},1);
     var interval=setTimeout(function(){percent_update(70)},2);
     setTimeout(function(){generate_pass(dbg)},45);
+    return 0;
 }
 
 function score_password(){
@@ -503,5 +504,5 @@ function score_password(){
     }
     //for scoring password I am using in between as I don't know how they're using it will show up as different but still it should be fine.
     sselect_by_id('orig_time').innerHTML=display_time(result.guesses/3000);
-
+    return 0;
 }
