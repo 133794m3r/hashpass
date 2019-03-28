@@ -1,6 +1,6 @@
 /*
 * Awesome Password Generator aka HashPass
-* Copyright (c) Macarthur Inbody 2011-2017
+* Copyright (c) 133794m3r aka Macarthur Inbody 2011-2019
 * https://github.com/133794m3r/hashpass
 * Licensed AGPLv3 or Later
 * version 2.0.1
