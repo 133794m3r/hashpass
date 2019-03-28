@@ -1,3 +1,9 @@
+/*
+* Awesome Password Generator aka HashPass
+* Copyright (c) Macarthur Inbody 2011-2017
+* https://github.com/133794m3r/hashpass
+* AGPLv3
+*/
 "use strict"
 function generate_test_data(half_strength=false){
     var usernames=new Array('Test','1234','Username','User');

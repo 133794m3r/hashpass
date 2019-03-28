@@ -1,9 +1,10 @@
 /*
 * Awesome Password Generator aka HashPass
-* Copyright (c) 133794m3r aka Macarthur Inbody 2011-2019
+* Copyright (c) Macarthur Inbody 2011-2017
 * https://github.com/133794m3r/hashpass
-*AGPLv3
+* AGPLv3
 */
+"use strict"
 function pow(value,power){
   var vals=Math.pow(value,power);
     return vals;

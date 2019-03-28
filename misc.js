@@ -1,10 +1,10 @@
 /*
 * Awesome Password Generator aka HashPass
-* Copyright (c) 133794m3r aka Macarthur Inbody 2011-2019
+* Copyright (c) Macarthur Inbody 2011-2017
 * https://github.com/133794m3r/hashpass
-* Licensed AGPLv3 or Later
-* version 2.0.0b
+* AGPLv3
 */
+"use strict"
 function permute(arr) {
   var N = arr.length;
   var directions = [
