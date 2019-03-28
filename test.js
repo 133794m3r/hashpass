@@ -38,6 +38,7 @@ function generate_test_data(half_strength=false){
     JSON.stringify(salts)+
     '<br />final_hashes='+JSON.stringify(final_hashes);
     select_by_id('results').innerHTML=str;
+    return 0;
 }
 
 function verify_test_data(half_strength=true){
@@ -95,6 +96,7 @@ function verify_test_data(half_strength=true){
     total=round((end-start),2);
     console.log('no_errors');
     console.log('time:'+total+'s');
+    return 0;
 }
 /*
  * TODO:
