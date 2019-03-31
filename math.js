@@ -103,9 +103,9 @@ function standard_deviation(array,mean){
  * 
  * Generates a random number between two numbers AND returns a float with the precision that is defined.
  * 
- * @param   min 	integer minimum value
- * @param   max		integer maximum value
- * @param   precision	integer digits of precision
+ * @param   min     integer minimum value
+ * @param   max        integer maximum value
+ * @param   precision    integer digits of precision
  * @return  float the value   
  */
 function randfloat(min,max,precision){
@@ -133,13 +133,13 @@ function sum(initial_value,start,end,formula){
 
 function num_format(number){
   var str=number+'';
-	var x = str.split('.');
-	var x1 = x[0];
-	var x2 = x.length > 1 ? '.' + x[1] : '';
-	var rgx = /(\d+)(\d{3})/;
-	while (rgx.test(x1)) {
-		x1 = x1.replace(rgx, '$1' + ',' + '$2');
-	}
+    var x = str.split('.');
+    var x1 = x[0];
+    var x2 = x.length > 1 ? '.' + x[1] : '';
+    var rgx = /(\d+)(\d{3})/;
+    while (rgx.test(x1)) {
+        x1 = x1.replace(rgx, '$1' + ',' + '$2');
+    }
   return x1+x2;
 }
 

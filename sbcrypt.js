@@ -354,25 +354,25 @@ function bcrypt_one_iter(password,salt){
         var word=0;
 
         word = data[off++]&0xff;
-//		off = off % data_len;
-		if(off>=data_len){
+//        off = off % data_len;
+        if(off>=data_len){
             off=0;
         }
         //2
-		word = (word << 8) | (data[off++] & 0xff);
-		//off = off % data_len;
-		if(off>=data_len){
+        word = (word << 8) | (data[off++] & 0xff);
+        //off = off % data_len;
+        if(off>=data_len){
             off=0;
         }
         //3
-		word = (word << 8) | (data[off++] & 0xff);
-		//off = off % data_len;
-		if(off>=data_len){
+        word = (word << 8) | (data[off++] & 0xff);
+        //off = off % data_len;
+        if(off>=data_len){
             off=0;
         }
         //4
-		word = (word << 8) | (data[off++] & 0xff);
-		if(off>=data_len){
+        word = (word << 8) | (data[off++] & 0xff);
+        if(off>=data_len){
             off=0;
         }
 //        offp=off;
@@ -3028,7 +3028,7 @@ x15 ^= u<<18 | u>>>14;
        iter += 1;
     }
 
-	if(string===true){
+    if(string===true){
         for (i = 0; i < iter; i++) {
         i_5=i*5;
         str1=data.charCodeAt(i_5);
@@ -3057,7 +3057,7 @@ x15 ^= u<<18 | u>>>14;
         alphabet.charAt(part7)+
         alphabet.charAt(part8);
     }
-	}
+    }
 else{
         for (i = 0; i < iter; i++) {
         i_5=i*5;
