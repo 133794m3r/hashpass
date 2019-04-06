@@ -33,43 +33,43 @@ function permute(arr) {
     }
     return res;
   }
-  var makeResult = typeof arr !== 'string' ? result : function () {
+  var makeresult = typeof arr !== 'string' ? result : function () {
     return result().join('');
   };
-  return function () {
+
     var i,
-    maxIndex,
-    moveTo;
+    max_index,
+    move_to;
     for (i = 0; i < N; i += 1) {
       if (directions[i] !== 0) {
-        maxIndex = i;
+        max_index = i;
         break;
       }
     }
-    if (maxIndex === undefined) {
+    if (max_index === undefined) {
       return undefined;
     }
-    for (i = maxIndex + 1; i < N; i += 1) {
-      if (directions[i] !== 0 && indices[i] > indices[maxIndex]) {
-        maxIndex = i;
+    for (i = max_index + 1; i < N; i += 1) {
+      if (directions[i] !== 0 && indices[i] > indices[max_index]) {
+        max_index = i;
       }
     }
-    moveTo = maxIndex + directions[maxIndex];
-    swap(maxIndex, moveTo);
-    if (moveTo === 0 || moveTo === N - 1 || indices[moveTo + directions[moveTo]] > indices[moveTo]) {
-      directions[moveTo] = 0;
+    move_to = max_index + directions[max_index];
+    swap(max_index, move_to);
+    if (move_to === 0 || move_to === N - 1 || indices[move_to + directions[move_to]] > indices[move_to]) {
+      directions[move_to] = 0;
     }
     for (i = 0; i < N; i += 1) {
-      if (indices[i] > indices[moveTo]) {
-        if (i < moveTo) {
+      if (indices[i] > indices[move_to]) {
+        if (i < move_to) {
           directions[i] = 1;
         } else {
           directions[i] = - 1;
         }
       }
     }
-    return makeResult();
-  };
+    return make_result();
+
 }
 
 function select_by_id(element_id){
