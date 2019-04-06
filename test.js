@@ -5,6 +5,55 @@
 * AGPLv3
 */
 "use strict"
+function get_combinations(arrays, combine = [], final_list = [],final_list_len=0) {
+    if (!arrays.length) {
+        final_list.push(combine);
+    } else {
+        arrays[0].forEach(now => {
+            let next_arrs = arrays.slice(1);
+            let copy = combine.slice();
+            copy.push(now);
+            get_combinations(next_arrs, copy, final_list,final_list_len);
+        });
+    }
+    return final_list;
+}
+function generate_index(){
+    var indexes='';
+    var i=0;
+    var j=0;
+    var strings=4;
+    var variations=3;
+    var tmp_str='';
+    var arrays=new Array(3);
+    tmp_str=''
+    var tmp_str2='[';
+    var tmp_chr='';
+    for(i=0;i<variations;i++){
+        tmp_str='[';
+        for(j=0;j<strings;j++){
+            if(j<strings && j>=1){
+                tmp_chr=',';
+            }
+            else{
+                tmp_chr='';
+            }
+            tmp_str=tmp_str+tmp_chr+j;
+        }
+        tmp_str=tmp_str+']'
+        if(i < (strings-2) ){
+            tmp_chr=',';
+        }
+        else{
+            tmp_chr='';
+        }
+        tmp_str2=tmp_str2+tmp_str+tmp_chr;
+    }
+    tmp_str2=tmp_str2+']';
+    var array=JSON.parse(tmp_str2);
+    var result = get_combinations(array);
+    result='var indexes='+JSON.stringify(result)+'';
+}
 function generate_test_data(half_strength=false){
     var usernames=new Array('Test','1234','Username','User');
     var passwords=new Array('Password','Hunter2','Test','Qwerty123');
