@@ -53,6 +53,7 @@ function generate_index(){
     var array=JSON.parse(tmp_str2);
     var result = get_combinations(array);
     result='var indexes='+JSON.stringify(result)+'';
+    console.log(result);
 }
 function generate_test_data(half_strength=false){
     var usernames=new Array('Test','1234','Username','User');
