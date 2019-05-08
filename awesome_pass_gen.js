@@ -188,7 +188,6 @@ function simplify(password,max_len,no_spec,legacy_mode){
         }
     //password=password+tmp_str;
     var time2=Date.now();
-    console.log('pass '+password);
     console.log('pass_len '+password.length);
     console.log('simplify:'+(time2-time)+'ms');
     return password;
