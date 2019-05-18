@@ -5,6 +5,7 @@
 * Licensed GNU AGPLv3 or Later
 * version 2.0.1
 */
+/*jshint -W117 */
 "use strict"
 var perc=0;
 function generate_salt(password,username,url,lower=false,higher=false){
@@ -34,14 +35,34 @@ function generate_salt(password,username,url,lower=false,higher=false){
         n2=13;
         r2=15;
     }
-    
+    /*
+     * To make everything be required from the git-go we're doing this now.
+     * hmac_sha256(key,message,'encoding');
+     * The reasoning for this is so that the entire string is being utilized from the very
+     * beginning and thus it's a bit harder to try to do a bruteforce attack.
+     * The previous way of doing it, only required the url and password the start thus an attacker
+     * would be able to generate password+url and then do branching usernames by the attack surface.
+     * This type of attack isn't that feasible due to a full attack not really happening as a zero day
+     * full knowledge attack would allow the attacker to see the "username" that a person had. So more
+     * likely than not they'd not have to guess the usernames and would be able to just try it, but if
+     * a user doesn't use the same username for the site as they do the generator then this will help
+     * to slow the attackers down somewhat.
+     *
+     * new password=hmac_256(username,password+url+username,'hex');
+     * new username=hmac_256(password,url+username+password,'hex');
+     * new url=hmac_256(url,username+password+url,'hex');
+     *
+     * This willl be done _before_ any of the ucrypting that's run on the passwords and will thus
+     * just be an additional step for this part of the process.
+     */
+
     r1=r1+1;
     r2=r2+1;
 
     password=ucrypt(password,url,n1,r1,p,32,'base64');
     username=ucrypt(username,password,n1,r1,p,32,'hex');
     url=ucrypt(url,username,n1,r1,p,32,'base64');
-    
+
     }
     salt=url+password+username;
     salt2=username+url+password;
@@ -254,24 +275,24 @@ function generate_pass(dbg=false){
     score=result.score;
     if(score===0){
         color='red';
-        warn_txt='Unsafe'
+        warn_txt='Unsafe';
         document.getElementById('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
     }
     else if(score === 1){
         color='orange';
-        warn_txt='Bad'
+        warn_txt='Bad';
     }
     else if(score === 2){
         color='yellow';
-        warn_txt='Acceptable'
+        warn_txt='Acceptable';
     }
     else if(score === 3){
         color='yellowgreen';
-        warn_txt='Safe'
+        warn_txt='Safe';
     }
     else{
         color='green';
-        warn_txt='Perfect'
+        warn_txt='Perfect';
     }
 
     select_by_id('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
@@ -355,7 +376,7 @@ I control the strengths.
 select_by_id('gen_time').innerHTML=display_time(result.guesses/9000);
 modal_toggle('_progress');
 
-select_by_id('generate_pass').disabled=false
+select_by_id('generate_pass').disabled=false;
 
     if(dbg===true){
         console.log(result.guesses);
@@ -426,10 +447,10 @@ function confirmed(val,id){
 }
 
 function generate_wrapper(dbg=false){
-    setTimeout(function(){select_by_id('modal_progress').style.visibility='visible'},0);
-    setTimeout(function(){select_by_id('generate_pass').disabled=true},1);
-    var interval=setTimeout(function(){percent_update(70)},2);
-    setTimeout(function(){generate_pass(dbg)},45);
+    setTimeout(function(){select_by_id('modal_progress').style.visibility='visible';},0);
+    setTimeout(function(){select_by_id('generate_pass').disabled=true;},1);
+    var interval=setTimeout(function(){percent_update(70);},2);
+    setTimeout(function(){generate_pass(dbg);},45);
     return 0;
 }
 
@@ -464,24 +485,24 @@ function score_password(){
     tmp=result.feedback.warning;
     if(score===0){
         color='red';
-        warn_txt='Unsafe'
+        warn_txt='Unsafe';
         select_by_id('orig_score_txt').setAttribute('style', 'color: red; font-weight:bold;');
     }
     else if(score === 1){
         color='orange';
-        warn_txt='Bad'
+        warn_txt='Bad';
     }
     else if(score === 2){
         color='yellow';
-        warn_txt='Acceptable'
+        warn_txt='Acceptable';
     }
     else if(score === 3){
         color='yellowgreen';
-        warn_txt='Safe'
+        warn_txt='Safe';
     }
     else{
         color='green';
-        warn_txt='Perfect'
+        warn_txt='Perfect';
     }
     select_by_id('orig_score_txt').setAttribute('style', 'color: white; font-weight:bold;');
     warning='Try adding a word or two, less common words are better. Or try adding a few numbers. '+tmp;
