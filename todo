@@ -10,7 +10,7 @@ TODO:
 *Important*
 #1 major thing. Move over basic code from index-dev into index for the copying of the password and also other such functions once I confirm that everythign is currently working.
 #2 Make sure to add a new test for the VCCS system so that it does not contain more than 2 characters of the username given to it within the generated password so that all generated passwords work just fine. This will be done after the no-repeat-strings function is completed and will most likely involve just swapping the third offending character with the second so that it can fool the system and thus won't require a ton of work to do. Do
-
+#3 Utilize HMACs for salt generation to make it rely upon the entire thing.
 
 Modal popup will only be for scores that are less than 1 so that the user realizes the rest will just be strongly worded.
 
