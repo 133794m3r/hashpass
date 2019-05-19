@@ -17,8 +17,12 @@ function generate_salt(password,username,url,lower=false,higher=false){
     var n2=9;
     var p2=1;
     var r2=8;
-
-
+    //password=sha256_fast(password);
+    //username=sha256_fast(username);
+    //url=sha256_fast(url);
+    //password=hmac_sha256_fast(password,url+password+username);
+    //url=hmac_sha256_fast(url,password+username+url);
+    //username=hmac_sha256_fast(username,username+url+password);
 
     if(lower==true && higher === false){
         password=scrypt(password,url,n1,r1,p,32,'base64');

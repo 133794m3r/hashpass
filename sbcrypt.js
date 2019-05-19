@@ -951,16 +951,6 @@ function hash_blocks(w, v, p, pos, len) {
                 ((p[pos_tmp + 2] & 0xff) << 8) | (p[pos_tmp + 3] & 0xff));
 
 
-        /*
-        for (i = 16; i < 64; i++) {
-            u = w[i - 2];
-            t1 = (u >>> 17 | u << (32 - 17)) ^ (u >>> 19 | u << (32 - 19)) ^ (u >>> 10);
-            u = w[i - 15];
-            t2 = (u >>> 7 | u << (32 - 7)) ^ (u >>> 18 | u << (32 - 18)) ^ (u >>> 3);
-            w[i] = (t1 + w[i - 7] | 0) + (t2 + w[i - 16] | 0);
-        }
-        */
-
         //16
         u = w[14];
         t1 = (u >>> 17 | u << 15) ^ (u >>> 19 | u << 13) ^ (u >>> 10);
@@ -2372,14 +2362,6 @@ function hash_blocks(w, v, p, pos, len) {
             //a = (t1 + t2) | 0;
             ////64
 
-
-
-
-
-
-
-
-
         v[0] += a;
         v[1] += b;
         v[2] += c;
@@ -2529,8 +2511,83 @@ function finish(out){
 
 
     update(data);
-  var out=new Uint8Array(digest_length);
-    return finish(out);
+    var out=new Uint8Array(digest_length);
+      if(!finished){
+        var left=buffer_length;
+        var bit_len_hi = (bytes_hashed / 0x20000000 )| 0;
+        var bit_len_lo = bytes_hashed << 3;
+        var pad_len=( (bytes_hashed % 64) < 56) ? 64 : 128;
+        var tmp=pad_len-8;
+        i=left+1;
+        buffer[left] = 0x80;
+        for (;i<tmp; i++) {
+            buffer[i]=0;
+        }
+
+        buffer[pad_len-8]= (bit_len_hi >>> 24) & 0xff;
+        buffer[pad_len-7]= (bit_len_hi >>>16 )& 0xff;
+        buffer[pad_len-6]= (bit_len_hi >>>8) &0xff;
+        buffer[pad_len-5]= (bit_len_hi >>> 0) & 0xff;
+        buffer[pad_len-4]= (bit_len_lo >>>24) & 0xff;
+        buffer[pad_len-3]=(bit_len_lo >>> 16) & 0xff;
+        buffer[pad_len-2]=(bit_len_lo >>> 8) &0xff;
+        buffer[pad_len-1]=(bit_len_lo >>> 0 ) &0xff;
+        hash_blocks(temp,state,buffer,0,pad_len);
+        finished=true;
+    }
+
+    //0
+        out[0] = (state[0] >>> 24) &0xff;
+        out[1] = (state[0] >>> 16) &0xff;
+        out[2] = (state[0] >>> 8) &0xff;
+        out[3] = (state[0] >>> 0) &0xff;
+
+
+    //1
+        out[4] = (state[1] >>> 24) &0xff;
+        out[5] = (state[1] >>> 16) &0xff;
+        out[6] = (state[1] >>> 8) &0xff;
+        out[7] = (state[1] >>> 0) &0xff;
+
+    //2
+        out[8] = (state[2] >>> 24) &0xff;
+        out[9] = (state[2] >>> 16) &0xff;
+        out[10] = (state[2] >>> 8) &0xff;
+        out[11] = (state[2] >>> 0) &0xff;
+
+    //3
+        out[12] = (state[3] >>> 24) &0xff;
+        out[13] = (state[3] >>> 16) &0xff;
+        out[14] = (state[3] >>> 8) &0xff;
+        out[15] = (state[3] >>> 0) &0xff;
+
+    //4
+        out[16] = (state[4] >>> 24) &0xff;
+        out[17] = (state[4] >>> 16) &0xff;
+        out[18] = (state[4] >>> 8) &0xff;
+        out[19] = (state[4] >>> 0) &0xff;
+
+    //5
+        out[20] = (state[5] >>> 24) &0xff;
+        out[21] = (state[5] >>> 16) &0xff;
+        out[22] = (state[5] >>> 8) &0xff;
+        out[23] = (state[5] >>> 0) &0xff;
+
+    //6
+        out[24] = (state[6] >>> 24) &0xff;
+        out[25] = (state[6] >>> 16) &0xff;
+        out[26] = (state[6] >>> 8) &0xff;
+        out[27] = (state[6] >>> 0) &0xff;
+
+    //7
+        out[28] = (state[7] >>> 24) &0xff;
+        out[29] = (state[7] >>> 16) &0xff;
+        out[30] = (state[7] >>> 8) &0xff;
+        out[31] = (state[7] >>> 0) &0xff;
+
+  
+    //return finish(out);
+    return out;
 //return hash(data);
 }
 
