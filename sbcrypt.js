@@ -811,9 +811,7 @@ function bcrypt_one_iter(password,salt){
 
   function sha256_fast(data){
 "use strict";
-var exports=[];
-exports.digest_length = 32;
-exports.block_size = 64;
+
 // SHA-256 constants
 var K = new Uint32Array([
     0x428a2f98, 0x71374491, 0xb5c0fbcf, 0xe9b5dba5, 0x3956c25b,
@@ -831,8 +829,8 @@ var K = new Uint32Array([
     0x90befffa, 0xa4506ceb, 0xbef9a3f7, 0xc67178f2
 ]);
 
-     var digest_length = exports.digest_length;
-         var block_size = exports.block_size;
+     var digest_length = 32;
+         var block_size = 64;
         var state = new Int32Array(8); // hash state
         var temp = new Int32Array(64); // temporary state
         var buffer = new Uint8Array(128); // buffer for data to hash
@@ -1141,14 +1139,14 @@ function hash_blocks(w, v, p, pos, len) {
         t1 = (u >>> 17 | u << 15) ^ (u >>> 19 | u << 13) ^ (u >>> 10);
         u = w[26];
         t2 = (u >>> 7 | u << 25) ^ (u >>> 18 | u << 14) ^ (u >>> 3);
-        w[41] = (t1 + w[34] | 0) + (t2 + w[25] | 0)
+        w[41] = (t1 + w[34] | 0) + (t2 + w[25] | 0);
 
         //42
         u = w[40];
         t1 = (u >>> 17 | u << 15) ^ (u >>> 19 | u << 13) ^ (u >>> 10);
         u = w[27];
         t2 = (u >>> 7 | u << 25) ^ (u >>> 18 | u << 14) ^ (u >>> 3);
-        w[42] = (t1 + w[35] | 0) + (t2 + w[26] | 0)
+        w[42] = (t1 + w[35] | 0) + (t2 + w[26] | 0);
 
         //43
         u = w[41];
@@ -2386,7 +2384,7 @@ function hash_blocks(w, v, p, pos, len) {
 function update(data,data_len=0){
 
     if(data_len === 0){
-        data_len=data.length
+        data_len=data.length;
     }
     if(finished){
         throw new Error("SHA256: CAN'T UPDATE FINISHED");
@@ -3238,11 +3236,11 @@ else{
   // Decode strings.
   if (typeof password === 'string'){
     //password = string_to_bytes(password);
-    password=string_to_int8_array(password);
+    password=string_to_uint8_array(password);
   }
   if (typeof salt === 'string'){
     //salt = string_to_bytes(salt);
-    salt=string_to_int8_array(salt);
+    salt=string_to_uint8_array(salt);
   }
 
     XY = new Int32Array(64*r);
