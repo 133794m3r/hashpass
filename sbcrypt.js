@@ -3236,11 +3236,11 @@ else{
   // Decode strings.
   if (typeof password === 'string'){
     //password = string_to_bytes(password);
-    password=string_to_uint8_array(password);
+    password=string_to_int8_array(password);
   }
   if (typeof salt === 'string'){
     //salt = string_to_bytes(salt);
-    salt=string_to_uint8_array(salt);
+    salt=string_to_int8_array(salt);
   }
 
     XY = new Int32Array(64*r);
