@@ -80,7 +80,7 @@ function mean(array){
     for(i=0;i<arg_len;++i){
         max+=array[i];
     }
-    tmp=round((max/arg_len),8);
+    tmp=round((max/arg_len),30);
     return tmp;
 }
 
@@ -93,7 +93,7 @@ function standard_deviation(array,mean){
         tmp+=pow((array[i]-mean),2);
     }
     tmp=(tmp/arr_len);
-    tmp=round(sqrt(tmp),8);
+    tmp=round(sqrt(tmp),10);
     return tmp;
 }
 

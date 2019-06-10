@@ -183,6 +183,22 @@ function hex_decode(hex_str){
     }
     return out_str;
 }
+function hex_encode(value){
+    var hex_str='';
+    var len=value.length;
+    if(typeof value === 'number'){
+        hex_str=value.toString(16);
+    }
+    else if(typeof value === 'object'){
+        for(i=0;i<len;++i){
+            hex_str=hex_str+(value[i].toString(16));
+        }
+    }
+    else{
+        return 2;
+    }
+    return hex_str;
+}
 function string_indexes(string,search_string){
 var len=string.length;
 var tmp_str='';

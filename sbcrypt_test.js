@@ -26,7 +26,7 @@ var tmp_str=Math.random().toString(16);
 var tmp_str2=Math.random().toString(16);
 var tmp='';
 //n=Math.pow(2,n);
-
+var l=0;
 true_start=microtime();
 for(i=1;i<=j;i++){
     start=microtime();
@@ -35,12 +35,14 @@ for(i=1;i<=j;i++){
         tmp_str=tmp;
     end=microtime();
     times[i-1]=((end-start));
+    //console.log((end-start));
 }
 console.log(tmp_str);
 true_end=microtime();
 
 var arr_start=1+(Math.ceil(j/20));
 var arr_end=-1*arr_start;
+console.log('total time:'+(true_end-true_start));
 times_sort=times.sort(function(a,b){
         return a - b;
     });

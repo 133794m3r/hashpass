@@ -1,4 +1,4 @@
-    function sha256_fast(data){
+function sha256_fast(data){
 "use strict";
 // SHA-256 constants
 var K = new Uint32Array([
@@ -38,7 +38,7 @@ var K = new Uint32Array([
 
 
 
-function hash_blocks(w, v, p, pos, len) {
+function blocks(w, v, p, pos, len) {
     var a, b, c, d, e, f, g, h, u, i, j, t1, t2,pos_tmp=0;
     while (len >= 64) {
         a = v[0];
@@ -1589,36 +1589,6 @@ function hash_blocks(w, v, p, pos, len) {
 // Hash implements SHA256 hash algorithm.
 function update(data,data_len=0){
 
-    if(data_len === 0){
-        data_len=data.length;
-    }
-    if(finished){
-        throw new Error("SHA256: CAN'T UPDATE FINISHED");
-    }
-    var data_pos=0;
-    bytes_hashed+=data_len;
-
-    if(buffer_length > 0){
-        while (buffer_length < 64 && data_len > 0){
-            buffer[buffer_length++] = data[data_pos++];
-            data_len--;
-        }
-
-        if(buffer_length === 64){
-            hash_blocks(temp,state,buffer,0,64);
-            buffer_length = 0;
-        }
-    }
-
-    if(data_len >= 64){
-        data_pos = hash_blocks(temp,state,data,data_pos,data_len);
-        data_len%=64;
-    }
-
-    while(data_len > 0){
-        buffer[buffer_length++] = data[data_pos++];
-        data_len--;
-    }
 
     return data;
 }
@@ -1711,15 +1681,113 @@ function finish(out){
     state[7] = 0x5be0cd19;
     buffer_length = 0;
     bytes_hashed = 0;
-    finished = false;
 
 
-    update(data);
+    //update(data);
+    var data_len=data.length;
+    var data_pos=0;
+    bytes_hashed+=data_len;
+
+    if(buffer_length > 0){
+        while (buffer_length < 64 && data_len > 0){
+            buffer[buffer_length++] = data[data_pos++];
+            data_len--;
+        }
+
+        if(buffer_length === 64){
+            blocks(temp,state,buffer,0,64);
+            buffer_length = 0;
+        }
+    }
+
+    if(data_len >= 64){
+        data_pos = blocks(temp,state,data,data_pos,data_len);
+        data_len%=64;
+    }
+
+    while(data_len > 0){
+        buffer[buffer_length++] = data[data_pos++];
+        data_len--;
+    }
+
   var out=new Uint8Array(digest_length);
-    return finish(out);
+  
+  //  return finish(out);
+    var i=0;
+        var left=buffer_length;
+        var bit_len_hi = (bytes_hashed / 0x20000000 )| 0;
+        var bit_len_lo = bytes_hashed << 3;
+        var pad_len=( (bytes_hashed % 64) < 56) ? 64 : 128;
+        var tmp=pad_len-8;
+        i=left+1;
+        buffer[left] = 0x80;
+        for (;i<tmp; i++) {
+            buffer[i]=0;
+        }
+
+        buffer[pad_len-8]= (bit_len_hi >>> 24) & 0xff;
+        buffer[pad_len-7]= (bit_len_hi >>>16 )& 0xff;
+        buffer[pad_len-6]= (bit_len_hi >>>8) &0xff;
+        buffer[pad_len-5]= (bit_len_hi >>> 0) & 0xff;
+        buffer[pad_len-4]= (bit_len_lo >>>24) & 0xff;
+        buffer[pad_len-3]=(bit_len_lo >>> 16) & 0xff;
+        buffer[pad_len-2]=(bit_len_lo >>> 8) &0xff;
+        buffer[pad_len-1]=(bit_len_lo >>> 0 ) &0xff;
+        blocks(temp,state,buffer,0,pad_len);
+
+
+    //0
+        out[0] = (state[0] >>> 24) &0xff;
+        out[1] = (state[0] >>> 16) &0xff;
+        out[2] = (state[0] >>> 8) &0xff;
+        out[3] = (state[0] >>> 0) &0xff;
+
+
+    //1
+        out[4] = (state[1] >>> 24) &0xff;
+        out[5] = (state[1] >>> 16) &0xff;
+        out[6] = (state[1] >>> 8) &0xff;
+        out[7] = (state[1] >>> 0) &0xff;
+
+    //2
+        out[8] = (state[2] >>> 24) &0xff;
+        out[9] = (state[2] >>> 16) &0xff;
+        out[10] = (state[2] >>> 8) &0xff;
+        out[11] = (state[2] >>> 0) &0xff;
+
+    //3
+        out[12] = (state[3] >>> 24) &0xff;
+        out[13] = (state[3] >>> 16) &0xff;
+        out[14] = (state[3] >>> 8) &0xff;
+        out[15] = (state[3] >>> 0) &0xff;
+
+    //4
+        out[16] = (state[4] >>> 24) &0xff;
+        out[17] = (state[4] >>> 16) &0xff;
+        out[18] = (state[4] >>> 8) &0xff;
+        out[19] = (state[4] >>> 0) &0xff;
+
+    //5
+        out[20] = (state[5] >>> 24) &0xff;
+        out[21] = (state[5] >>> 16) &0xff;
+        out[22] = (state[5] >>> 8) &0xff;
+        out[23] = (state[5] >>> 0) &0xff;
+
+    //6
+        out[24] = (state[6] >>> 24) &0xff;
+        out[25] = (state[6] >>> 16) &0xff;
+        out[26] = (state[6] >>> 8) &0xff;
+        out[27] = (state[6] >>> 0) &0xff;
+
+    //7
+        out[28] = (state[7] >>> 24) &0xff;
+        out[29] = (state[7] >>> 16) &0xff;
+        out[30] = (state[7] >>> 8) &0xff;
+        out[31] = (state[7] >>> 0) &0xff;
+    return out;
 //return hash(data);
 }
-  function string_to_uint8_array(s) {
+function string_to_uint8_array(s){
 "use strict";
     var arr = [];
     var s_len=s.length;
@@ -1741,7 +1809,9 @@ function finish(out){
     arr=Uint8Array.from(arr);
     return arr;
   }
-function hmac_sha256_fast(key,msg) {
+function hmac_sha256_fast(key,msg){
+    "use strict";
+
     var key_len=key.length;
     var msg_len=msg.length;
     keyb=string_to_uint8_array(key);
@@ -1777,8 +1847,6 @@ if (key_len<block_size) {
     }
     inner_key_pad.fill(0x36);
     outer_key_pad.fill(0x5c);
-
-    console.log(Array.from(pad));
     for (i=0;i<block_size;i++) {
         outer_key_pad[i]=outer_key_pad[i] ^ pad[i];
         inner_key_pad[i]=inner_key_pad[i] ^ pad[i];

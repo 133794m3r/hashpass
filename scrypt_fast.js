@@ -1776,23 +1776,34 @@ function PBKDF2_HMAC_SHA256_one_iter_fast(password, salt, dk_len){
     var j=0;
     var i_4=inner_len-4;
     // inner = (password ^ ipad) || salt || counter
+    /*
     for (i = 0; i < 64; i++){
       inner[i] = 0x36;
     }
+    */
+    inner.fill(0x36);
     for (i = 0; i < password_len; i++){
       inner[i] ^= password[i];
     }
+    /*
     for (i = 0; i < salt_len; i++){
       inner[64+i] = salt[i];
     }
+    */
+    inner.set(salt,64);
+    /*
     for (i = i_4; i < inner_len; i++){
       inner[i] = 0;
     }
-
+    */
+    inner.fill(0,i_4);
+/*
     // outer_key = password ^ opad
     for (i = 0; i < 64; i++){
       outer_key[i] = 0x5c;
     }
+    */
+    outer_key.fill(0x5c);
     for (i = 0; i < password_len; i++){
       outer_key[i] ^= password[i];
     }
